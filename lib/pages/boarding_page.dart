@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slide_to_act/slide_to_act.dart';
+import 'package:stylle/pages/pre_login_page.dart';
 
 class BoardingPage extends StatefulWidget {
   const BoardingPage({super.key});
@@ -24,7 +26,7 @@ class _BoardingPageState extends State<BoardingPage> {
             width: (MediaQuery.of(context).size.width),
           ),
           Positioned(
-            bottom: 100,
+            bottom: 50,
             right: 0, left: 0,
 // Oke chwa?
 // a chua, gio muon them 1 dong chu o tren cai box nay thi them 1 cai child moi pk a
@@ -33,7 +35,8 @@ class _BoardingPageState extends State<BoardingPage> {
                 Container(
                   margin:
                       // const EdgeInsets.symmetric(horizontal: 40, vertical: 35),
-                      const EdgeInsets.only(top: 35, bottom: 35, left: 45, right: 30),
+                      const EdgeInsets.only(
+                          top: 35, bottom: 35, left: 45, right: 30),
                   child: Text(
                     "Style is a way to say who you are without having to speak.",
                     style: GoogleFonts.abhayaLibre(
@@ -44,43 +47,32 @@ class _BoardingPageState extends State<BoardingPage> {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.00),
-                    color: const Color.fromRGBO(217, 217, 217, 0.3),
-                  ),
-                  // width: MediaQuery.of(context).size.width - 100,
-                  height: 90,
-                  margin: const EdgeInsets.symmetric(horizontal: 40),
-
-                  child: GestureDetector(
-                    onHorizontalDragUpdate: (event) async {
-                      if (event.primaryDelta! > 10) {
-                        _incTansXVal();
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        getStarted(),
-                        myWidth == 0.0
-                            ?  Expanded(
-                                child: Center(
-                                  child: Text(
-                                    "Get started",
-                                    style: GoogleFonts.abhayaLibre(
-                                        textStyle: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 30.00,
-                                            fontWeight: FontWeight.bold)),
-                                    // style: TextStyle(
-                                    //     color: Colors.white, fontSize: 23.00),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox(),
-                      ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
+                  child: SlideAction(
+                    height: 75,
+                    borderRadius: 25,
+                    elevation: 0,
+                    // innerColor: ,
+                    outerColor: const Color.fromRGBO(217, 217, 217, 0.3),
+                    sliderButtonIcon: const Icon(
+                      Icons.double_arrow_rounded,
+                      color: Colors.black,
+                      size: 34,
                     ),
+                    text: "Get started",
+                    textStyle: GoogleFonts.abhayaLibre(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30.00,
+                            fontWeight: FontWeight.bold)),
+                    sliderRotate: false,
+                    onSubmit: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PreLoginPage()));
+                    },
                   ),
                 ),
               ],
@@ -114,7 +106,7 @@ class _BoardingPageState extends State<BoardingPage> {
                     Flexible(
                       child: Text(
                         "  Successfully!",
-                        style: TextStyle(color: Colors.green, fontSize: 26.00, fontWeight: FontWeight.w600),
+                        style: TextStyle(color: Colors.green, fontSize: 26.00),
                       ),
                     ),
                   ],
