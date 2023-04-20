@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1024287017546",
+    "project_id": "stylle",
+    "storage_bucket": "stylle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024287017546:android:9c1f32d7306611cc9134b3",
+        "android_client_info": {
+          "package_name": "com.example.stylle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024287017546-sa5sv1349l9lqhakl4teo6uhtkp9cgqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpKPaEwroREo5oM9ZhLwuWnGRz6oFRKvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024287017546-sa5sv1349l9lqhakl4teo6uhtkp9cgqv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

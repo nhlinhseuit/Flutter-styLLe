@@ -88,7 +88,9 @@ class _PreLoginPageState extends State<PreLoginPage> {
                                 fontSize: 20.00,
                                 fontWeight: FontWeight.w900)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(registerRoute);
+                      },
                     ),
                   ),
                 ),

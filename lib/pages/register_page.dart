@@ -12,6 +12,20 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late final TextEditingController _email;
+  late final TextEditingController _password;
+  @override
+  void initState() {
+    _email = TextEditingController();
+    _password = TextEditingController();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Column(
               children: [
                 TextField(
+                  autofocus: true,
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
                     hintText: 'Your first name',
@@ -95,15 +110,15 @@ class _RegisterPageState extends State<RegisterPage> {
               }
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(loginRoute);
-              }, 
               child: Text(
                 "Already have an account? Log in.",
                 style: GoogleFonts.abhayaLibre(
                   color: Colors.black,
                   fontSize: 16.00,)
                 ),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+              }, 
             )
         ],)
       ),

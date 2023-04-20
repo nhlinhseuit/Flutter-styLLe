@@ -1,9 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/constants/colors.dart';
 import 'package:stylle/utilities/popup_dialog.dart';
 
 import '../constants/routes.dart';
@@ -16,6 +12,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late final TextEditingController _email;
+  late final TextEditingController _password;
+  @override
+  void initState() {
+    _email = TextEditingController();
+    _password = TextEditingController();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,51 +53,49 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               children: [
                 TextField(
-              autofocus: true,
-              keyboardType: TextInputType.emailAddress,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-                hintStyle: GoogleFonts.abhayaLibre(
-                  textStyle: const TextStyle(
-
-                  )
-                )
-              ),
-            ),
-            TextField(
-              autofocus: true,
-              obscureText: true,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                hintText: 'Enter your password',
-                hintStyle: GoogleFonts.abhayaLibre()
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                  controller: _email,
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your email',
+                    hintStyle: GoogleFonts.abhayaLibre()
+                  ),
+                ),
+                TextField(
+                  controller: _password,
+                  autofocus: true,
+                  obscureText: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your password',
+                    hintStyle: GoogleFonts.abhayaLibre()
+                  ),
+                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Checkbox(value: false, onChanged: (bool? value) {}, ),
-                    Text(
-                      "Remember me",
-                      style: GoogleFonts.abhayaLibre(),
+                    Row(
+                      children: [
+                        Checkbox(value: false, onChanged: (bool? value) {}, ),
+                        Text(
+                          "Remember me",
+                          style: GoogleFonts.abhayaLibre(),
+                        )
+                      ],
+                    ),
+                    TextButton(
+                      onPressed: () {}, 
+                      child: Text(
+                        "Forgot password?",
+                        style: GoogleFonts.abhayaLibre(
+                            color: const Color.fromARGB(255, 160, 160, 160)
+                        ),
+                      )
                     )
                   ],
                 ),
-                TextButton(
-                  onPressed: () {}, 
-                  child: Text(
-                    "Forgot password?",
-                    style: GoogleFonts.abhayaLibre(
-                        color: const Color.fromARGB(255, 160, 160, 160)
-                    ),
-                  )
-                )
               ],
-            ),
-            ],
             ),
             Column(
               children: [
@@ -142,15 +150,15 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(registerRoute);
-              }, 
               child: Text(
                 "New to this app? Sign up.",
                 style: GoogleFonts.abhayaLibre(
                   color: Colors.black,
                   fontSize: 16.00,)
                 ),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
+              }, 
             )
         ],)
       ),
