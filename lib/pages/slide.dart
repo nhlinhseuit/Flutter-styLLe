@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_to_act/slide_to_act.dart';
+import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 
 class Slide extends StatefulWidget {
@@ -39,8 +38,7 @@ class _SlideState extends State<Slide> {
                   fontWeight: FontWeight.bold)),
           sliderRotate: false,
           onSubmit: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const PreLoginPage()));
+            Navigator.pushNamed(context, preLoginRoute);
           },
         ),
       )),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stylle/pages/boarding_page.dart';
+import 'package:stylle/pages/login_page.dart';
+
+import '../constants/routes.dart';
 
 class PreLoginPage extends StatefulWidget {
   const PreLoginPage({super.key});
@@ -49,10 +53,12 @@ class _PreLoginPageState extends State<PreLoginPage> {
                         style: GoogleFonts.abhayaLibre(
                             textStyle: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 25.00,
+                                fontSize: 20.00,
                                 fontWeight: FontWeight.w900)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(loginRoute);
+                      },
                     ),
                   ),
                 ),
@@ -79,7 +85,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                         style: GoogleFonts.abhayaLibre(
                             textStyle: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 25.00,
+                                fontSize: 20.00,
                                 fontWeight: FontWeight.w900)),
                       ),
                       onPressed: () {},

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_to_act/slide_to_act.dart';
+import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 
 class BoardingPage extends StatefulWidget {
@@ -64,14 +65,11 @@ class _BoardingPageState extends State<BoardingPage> {
                     textStyle: GoogleFonts.abhayaLibre(
                         textStyle: const TextStyle(
                             color: Colors.white,
-                            fontSize: 30.00,
+                            fontSize: 24.00,
                             fontWeight: FontWeight.bold)),
                     sliderRotate: false,
                     onSubmit: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PreLoginPage()));
+                      Navigator.pushNamed(context,preLoginRoute);
                     },
                   ),
                 ),
