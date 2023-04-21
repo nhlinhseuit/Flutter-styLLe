@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/pages/boarding_page.dart';
-import 'package:stylle/pages/login_page.dart';
 
 import '../constants/routes.dart';
 

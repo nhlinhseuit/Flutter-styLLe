@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:stylle/pages/pre_login_page.dart';
 
 class BoardingPage extends StatefulWidget {
   const BoardingPage({super.key});
@@ -117,22 +116,4 @@ class _BoardingPageState extends State<BoardingPage> {
         ),
       );
 
-  _incTansXVal() async {
-    int canLoop = -1;
-    for (var i = 0; canLoop == -1; i++) {
-      await Future.delayed(const Duration(milliseconds: 1), () {
-        setState(() {
-          if (translateX + 1 <
-              MediaQuery.of(context).size.width - (200 + myWidth)) {
-            translateX += 1;
-            myWidth = MediaQuery.of(context).size.width - (200 + myWidth);
-          } else {
-            setState(() {
-              canLoop = 1;
-            });
-          }
-        });
-      });
-    }
-  }
 }

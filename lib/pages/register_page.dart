@@ -5,6 +5,7 @@ import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
 import '../utilities/popup_dialog.dart';
+import '../services/collections/my_users.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -45,6 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
           width: (MediaQuery.of(context).size.width),
         ),
         Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
@@ -55,7 +57,6 @@ class _RegisterPageState extends State<RegisterPage> {
           body: Container(
             margin: const EdgeInsets.all(32),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -67,11 +68,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.w900)
                   ),
                 ),
+                const SizedBox(
+                  height: 80,
+                ),
                 Column(
                   children: [
                     TextField(
                       controller: _firstName,
-                      autofocus: true,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Your first name',
@@ -108,7 +111,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintStyle: GoogleFonts.abhayaLibre()
                       ),
                     ),
-                ],
+                  ],
+                ),
+                const SizedBox(
+                  height: 80,
                 ),
                 ElevatedButton(
                   // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
@@ -131,7 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     final passwordText = _password.text;
                     final firstNameText = _firstName.text;
                     final lastNameText = _lastName.text;
-                    print(emailText);
                     try {
                       await AuthService.firebase().createUser(
                         email: emailText, 
@@ -139,10 +144,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         firstName: firstNameText, 
                         lastName: lastNameText,
                       );
-                      final user = AuthService.firebase().currentUser;
-                      user?.isEmailVerified;
                       AuthService.firebase().sendEmailVerification();
-                      // Navigator.of(context).pushNamed(verifyRoute);
+                      Navigator.of(context).pushNamed(verifyRoute);
                     } on WeakPasswordAuthException {
                       await showMessageDialog(context, 'Babe, your password is not strong enough.');
                     } on EmailAlreadyInUseAuthException {
@@ -151,11 +154,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       await showMessageDialog(context, 'Babe, your email is invalid.');
                     } on GenericAuthException {
                       await showMessageDialog(context, 'Authentication error.');
-                    }
-                    catch (e) {
+                    } catch (e) {
                         await showMessageDialog(context, 'Error: ${e.toString()}');
                     }
                   } 
+                ),
+                const SizedBox(
+                  height: 80,
                 ),
                 TextButton(
                   child: Text(

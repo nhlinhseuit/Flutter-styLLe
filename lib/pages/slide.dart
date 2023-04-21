@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:stylle/pages/pre_login_page.dart';
 
 class Slide extends StatefulWidget {
   const Slide({super.key});

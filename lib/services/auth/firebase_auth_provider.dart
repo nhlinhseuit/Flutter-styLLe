@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, FirebaseAuthException;
 
 import '../../firebase_options.dart';
+import '../collections/my_users.dart';
 import 'auth_exceptions.dart';
 import 'auth_provider.dart';
 import 'auth_user.dart';
@@ -13,6 +14,8 @@ class FirebaseAuthProvider implements AuthProvider {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       final user = currentUser;
       if (user != null) {
+        final MyUser newUser = MyUser(user.uid!, firstName, lastName, email);
+        await newUser.addUser();
         return user;
       } else {
         throw UserNotLoggedInAuthException();
