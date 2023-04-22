@@ -57,6 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
           body: Container(
             margin: const EdgeInsets.all(32),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -68,9 +69,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.w900)
                   ),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height / 10),
+                // ),
                 Column(
                   children: [
                     TextField(
@@ -113,9 +114,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height / 10),
+                // ),
                 ElevatedButton(
                   // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   style: ElevatedButton.styleFrom(
@@ -159,9 +160,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                   } 
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height / 10),
+                // ),
                 TextButton(
                   child: Text(
                     "Already have an account? Log in.",

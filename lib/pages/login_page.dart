@@ -56,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           body: Container(
             margin: const EdgeInsets.all(32),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -67,9 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.w900)
                   ),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height / 10),
+                // ),
                 Column(
                   children: [
                     TextField(
@@ -127,9 +128,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height / 10),
+                // ),
                 Column(
                   children: [
                     Container(
@@ -146,10 +147,10 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Log in',
                           style: GoogleFonts.abhayaLibre(
-                                  textStyle: TextStyle(
-                                    color: Theme.of(context).colorScheme.primary,
-                                  // color: Color.fromARGB(255, 252, 200, 209),
-                                  fontSize: 20.00,)
+                            textStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 20.00,
+                            )
                           ),
                         ),
                         onPressed: () async {
@@ -162,8 +163,6 @@ class _LoginPageState extends State<LoginPage> {
                               password: passwordText
                             );
                             final user = AuthService.firebase().currentUser;
-                      print(user?.uid);
-
                             if (user != null) {
                               final emailVerified = user.isEmailVerified;
                               if (emailVerified) {
@@ -210,9 +209,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height / 10),
+                // ),
                 TextButton(
                   child: Text(
                     "New to this app? Sign up.",
