@@ -16,12 +16,14 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _confirmPassword;
   late final TextEditingController _firstName;
   late final TextEditingController _lastName;
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _confirmPassword = TextEditingController();
     _firstName = TextEditingController();
     _lastName = TextEditingController();
     super.initState();
@@ -30,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _confirmPassword.dispose();
     _firstName.dispose();
     _lastName.dispose();
     super.dispose();
@@ -68,9 +71,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.w900)
                   ),
                 ),
-                // SizedBox(
-                //   height: (MediaQuery.of(context).size.height / 10),
-                // ),
                 Column(
                   children: [
                     TextField(
@@ -93,13 +93,17 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintStyle: GoogleFonts.abhayaLibre()
                       ),
                     ),
+                    const SizedBox(
+                      height: 32,
+                    ),
                     TextField(
                       controller: _email,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(),
+                        prefixIcon: const Icon(Icons.email_outlined),
                       ),
                     ),
                     TextField(
@@ -108,14 +112,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                      ),
+                    ),
+                    TextField(
+                      controller: _confirmPassword,
+                      obscureText: true,
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        hintText: 'Confirm your password',
+                        hintStyle: GoogleFonts.abhayaLibre(),
+                        prefixIcon: const Icon(Icons.lock),
                       ),
                     ),
                   ],
                 ),
-                // SizedBox(
-                //   height: (MediaQuery.of(context).size.height / 10),
-                // ),
                 ElevatedButton(
                   // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   style: ElevatedButton.styleFrom(
@@ -137,6 +149,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     final passwordText = _password.text;
                     final firstNameText = _firstName.text;
                     final lastNameText = _lastName.text;
+                    final confirmPasswordText = _confirmPassword.text;
+                    if (passwordText != confirmPasswordText) {
+                      await showMessageDialog(context, 'Passwords do not match.');
+                      return;
+                    }
                     try {
                       await AuthService.firebase().createUser(
                         email: emailText, 
@@ -160,9 +177,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                   } 
                 ),
-                // SizedBox(
-                //   height: (MediaQuery.of(context).size.height / 10),
-                // ),
                 TextButton(
                   child: Text(
                     "Already have an account? Log in.",
@@ -179,6 +193,5 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ],
     );
-  
   }
 }

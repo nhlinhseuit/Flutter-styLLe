@@ -15,10 +15,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  double translateX = 0.0;
-  double translateY = 0.0;
-  double myWidth = 0;
-
   late final TextEditingController _email;
   late final TextEditingController _password;
   late bool _isCheckedRememberMe = false;
@@ -107,7 +103,8 @@ class _LoginPageState extends State<LoginPage> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(),
+                        prefixIcon: const Icon(Icons.email_outlined),
                       ),
                     ),
                     TextField(
@@ -118,7 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(),
+                        prefixIcon: const Icon(Icons.lock_outline),
                       ),
                     ),
                     const SizedBox(
@@ -141,11 +139,14 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {}, 
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(forgotPasswordRoute);
+                          }, 
                           child: Text(
                             "Forgot password?",
                             style: GoogleFonts.abhayaLibre(
-                                color: const Color.fromARGB(255, 100, 100, 100)
+                              fontSize: 16,
+                              color: const Color.fromARGB(255, 100, 100, 100)
                             ),
                           )
                         )
@@ -234,10 +235,8 @@ class _LoginPageState extends State<LoginPage> {
                 TextButton(
                   child: Text(
                     "New to this app? Sign up.",
-                    style: GoogleFonts.abhayaLibre(
-                      color: Colors.black,
-                      fontSize: 16.00,)
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
                   }, 
