@@ -60,7 +60,7 @@ class MainPage extends StatelessWidget {
               if (emailVerified) {
                 return const HomePage();
               } else {
-                return const BoardingPage();
+                return const VerifyEmailPage();
               }
             } else {
               return const BoardingPage();

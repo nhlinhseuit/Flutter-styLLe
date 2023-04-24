@@ -44,7 +44,9 @@ class _HomePageState extends State<HomePage> {
                   final confirmLogout = await showLogOutDialog(context);
                   if (confirmLogout) {
                     await AuthService.firebase().logout();
-                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false,);
+                    if (mounted) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false,);
+                    }
                   }
                   break;
               }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stylle/utilities/popup_dialog.dart';
 
 import '../constants/routes.dart';
@@ -26,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _loadUserEmailPassword();
     super.initState();
   }
   @override
@@ -34,6 +36,35 @@ class _LoginPageState extends State<LoginPage> {
     _password.dispose();
     super.dispose();
   }
+
+  // REMEMBER ME FEATURE
+  void _handleRemeberme(bool? value) {
+    _isCheckedRememberMe = value ?? false;
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool('remember_me', _isCheckedRememberMe);
+      prefs.setString('email', _email.text);
+      prefs.setString('password', _password.text);
+    });
+    setState(() {
+      _isCheckedRememberMe = value ?? false;
+    });
+  }
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email') ?? "";
+      final password = prefs.getString('password') ?? "";
+      final rememberMe = prefs.getBool('remember_me') ?? false;
+      if (rememberMe) {
+        setState(() {
+          _isCheckedRememberMe = true;
+        });
+        _email.text = email;
+        _password.text = password;
+      }
+    } catch (_) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -68,9 +99,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.w900)
                   ),
                 ),
-                // SizedBox(
-                //   height: (MediaQuery.of(context).size.height / 10),
-                // ),
                 Column(
                   children: [
                     TextField(
@@ -104,11 +132,8 @@ class _LoginPageState extends State<LoginPage> {
                             Checkbox(
                               checkColor: Theme.of(context).colorScheme.primary,
                               value: _isCheckedRememberMe, 
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _isCheckedRememberMe = value!;
-                                });
-                              }, ),
+                              onChanged: _handleRemeberme, 
+                              ),
                             Text(
                               "Remember me",
                               style: GoogleFonts.abhayaLibre(),
@@ -128,9 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                // SizedBox(
-                //   height: (MediaQuery.of(context).size.height / 10),
-                // ),
                 Column(
                   children: [
                     Container(
@@ -156,7 +178,6 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () async {
                           final emailText = _email.text;
                           final passwordText = _password.text;
-                          
                           try {
                             await AuthService.firebase().login(
                               email: emailText, 
@@ -165,6 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                             final user = AuthService.firebase().currentUser;
                             if (user != null) {
                               final emailVerified = user.isEmailVerified;
+                              if (!mounted) return;
                               if (emailVerified) {
                                 Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
                               } else {              
@@ -209,9 +231,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                // SizedBox(
-                //   height: (MediaQuery.of(context).size.height / 10),
-                // ),
                 TextButton(
                   child: Text(
                     "New to this app? Sign up.",

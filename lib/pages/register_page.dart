@@ -5,7 +5,6 @@ import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
 import '../utilities/popup_dialog.dart';
-import '../services/collections/my_users.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -146,6 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         lastName: lastNameText,
                       );
                       AuthService.firebase().sendEmailVerification();
+                      if (!mounted) return;
                       Navigator.of(context).pushNamed(verifyRoute);
                     } on WeakPasswordAuthException {
                       await showMessageDialog(context, 'Babe, your password is not strong enough.');
