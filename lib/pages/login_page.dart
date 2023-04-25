@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       onPressed: () {
                         showMessageDialog(
-                            context, 'Log in with Facebook succ essfully.');
+                            context, 'Log in with Facebook successfully.');
                       },
                       icon: const Icon(
                         Icons.facebook,
