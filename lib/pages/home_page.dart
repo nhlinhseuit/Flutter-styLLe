@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
           'styLLe',
           style: GoogleFonts.allura(
             color: Theme.of(context).colorScheme.primary,
-            fontSize: 60,
+            fontSize: 56,
           ),),
         actions: [
           PopupMenuButton<MenuAction>(
@@ -44,7 +44,9 @@ class _HomePageState extends State<HomePage> {
                   final confirmLogout = await showLogOutDialog(context);
                   if (confirmLogout) {
                     await AuthService.firebase().logout();
-                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false,);
+                    if (mounted) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false,);
+                    }
                   }
                   break;
               }
@@ -74,17 +76,27 @@ class _HomePageState extends State<HomePage> {
             )   
         ]),
       ),
-      // body: FutureBuilder(
-      //   future: MyUser.dbUsers.doc(user?.uid).get(),
-      //   builder: (context, snapshot) {
-      //     try {
-      //       final dbusers = snapshot;
-      //       return snapshot.docs[0]["first_name"];
-      //     } catch (e) {
-      //       print(e);
-      //     }
-        // }
-      // )
+      bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Theme.of(context).colorScheme.primary,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle_outline),
+            label: 'Upload',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'Profile',
+          )
+        ],
+      ),
     );
   
   }

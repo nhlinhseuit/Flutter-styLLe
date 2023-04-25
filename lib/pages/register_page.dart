@@ -16,12 +16,14 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _confirmPassword;
   late final TextEditingController _firstName;
   late final TextEditingController _lastName;
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _confirmPassword = TextEditingController();
     _firstName = TextEditingController();
     _lastName = TextEditingController();
     super.initState();
@@ -30,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _confirmPassword.dispose();
     _firstName.dispose();
     _lastName.dispose();
     super.dispose();
@@ -56,6 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
           body: Container(
             margin: const EdgeInsets.all(32),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -68,7 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 80,
                 ),
                 Column(
                   children: [
@@ -102,21 +106,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                       ))
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     TextField(
                       controller: _email,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 100, 100, 100),
-                                      fontSize: 16.00,
-                                      fontWeight: FontWeight.w400
-                                      ))
+                        hintStyle: GoogleFonts.abhayaLibre()
                       ),
                     ),
                     const SizedBox(
@@ -128,23 +124,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 100, 100, 100),
-                                      fontSize: 16.00,
-                                      fontWeight: FontWeight.w400
-                                      ))
+                        hintStyle: GoogleFonts.abhayaLibre()
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 80,
                 ),
-
-                // BUTTON
-
-
                 ElevatedButton(
                   // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   style: ElevatedButton.styleFrom(
@@ -167,6 +154,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     final passwordText = _password.text;
                     final firstNameText = _firstName.text;
                     final lastNameText = _lastName.text;
+                    final confirmPasswordText = _confirmPassword.text;
+                    if (passwordText != confirmPasswordText) {
+                      await showMessageDialog(context, 'Passwords do not match.');
+                      return;
+                    }
                     try {
                       await AuthService.firebase().createUser(
                         email: emailText, 
@@ -175,6 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         lastName: lastNameText,
                       );
                       AuthService.firebase().sendEmailVerification();
+                      if (!mounted) return;
                       Navigator.of(context).pushNamed(verifyRoute);
                     } on WeakPasswordAuthException {
                       await showMessageDialog(context, 'Babe, your password is not strong enough.');
@@ -190,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   } 
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 80,
                 ),
                 TextButton(
                   child: Text(
@@ -208,6 +201,5 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ],
     );
-  
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
 
 import '../services/auth/auth_service.dart';
@@ -12,46 +13,118 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
+  Future<void> verifyEmail() async {
+    await AuthService.firebase().sendEmailVerification();
+  }
+  @override
+  void initState() {
+    // verifyEmail();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    // final auth = AuthService.firebase().instance();
-    final auth = FirebaseAuth.instance;
-    auth.authStateChanges().listen((user) {
-    final user = AuthService.firebase().currentUser;
-      if (user != null) {
-        if (user.isEmailVerified) {
-              Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
-        }
-      }
-    });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Verify email'),
-      ),
-      body: Column(
-        children: [
-          const Text("We've sent you an email verification."),
-          const Text("If you haven't receive your verification, please tap on the button below:"),
-          TextButton(
-            onPressed: () async {
-              await AuthService.firebase().sendEmailVerification();
-            }, 
-            child: const Text('Send email verification.')
+    // final auth = FirebaseAuth.instance;
+    // auth.authStateChanges().listen((user) {
+    // final user = AuthService.firebase().currentUser;
+    //   if (user != null) {
+    //     if (user.isEmailVerified) {
+    //           Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+    //     }
+    //   }
+    // });
+    return Stack(
+      children: [
+        Image.asset(
+          "assets/images/LoginBackground.png",
+          fit: BoxFit.fill,
+          height: (MediaQuery.of(context).size.height),
+          width: (MediaQuery.of(context).size.width),
+        ),
+        Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.black,
+            // title: const Text("Login"),
           ),
-          TextButton(
-            onPressed: () => {
-              Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false)
-            }, 
-            child: const Text('Later'),
+          body: Container(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    "Verify \nyour account",
+                    style: GoogleFonts.abhayaLibre(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 36.00,
+                        fontWeight: FontWeight.w900
+                      )
+                    ),
+                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("We've sent you an email verification.\nIf you haven't receive your verification, please tap on the button below:"),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25), // <-- Radius
+                        ),
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      onPressed: () async {
+                        await AuthService.firebase().sendEmailVerification();
+                      }, 
+                      child: Text(
+                        'Send email verification.',
+                        style: GoogleFonts.abhayaLibre(
+                          textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.00,
+                          )
+                        ),
+                      )
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25), // <-- Radius
+                        ),
+                        backgroundColor: Colors.black,
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      onPressed: () => {
+                        Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false)
+                      }, 
+                      child: Text(
+                        'Later',
+                        style: GoogleFonts.abhayaLibre(
+                          textStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 20.00,
+                          )
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 80,
+                    ),
+                  ],
+                ),
+            ]),
           ),
-          TextButton(
-            onPressed: () async {
-              await AuthService.firebase().logout();
-              Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
-            }, 
-            child: const Text('Sign out'),
-          )
-      ]),
+        ),
+      ],
     );
   }
 }

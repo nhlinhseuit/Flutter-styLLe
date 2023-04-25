@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
+import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           registerRoute: (context) => const RegisterPage(),
           homeRoute: (context) => const HomePage(),
           verifyRoute: (context) => const VerifyEmailPage(),
+          forgotPasswordRoute: (context) => const ForgotPasswordPage(),
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
           textTheme: TextTheme(
             bodyMedium: GoogleFonts.abhayaLibre(
               textStyle: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
               )
             )
           ),
@@ -60,7 +62,7 @@ class MainPage extends StatelessWidget {
               if (emailVerified) {
                 return const HomePage();
               } else {
-                return const BoardingPage();
+                return const VerifyEmailPage();
               }
             } else {
               return const BoardingPage();
