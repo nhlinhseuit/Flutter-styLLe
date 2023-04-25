@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
+import 'package:stylle/utilities/popup_dialog.dart';
 
 import '../services/auth/auth_service.dart';
 
@@ -13,13 +16,31 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
+  late Timer _timer;
+  
   Future<void> verifyEmail() async {
     await AuthService.firebase().sendEmailVerification();
   }
+
   @override
   void initState() {
-    // verifyEmail();
     super.initState();
+    verifyEmail();
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      await AuthService.firebase().reloadUser();
+      final user = AuthService.firebase().currentUser;
+      if (user?.isEmailVerified ?? false) {
+        timer.cancel();
+        if (!mounted) return;
+        await showMessageDialog(context, 'Your email has been successfully verified.');
+        Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+      }
+    });
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
   }
   @override
   Widget build(BuildContext context) {

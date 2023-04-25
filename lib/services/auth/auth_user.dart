@@ -10,5 +10,9 @@ class AuthUser {
   const AuthUser({required this.uid, required this.email, required this.isEmailVerified});
 
   factory AuthUser.fromFirebase(User user)
-  => AuthUser(uid: user.uid,email: user.email, isEmailVerified: user.emailVerified);
+  => AuthUser(
+    uid: user.uid,
+    email: user.email, 
+    isEmailVerified: user.emailVerified
+  );
 }

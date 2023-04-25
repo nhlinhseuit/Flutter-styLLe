@@ -160,7 +160,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         firstName: firstNameText, 
                         lastName: lastNameText,
                       );
-                      AuthService.firebase().sendEmailVerification();
                       if (!mounted) return;
                       Navigator.of(context).pushNamed(verifyRoute);
                     } on WeakPasswordAuthException {

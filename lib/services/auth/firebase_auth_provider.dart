@@ -111,4 +111,9 @@ class FirebaseAuthProvider implements AuthProvider {
       throw GenericAuthException();
     }
   }
+  
+  @override
+  Future<void> reloadUser() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+  }
 }
