@@ -11,9 +11,6 @@ class PreLoginPage extends StatefulWidget {
 }
 
 class _PreLoginPageState extends State<PreLoginPage> {
-  double translateX = 0.0;
-  double translateY = 0.0;
-  double myWidth = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

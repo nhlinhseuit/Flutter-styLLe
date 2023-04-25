@@ -185,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     )
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                    Navigator.of(context).popAndPushNamed(loginRoute);
                   }, 
                 )
             ],)

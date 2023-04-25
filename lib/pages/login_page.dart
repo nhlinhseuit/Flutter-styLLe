@@ -238,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
+                    Navigator.of(context).popAndPushNamed(registerRoute);
                   }, 
                 )
               ],
