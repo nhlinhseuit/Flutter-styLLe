@@ -15,21 +15,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final TextEditingController _email;
-  late final TextEditingController _password;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
   late bool _isCheckedRememberMe = false;
   
   @override
   void initState() {
-    _email = TextEditingController();
-    _password = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
     _loadUserEmailPassword();
     super.initState();
   }
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class _LoginPageState extends State<LoginPage> {
     _isCheckedRememberMe = value ?? false;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool('remember_me', _isCheckedRememberMe);
-      prefs.setString('email', _email.text);
-      prefs.setString('password', _password.text);
+      prefs.setString('email', _emailController.text.trim());
+      prefs.setString('password', _passwordController.text.trim());
     });
     setState(() {
       _isCheckedRememberMe = value ?? false;
@@ -55,8 +55,8 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isCheckedRememberMe = true;
         });
-        _email.text = email;
-        _password.text = password;
+        _emailController.text = email;
+        _passwordController.text = password;
       }
     } catch (_) {}
   }
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: [
                     TextField(
-                      controller: _email,
+                      controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     TextField(
-                      controller: _password,
+                      controller: _passwordController,
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
@@ -177,8 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () async {
-                          final emailText = _email.text;
-                          final passwordText = _password.text;
+                          final emailText = _emailController.text.trim();
+                          final passwordText = _passwordController.text.trim();
                           try {
                             await AuthService.firebase().login(
                               email: emailText, 

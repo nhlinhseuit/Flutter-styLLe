@@ -14,28 +14,28 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  late final TextEditingController _email;
-  late final TextEditingController _password;
-  late final TextEditingController _confirmPassword;
-  late final TextEditingController _firstName;
-  late final TextEditingController _lastName;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
   @override
   void initState() {
-    _email = TextEditingController();
-    _password = TextEditingController();
-    _confirmPassword = TextEditingController();
-    _firstName = TextEditingController();
-    _lastName = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
-    _confirmPassword.dispose();
-    _firstName.dispose();
-    _lastName.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Column(
                   children: [
                     TextField(
-                      controller: _firstName,
+                      controller: _firstNameController,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Your first name',
@@ -84,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     TextField(
-                      controller: _lastName,
+                      controller: _lastNameController,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Your last name',
@@ -95,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 32,
                     ),
                     TextField(
-                      controller: _email,
+                      controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -105,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     TextField(
-                      controller: _password,
+                      controller: _passwordController,
                       obscureText: true,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     TextField(
-                      controller: _confirmPassword,
+                      controller: _confirmPasswordController,
                       obscureText: true,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
@@ -144,11 +144,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onPressed: () async {
-                    final emailText = _email.text;
-                    final passwordText = _password.text;
-                    final firstNameText = _firstName.text;
-                    final lastNameText = _lastName.text;
-                    final confirmPasswordText = _confirmPassword.text;
+                    final emailText = _emailController.text.trim();
+                    final passwordText = _passwordController.text.trim();
+                    final firstNameText = _firstNameController.text.trim();
+                    final lastNameText = _lastNameController.text.trim();
+                    final confirmPasswordText = _confirmPasswordController.text.trim();
                     if (passwordText != confirmPasswordText) {
                       await showMessageDialog(context, 'Passwords do not match.');
                       return;

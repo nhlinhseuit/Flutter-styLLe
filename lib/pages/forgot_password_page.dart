@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stylle/services/auth/auth_service.dart';
+import 'package:stylle/utilities/popup_dialog.dart';
+
+import '../services/auth/auth_exceptions.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -11,6 +14,41 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  late final TextEditingController _emailController;
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void resetPassword() async {
+    String email = _emailController.text.trim();
+
+    if (email.isNotEmpty) {
+      try {
+        await AuthService.firebase().sendPasswordResetEmail(email: email);
+        await showMessageDialog(context, 'Please check your email to reset your password.');
+        Navigator.of(context).pop();
+      } on UserNotFoundAuthException {
+        var snackBar = const SnackBar(content: Text('User not found.\nMake sure your email has been registered.'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } on InvalidEmailAuthException {
+        var snackBar = const SnackBar(content: Text('Invalid email.'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } catch (e) {
+        var snackBar = SnackBar(content: Text(e.toString()));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      // Show an error message to the user
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -43,6 +81,39 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       fontSize: 36.00,
                       fontWeight: FontWeight.w900)
                   ),
+                ),
+                TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your email',
+                    hintStyle: GoogleFonts.abhayaLibre(),
+                    prefixIcon: const Icon(Icons.email_outlined),
+                  ),
+                ),
+                ElevatedButton(
+                  // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25), // <-- Radius
+                    ),
+                    backgroundColor: Colors.black,
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: resetPassword,
+                  child: Text(
+                    'Reset Password',
+                    style: GoogleFonts.abhayaLibre(
+                      textStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 20.00,
+                      )
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 120,
                 ),
               ]
             ),
