@@ -65,7 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 36.00,
                           fontWeight: FontWeight.w900)),
                 ),
-                
+                const SizedBox(
+                  height: 80,
+                ),
                 Column(
                   children: [
                     TextField(
@@ -76,9 +78,6 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Enter your email',
                         hintStyle: GoogleFonts.abhayaLibre()
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
                     ),
                     TextField(
                       controller: _password,
@@ -125,8 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "Forgot password?",
                             style: GoogleFonts.abhayaLibre(
-                                color: const Color.fromARGB(255, 100, 100, 100),
-                                fontWeight: FontWeight.w800,
+                                color: const Color.fromARGB(255, 100, 100, 100)
                             ),
                           )
                         )
@@ -134,9 +132,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                
-
-
+                const SizedBox(
+                  height: 80,
+                ),
                 Column(
                   children: [
                     Container(
@@ -169,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                               password: passwordText
                             );
                             final user = AuthService.firebase().currentUser;
-                            print(user?.uid);
+                      print(user?.uid);
 
                             if (user != null) {
                               final emailVerified = user.isEmailVerified;
