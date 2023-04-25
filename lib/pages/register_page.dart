@@ -28,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _lastName = TextEditingController();
     super.initState();
   }
+
   @override
   void dispose() {
     _email.dispose();
@@ -37,6 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _lastName.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -57,147 +59,138 @@ class _RegisterPageState extends State<RegisterPage> {
             // title: const Text("Login"),
           ),
           body: Container(
-            margin: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Create \nyour new account",
-                  style: GoogleFonts.abhayaLibre(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 36.00,
-                      fontWeight: FontWeight.w900)
-                  ),
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                Column(
-                  children: [
-                    TextField(
-                      controller: _firstName,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: 'Your first name',
-                        hintStyle: GoogleFonts.abhayaLibre(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 100, 100, 100),
-                                      fontSize: 16.00,
-                                      fontWeight: FontWeight.w400
-                                      )
-                        )
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      controller: _lastName,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: 'Your last name',
-                        hintStyle: GoogleFonts.abhayaLibre(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 100, 100, 100),
-                                      fontSize: 16.00,
-                                      fontWeight: FontWeight.w400
-                                      ))
-                      ),
-                    ),
-                    TextField(
-                      controller: _email,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre()
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      controller: _password,
-                      obscureText: true,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre()
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                ElevatedButton(
-                  // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25), // <-- Radius
-                    ),
-                    backgroundColor: Colors.black,
-                    minimumSize: const Size.fromHeight(50),
-                  ),
-                  child: Text(
-                    'Sign up',
+              margin: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Create \nyour new account",
                     style: GoogleFonts.abhayaLibre(
+                        textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 36.00,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                  Column(
+                    children: [
+                      TextField(
+                        controller: _firstName,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                            hintText: 'Your first name',
+                            hintStyle: GoogleFonts.abhayaLibre(
+                                textStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 100, 100, 100),
+                                    fontSize: 16.00,
+                                    fontWeight: FontWeight.w400))),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: _lastName,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                            hintText: 'Your last name',
+                            hintStyle: GoogleFonts.abhayaLibre(
+                                textStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 100, 100, 100),
+                                    fontSize: 16.00,
+                                    fontWeight: FontWeight.w400))),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: _email,
+                        keyboardType: TextInputType.emailAddress,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                            hintText: 'Enter your email',
+                            hintStyle: GoogleFonts.abhayaLibre()),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: _password,
+                        obscureText: true,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                            hintText: 'Enter your password',
+                            hintStyle: GoogleFonts.abhayaLibre()),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                      // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25), // <-- Radius
+                        ),
+                        backgroundColor: Colors.black,
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      child: Text(
+                        'Sign up',
+                        style: GoogleFonts.abhayaLibre(
                             textStyle: const TextStyle(
-                            color: Color.fromARGB(255, 252, 200, 209),
-                            fontSize: 20.00,)
-                    ),
-                  ),
-                  onPressed: () async {
-                    final emailText = _email.text;
-                    final passwordText = _password.text;
-                    final firstNameText = _firstName.text;
-                    final lastNameText = _lastName.text;
-                    final confirmPasswordText = _confirmPassword.text;
-                    if (passwordText != confirmPasswordText) {
-                      await showMessageDialog(context, 'Passwords do not match.');
-                      return;
-                    }
-                    try {
-                      await AuthService.firebase().createUser(
-                        email: emailText, 
-                        password: passwordText, 
-                        firstName: firstNameText, 
-                        lastName: lastNameText,
-                      );
-                      AuthService.firebase().sendEmailVerification();
-                      if (!mounted) return;
-                      Navigator.of(context).pushNamed(verifyRoute);
-                    } on WeakPasswordAuthException {
-                      await showMessageDialog(context, 'Babe, your password is not strong enough.');
-                    } on EmailAlreadyInUseAuthException {
-                      await showMessageDialog(context, 'Babe, your email is already in use.');
-                    } on InvalidEmailAuthException {
-                      await showMessageDialog(context, 'Babe, your email is invalid.');
-                    } on GenericAuthException {
-                      await showMessageDialog(context, 'Authentication error.');
-                    } catch (e) {
-                        await showMessageDialog(context, 'Error: ${e.toString()}');
-                    }
-                  } 
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                TextButton(
-                  child: Text(
-                    "Already have an account? Log in.",
-                    style: GoogleFonts.abhayaLibre(
-                      color: Colors.black,
-                      fontSize: 16.00,)
-                    ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
-                  }, 
-                )
-            ],)
-          ),
+                          color: Color.fromARGB(255, 252, 200, 209),
+                          fontSize: 20.00,
+                        )),
+                      ),
+                      onPressed: () async {
+                        final emailText = _email.text;
+                        final passwordText = _password.text;
+                        final firstNameText = _firstName.text;
+                        final lastNameText = _lastName.text;
+                        final confirmPasswordText = _confirmPassword.text;
+                        if (passwordText != confirmPasswordText) {
+                          await showMessageDialog(
+                              context, 'Passwords do not match.');
+                          return;
+                        }
+                        try {
+                          await AuthService.firebase().createUser(
+                            email: emailText,
+                            password: passwordText,
+                            firstName: firstNameText,
+                            lastName: lastNameText,
+                          );
+                          AuthService.firebase().sendEmailVerification();
+                          if (!mounted) return;
+                          Navigator.of(context).pushNamed(verifyRoute);
+                        } on WeakPasswordAuthException {
+                          await showMessageDialog(context,
+                              'Babe, your password is not strong enough.');
+                        } on EmailAlreadyInUseAuthException {
+                          await showMessageDialog(
+                              context, 'Babe, your email is already in use.');
+                        } on InvalidEmailAuthException {
+                          await showMessageDialog(
+                              context, 'Babe, your email is invalid.');
+                        } on GenericAuthException {
+                          await showMessageDialog(
+                              context, 'Authentication error.');
+                        } catch (e) {
+                          await showMessageDialog(
+                              context, 'Error: ${e.toString()}');
+                        }
+                      }),
+                  TextButton(
+                    child: Text("Already have an account? Log in.",
+                        style: GoogleFonts.abhayaLibre(
+                          color: Colors.black,
+                          fontSize: 16.00,
+                        )),
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          loginRoute, (route) => false);
+                    },
+                  )
+                ],
+              )),
         ),
       ],
     );
