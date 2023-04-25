@@ -60,7 +60,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                 Center(
                   child: Container(
                     width: (MediaQuery.of(context).size.width - 60),
-                    height: 50,
+                    height: 55,
                     child: ElevatedButton(
                       // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                       style: ElevatedButton.styleFrom(
@@ -88,21 +88,18 @@ class _PreLoginPageState extends State<PreLoginPage> {
 
                 Center(
                   child: Container(
-                    margin: const EdgeInsets.only(top: 16),
+                    margin: const EdgeInsets.only(top: 20),
                     width: (MediaQuery.of(context).size.width - 60),
-                    height: 50,
+                    height: 55,
                     child: OutlinedButton(
                       // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-
+                      
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
-                            width: 2.0,
-                            color: Color.fromRGBO(217, 217, 217, 0.3)),
+                        side: const BorderSide(width: 2.0, color: Color.fromRGBO(217, 217, 217, 0.3)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25), // <-- Radius
                         ),
-                        backgroundColor:
-                            const Color.fromRGBO(217, 217, 217, 0.2),
+                        backgroundColor: const Color.fromRGBO(217, 217, 217, 0.2),
                       ),
                       child: Text(
                         'CREATE NEW ACCOUNT',

@@ -20,7 +20,7 @@ class _BoardingPageState extends State<BoardingPage> {
       body: Stack(
         children: [
           Image.asset(
-            "assets/images/Boarding Screen 2.png",
+            "assets/images/Boarding Screen.png",
             fit: BoxFit.cover,
             height: (MediaQuery.of(context).size.height),
             width: (MediaQuery.of(context).size.width),
@@ -36,13 +36,13 @@ class _BoardingPageState extends State<BoardingPage> {
                   margin:
                       // const EdgeInsets.symmetric(horizontal: 40, vertical: 35),
                       const EdgeInsets.only(
-                          top: 35, bottom: 25, left: 45, right: 30),
+                          top: 35, bottom: 35, left: 45, right: 30),
                   child: Text(
                     "Style is a way to say who you are without having to speak.",
                     style: GoogleFonts.abhayaLibre(
                         textStyle: const TextStyle(
                             color: Colors.white,
-                            fontSize: 24.00,
+                            fontSize: 28.00,
                             fontWeight: FontWeight.bold)),
                     textAlign: TextAlign.left,
                   ),
