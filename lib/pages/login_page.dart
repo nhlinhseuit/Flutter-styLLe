@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     _password.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -65,9 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 36.00,
                           fontWeight: FontWeight.w900)),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
                 Column(
                   children: [
                     TextField(
@@ -75,9 +73,11 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
-                        hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre()
-                      ),
+                          hintText: 'Enter your email',
+                          hintStyle: GoogleFonts.abhayaLibre()),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     TextField(
                       controller: _password,
@@ -86,9 +86,8 @@ class _LoginPageState extends State<LoginPage> {
                       autocorrect: false,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre()
-                      ),
+                          hintText: 'Enter your password',
+                          hintStyle: GoogleFonts.abhayaLibre()),
                     ),
                     const SizedBox(
                       height: 20,
@@ -100,96 +99,95 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Checkbox(
                               checkColor: Theme.of(context).colorScheme.primary,
-                              value: _isCheckedRememberMe, 
+                              value: _isCheckedRememberMe,
                               onChanged: (bool? value) {
                                 setState(() {
                                   _isCheckedRememberMe = value!;
                                 });
-                              }, ),
+                              },
+                            ),
                             Text(
                               "Remember me",
                               style: GoogleFonts.abhayaLibre(
                                   textStyle: const TextStyle(
                                       color: Color.fromARGB(255, 100, 100, 100),
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w400
-                                      )
-                                      )
-                                      ,
+                                      fontWeight: FontWeight.w400)),
                             )
                           ],
                         ),
                         TextButton(
-                          onPressed: () {}, 
-                          child: Text(
-                            "Forgot password?",
-                            style: GoogleFonts.abhayaLibre(
-                                color: const Color.fromARGB(255, 100, 100, 100)
-                            ),
-                          )
-                        )
+                            onPressed: () {},
+                            child: Text(
+                              "Forgot password?",
+                              style: GoogleFonts.abhayaLibre(
+                                  color:
+                                      const Color.fromARGB(255, 100, 100, 100),
+                                  fontWeight: FontWeight.w800),
+                            ))
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
                 Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: ElevatedButton(
-                  // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25), // <-- Radius
-                          ),
-                          backgroundColor: Colors.black,
-                          minimumSize: const Size.fromHeight(50),
-                        ),
-                        child: Text(
-                          'Log in',
-                          style: GoogleFonts.abhayaLibre(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        child: ElevatedButton(
+                            // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(25), // <-- Radius
+                              ),
+                              backgroundColor: Colors.black,
+                              minimumSize: const Size.fromHeight(50),
+                            ),
+                            child: Text(
+                              'Log in',
+                              style: GoogleFonts.abhayaLibre(
                                   textStyle: TextStyle(
-                                    color: Theme.of(context).colorScheme.primary,
-                                  // color: Color.fromARGB(255, 252, 200, 209),
-                                  fontSize: 20.00,)
-                          ),
-                        ),
-                        onPressed: () async {
-                          final emailText = _email.text;
-                          final passwordText = _password.text;
-                          
-                          try {
-                            await AuthService.firebase().login(
-                              email: emailText, 
-                              password: passwordText
-                            );
-                            final user = AuthService.firebase().currentUser;
-                      print(user?.uid);
+                                color: Theme.of(context).colorScheme.primary,
+                                // color: Color.fromARGB(255, 252, 200, 209),
+                                fontSize: 20.00,
+                              )),
+                            ),
+                            onPressed: () async {
+                              final emailText = _email.text;
+                              final passwordText = _password.text;
 
-                            if (user != null) {
-                              final emailVerified = user.isEmailVerified;
-                              if (emailVerified) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
-                              } else {              
-                                Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route) => false);
+                              try {
+                                await AuthService.firebase().login(
+                                    email: emailText, password: passwordText);
+                                final user = AuthService.firebase().currentUser;
+                                print(user?.uid);
+
+                                if (user != null) {
+                                  final emailVerified = user.isEmailVerified;
+                                  if (emailVerified) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            homeRoute, (route) => false);
+                                  } else {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            verifyRoute, (route) => false);
+                                  }
+                                }
+                              } on UserNotFoundAuthException {
+                                await showMessageDialog(
+                                    context, 'Babe, who even are you?');
+                              } on WrongPasswordAuthException {
+                                await showMessageDialog(
+                                    context, 'Babe, wrong password.');
+                              } on GenericAuthException {
+                                await showMessageDialog(
+                                    context, 'Authentication Error.');
+                              } catch (e) {
+                                await showMessageDialog(
+                                    context, 'Error: ${e.toString()}');
                               }
-                            }         
-                          } on UserNotFoundAuthException {
-                            await showMessageDialog(context, 'Babe, who even are you?');
-                          } on WrongPasswordAuthException {
-                            await showMessageDialog(context, 'Babe, wrong password.');
-                          } on GenericAuthException {
-                            await showMessageDialog(context, 'Authentication Error.');
-                          }
-                          catch (e) {
-                            await showMessageDialog(context, 'Error: ${e.toString()}');
-                          }
-                        }
-                      )
-                    ),
+                            })),
                     const SizedBox(
                       height: 4,
                     ),
@@ -217,12 +215,11 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 TextButton(
-                  child: Text(
-                    "New to this app? Sign up.",
-                    style: GoogleFonts.abhayaLibre(
-                      color: Colors.black,
-                      fontSize: 16.00,)
-                    ),
+                  child: Text("New to this app? Sign up.",
+                      style: GoogleFonts.abhayaLibre(
+                        color: Colors.black,
+                        fontSize: 16.00,
+                      )),
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         registerRoute, (route) => false);

@@ -71,9 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.w900)
                   ),
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                
                 Column(
                   children: [
                     TextField(
@@ -106,6 +104,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                       ))
                       ),
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextField(
                       controller: _email,
                       keyboardType: TextInputType.emailAddress,
@@ -129,9 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                
                 ElevatedButton(
                   // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   style: ElevatedButton.styleFrom(
@@ -182,9 +181,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                   } 
                 ),
-                const SizedBox(
-                  height: 80,
-                ),
+                
                 TextButton(
                   child: Text(
                     "Already have an account? Log in.",
