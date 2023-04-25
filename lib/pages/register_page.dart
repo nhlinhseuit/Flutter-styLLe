@@ -5,7 +5,6 @@ import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
 import '../utilities/popup_dialog.dart';
-import '../services/collections/my_users.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -69,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 80,
+                  height: 30,
                 ),
                 Column(
                   children: [
@@ -79,19 +78,32 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         hintText: 'Your first name',
                         hintStyle: GoogleFonts.abhayaLibre(
-                          textStyle: const TextStyle(
-
-                          )
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 100, 100, 100),
+                                      fontSize: 16.00,
+                                      fontWeight: FontWeight.w400
+                                      )
                         )
                       ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     TextField(
                       controller: _lastName,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Your last name',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 100, 100, 100),
+                                      fontSize: 16.00,
+                                      fontWeight: FontWeight.w400
+                                      ))
                       ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     TextField(
                       controller: _email,
@@ -99,8 +111,16 @@ class _RegisterPageState extends State<RegisterPage> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 100, 100, 100),
+                                      fontSize: 16.00,
+                                      fontWeight: FontWeight.w400
+                                      ))
                       ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     TextField(
                       controller: _password,
@@ -108,27 +128,37 @@ class _RegisterPageState extends State<RegisterPage> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre()
+                        hintStyle: GoogleFonts.abhayaLibre(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 100, 100, 100),
+                                      fontSize: 16.00,
+                                      fontWeight: FontWeight.w400
+                                      ))
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 80,
+                  height: 60,
                 ),
+
+                // BUTTON
+
+
                 ElevatedButton(
                   // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25), // <-- Radius
                     ),
+                    backgroundColor: Colors.black,
                     minimumSize: const Size.fromHeight(50),
                   ),
                   child: Text(
                     'Sign up',
                     style: GoogleFonts.abhayaLibre(
                             textStyle: const TextStyle(
-                            color: Colors.black,
+                            color: Color.fromARGB(255, 252, 200, 209),
                             fontSize: 20.00,)
                     ),
                   ),
@@ -160,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   } 
                 ),
                 const SizedBox(
-                  height: 80,
+                  height: 60,
                 ),
                 TextButton(
                   child: Text(

@@ -31,13 +31,36 @@ class _PreLoginPageState extends State<PreLoginPage> {
             left: 0,
             child: Column(
               children: [
+                Center(
+                    child: Container(
+                  margin: const EdgeInsets.only(bottom:4),
+                  child: Text(
+                    "DRESS TO IMPRESS",
+                    style: GoogleFonts.abhayaLibre(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 36.00,
+                            fontWeight: FontWeight.bold)),
+                    textAlign: TextAlign.left,
+                  ),
+                )),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: const Divider(
+                    color: Colors.white,
+                    height: 25,
+                    thickness: 2,
+                    indent: 70,
+                    endIndent: 70,
+                  ),
+                ),
 
                 // BUTTON 1
 
                 Center(
                   child: Container(
                     width: (MediaQuery.of(context).size.width - 60),
-                    height: 55,
+                    height: 50,
                     child: ElevatedButton(
                       // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                       style: ElevatedButton.styleFrom(
@@ -65,18 +88,21 @@ class _PreLoginPageState extends State<PreLoginPage> {
 
                 Center(
                   child: Container(
-                    margin: const EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 16),
                     width: (MediaQuery.of(context).size.width - 60),
-                    height: 55,
+                    height: 50,
                     child: OutlinedButton(
                       // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                      
+
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(width: 2.0, color: Color.fromRGBO(217, 217, 217, 0.3)),
+                        side: const BorderSide(
+                            width: 2.0,
+                            color: Color.fromRGBO(217, 217, 217, 0.3)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25), // <-- Radius
                         ),
-                        backgroundColor: const Color.fromRGBO(217, 217, 217, 0.2),
+                        backgroundColor:
+                            const Color.fromRGBO(217, 217, 217, 0.2),
                       ),
                       child: Text(
                         'CREATE NEW ACCOUNT',
