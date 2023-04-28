@@ -163,15 +163,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (!mounted) return;
                       Navigator.of(context).pushNamed(verifyRoute);
                     } on WeakPasswordAuthException {
-                      await showMessageDialog(context, 'Babe, your password is not strong enough.');
+                      await showMessageDialog(context, 'Your password is not strong enough.');
                     } on EmailAlreadyInUseAuthException {
-                      await showMessageDialog(context, 'Babe, your email is already in use.');
+                      await showMessageDialog(context, 'Email already in use.');
                     } on InvalidEmailAuthException {
-                      await showMessageDialog(context, 'Babe, your email is invalid.');
+                      await showMessageDialog(context, 'Invalid email.');
                     } on GenericAuthException {
                       await showMessageDialog(context, 'Authentication error.');
                     } catch (e) {
-                        await showMessageDialog(context, 'Error: ${e.toString()}');
+                        await showMessageDialog(context, 'Error: ${e.toString()}', title: 'Something went wrong');
                     }
                   } 
                 ),

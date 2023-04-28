@@ -14,9 +14,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final user = AuthService.firebase().currentUser;
+  bool _showFabMenu = false;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           'styLLe',
           style: GoogleFonts.allura(
             color: Theme.of(context).colorScheme.primary,
-            fontSize: 56,
+            fontSize: 52,
           ),),
         actions: [
           PopupMenuButton<MenuAction>(
@@ -76,6 +78,56 @@ class _HomePageState extends State<HomePage> {
             )   
         ]),
       ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 360),
+            child: _showFabMenu
+                ? Stack(
+                    alignment: Alignment.bottomRight,
+                    children: <Widget>[
+                      FloatingActionButton(
+                        heroTag: 'fab1',
+                        onPressed: () {
+                          // Do something when fab1 is pressed
+                        },
+                        tooltip: 'Fab 1',
+                        child: const Icon(Icons.ac_unit),
+                      ),
+                      const SizedBox(height: 16),
+                      FloatingActionButton(
+                        heroTag: 'fab2',
+                        onPressed: () {
+                          // Do something when fab2 is pressed
+                        },
+                        tooltip: 'Fab 2',
+                        child: const Icon(Icons.accessibility),
+                      ),
+                      const SizedBox(height: 16),
+                      FloatingActionButton(
+                        heroTag: 'fab3',
+                        onPressed: () {
+                          // Do something when fab3 is pressed
+                        },
+                        tooltip: 'Fab 3',
+                        child: const Icon(Icons.adjust),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                _showFabMenu = !_showFabMenu;
+              });
+            },
+            tooltip: 'Show menu',
+            child: Icon(_showFabMenu ? Icons.close : Icons.menu),
+          ),
+        ]
+      ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Theme.of(context).colorScheme.primary,
         items: const [
@@ -98,7 +150,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-  
   }
 }
 

@@ -195,9 +195,11 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             }         
                           } on UserNotFoundAuthException {
-                            await showMessageDialog(context, 'Babe, who even are you?');
+                            await showMessageDialog(context, 'This email has not been registered.');
+                          } on InvalidEmailAuthException {
+                            await showMessageDialog(context, 'Invalid email.');
                           } on WrongPasswordAuthException {
-                            await showMessageDialog(context, 'Babe, wrong password.');
+                            await showMessageDialog(context, 'Wrong password.');
                           } on GenericAuthException {
                             await showMessageDialog(context, 'Authentication Error.');
                           }
@@ -240,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed(registerRoute);
                   }, 
-                )
+                ),
               ],
             )
           ),
