@@ -7,6 +7,7 @@ import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
+import 'package:stylle/pages/uploade_image_page.dart';
 import 'package:stylle/pages/verify_page.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           homeRoute: (context) => const HomePage(),
           verifyRoute: (context) => const VerifyEmailPage(),
           forgotPasswordRoute: (context) => const ForgotPasswordPage(),
+          imageCaptureRoute: (context) => const ImageCapture(),
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch().copyWith(
