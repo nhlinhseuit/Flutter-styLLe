@@ -17,11 +17,11 @@ class ProfilePageDelegated extends StatelessWidget {
           elevation: 2,
           backgroundColor: Colors.white,
           title: Container(
-            margin: const EdgeInsets.only(left: 100),
+            margin: const EdgeInsets.only(left: 130),
             child: Text(
-              'PROFILE',
+              'profile',
               style: GoogleFonts.allura(
-                color: Colors.pink[200],
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 35,
                 fontWeight: FontWeight.w600,
               ),

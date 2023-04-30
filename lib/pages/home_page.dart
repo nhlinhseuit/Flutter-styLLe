@@ -19,8 +19,8 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final tabs = const [
-    ImageCapture(),
     HomePageDelegated(),
+    ImageCapture(),
     Center(child: Text('FAVORITE')),
     ProfilePageDelegated(),
   ];
@@ -52,30 +52,30 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
             activeColor: Colors.white,
             // tabBackgroundColor: const Color.fromRGBO(255, 191, 202, 100),
-            tabBackgroundColor: Colors.pink[200]!,
+            tabBackgroundColor: Theme.of(context).colorScheme.primary,
             padding: const EdgeInsets.all(7),
-            tabs: const [
+            tabs: [
               GButton(
                 icon: Icons.home,
-                iconColor: Color.fromRGBO(255, 191, 202, 100),
+                iconColor: Theme.of(context).colorScheme.primary,
                 text: 'Home',
                 gap: 6,
               ),
               GButton(
                 icon: Icons.add_box_rounded,
-                iconColor: Color.fromRGBO(255, 191, 202, 100),
+                iconColor: Theme.of(context).colorScheme.primary,
                 text: 'Add',
                 gap: 6,
               ),
               GButton(
                 icon: Icons.favorite_rounded,
-                iconColor: Color.fromRGBO(255, 191, 202, 100),
+                iconColor: Theme.of(context).colorScheme.primary,
                 gap: 6,
                 text: 'Favorite',
               ),
               GButton(
                 icon: Icons.person_2,
-                iconColor: Color.fromRGBO(252, 191, 202, 100),
+                iconColor: Theme.of(context).colorScheme.primary,
                 text: 'Profile',
                 gap: 6,
               ),

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/services/auth/auth_service.dart';
-import '../constants/enums.dart';
-import '../constants/routes.dart';
-import 'home_page.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePageDelegated extends StatelessWidget {
@@ -20,19 +16,19 @@ class HomePageDelegated extends StatelessWidget {
           elevation: 2,
           backgroundColor: Colors.white,
           title: Container(
-            margin: const EdgeInsets.only(left: 124),
+            margin: const EdgeInsets.only(left: 8),
             child: Text(
               'styLLe',
               style: GoogleFonts.allura(
-                color: Colors.pink[200],
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 35,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
           actions: <Widget>[
             IconButton(
-              color: Colors.pink[200],
+              color: Theme.of(context).colorScheme.primary,
               icon: const Icon(
                 Icons.search_rounded,
                 size: 28.0,
@@ -44,190 +40,45 @@ class HomePageDelegated extends StatelessWidget {
           ],
         ),
 
-        // GRID VIEW
-
-        // body: GridView(
-        //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        //     maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-        //     crossAxisSpacing: 50,
-        //     mainAxisSpacing: 30,
-        //     childAspectRatio: MediaQuery.of(context).size.width /
-        //         (MediaQuery.of(context).size.height / 2),
-        //   ),
-        //   children: [
-        //     // for (var i = 0; i < 50; i++)
-        //     //   Image.network(
-        //     //     'https://picsum.photos/250?image=$i',
-        //     //     fit: BoxFit.contain,
-        //     //     width: 100,
-        //     //   ),
-        //     Container(
-        //       color: Colors.yellow,
-        //       width: 0,
-        //       height: 100,
-        //       // child: Image.network(
-        //       //   'https://picsum.photos/400/600',
-        //       //   width: MediaQuery.of(context).size.width,
-        //       // ),
-        //     ),
-
-        //     Container(
-        //       color: Colors.red,
-        //       width: 0,
-        //       height: 200,
-        //       // child: Image.network(
-        //       //   'https://picsum.photos/400/300',
-        //       //   width: MediaQuery.of(context).size.width,
-        //       // ),
-        //     ),
-        //   ],
-        // ),
-
-        // MANSONRY VIEW
-
-        // body: MasonryGridView.count(
-        //   crossAxisCount: 2,
-        //   mainAxisSpacing: 4,
-        //   crossAxisSpacing: 4,
-        // staggeredTiles: [
-        //     StaggeredTile.count(1, 1),
-        //     StaggeredTile.count(1, 2),
-        //     StaggeredTile.count(1, 1),
-        //     StaggeredTile.count(1, 1),
-        //     StaggeredTile.count(1, 1),
-        //     StaggeredTile.count(2, 1),
-        //     StaggeredTile.count(1, 1),
-        //     StaggeredTile.count(1, 1),
-        //     StaggeredTile.count(1, 1),
-        //   ],
-        //   itemBuilder: (BuildContext context, int index) {
-        //     return containers[index];
-        //   },
-        // ));
-
-        // STAGGRED VIEW
-
-        // body: StaggeredGridView.countBuilder(
-        //   crossAxisCount: 2,
-        //   itemCount: 10,
-        //   itemBuilder: (BuildContext context, int index) {
-        //     return Container(
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(8.0),
-        //     ),
-        //     child: ClipRRect(
-        //       borderRadius: BorderRadius.circular(8.0),
-        //       child: Image.network(
-        //         'https://picsum.photos/250?image=$index',
-        //         fit: BoxFit.cover,
-        //       ),
-        //     ),
-        //   );
-        //   },
-        //       // Container(
-        //       //   color: Colors.blue,
-        //       //   height: index.isEven ? 200 : 100,
-        //       // ),
-
-        //   staggeredTileBuilder: (int index) =>
-        //       StaggeredTile.count(1, index.isEven ? 2 : 1),
-        //   mainAxisSpacing: 4.0,
-        //   crossAxisSpacing: 4.0,
-        // ),
-
-        body: StaggeredGridView.countBuilder(
-          padding: EdgeInsets.all(10),
-          crossAxisCount: 2,
-          itemCount: 50,
-          itemBuilder: (BuildContext context, int index) {
-            return CustomWidget(
-              imageUrl: index % 2 == 0
-                  ? 'https://picsum.photos/400/400?image=${index + 10}'
-                  : 'https://picsum.photos/300/600?image=${index + 10}',
-            );
-          },
-          staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-        ));
-  }
-}
-
-class CustomWidget extends StatefulWidget {
-  final String imageUrl;
-
-  CustomWidget({required this.imageUrl});
-
-  @override
-  _CustomWidgetState createState() => _CustomWidgetState();
-}
-
-class _CustomWidgetState extends State<CustomWidget> {
-  double _aspectRatio = 1.0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Lấy kích thước ảnh từ URL
-    Image.network(widget.imageUrl)
-        .image
-        .resolve(const ImageConfiguration())
-        .addListener(
-      ImageStreamListener((ImageInfo info, bool _) {
-        setState(() {
-          // Tính tỷ lệ khung hình của ảnh
-          _aspectRatio = info.image.width / info.image.height;
-        });
-      }),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 50),
-      child: AspectRatio(
-        aspectRatio: _aspectRatio,
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                widget.imageUrl,
-                fit: BoxFit.scaleDown,
-              ),
-            ),
-            Expanded(
-              child: Row(
-                children: const [
-                    Text(
-                      'Alexander',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16.0,
-                      ), overflow: TextOverflow.ellipsis,
-                    ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Icon(Icons.favorite_border)
+        body: MasonryGridView.builder(
+          itemCount: 30,
+          gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(top: 16, left: 8, right: 8, bottom: 16),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(index % 2 == 0
+                        ? 'https://picsum.photos/400/400?image=${index + 10}'
+                        : 'https://picsum.photos/300/600?image=${index + 10}'),
                   ),
-                  // Icon(
-                  //   color: Color.fromRGBO(255, 191, 202, 100),
-                  //   Icons.favorite_border_rounded,
-                  //   size: 24.0,
-                  // ),
-                  // Icon(
-                  //   color: Color.fromRGBO(255, 191, 202, 100),
-                  //   Icons.favorite_border_rounded,
-                  //   size: 24.0,
-                  // ),
+                  Row(
+                    children:  const [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.0, left: 15),
+                        child: Text(
+                          'Climothee',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 120, 120, 120),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 9, left: 53),
+                        child: Icon(
+                          color: Color.fromRGBO(255, 191, 202, 100),
+                          Icons.favorite_border_rounded,
+                          size: 24.0,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+              )),
+        ));
   }
 }

@@ -13,8 +13,8 @@ import 'package:stylle/pages/verify_page.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
-    statusBarColor: Colors.pink[200]!, // màu nền của thanh trạng thái
+  SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
+    statusBarColor: Color.fromARGB(255, 252, 200, 209), // màu nền của thanh trạng thái
     statusBarIconBrightness: Brightness.dark, // màu icon trên thanh trạng thái
   ));
   runApp(const MyApp());
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: const MainPage(),
         routes: {
           preLoginRoute: (context) => const PreLoginPage(),
