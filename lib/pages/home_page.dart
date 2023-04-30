@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                 gap: 6,
               ),
               GButton(
-                icon: Icons.heart_broken,
+                icon: Icons.favorite_rounded,
                 iconColor: Color.fromRGBO(255, 191, 202, 100),
                 gap: 6,
                 text: 'Favorite',

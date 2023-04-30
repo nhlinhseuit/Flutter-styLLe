@@ -141,7 +141,9 @@ class HomePageDelegated extends StatelessWidget {
           itemCount: 50,
           itemBuilder: (BuildContext context, int index) {
             return CustomWidget(
-              imageUrl: index%2==0 ? 'https://picsum.photos/250?image=${index + 10}' : 'https://paradepets.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_700/MTkxMzY1Nzg4NjczMzIwNTQ2/cutest-dog-breeds-jpg.webp',
+              imageUrl: index % 2 == 0
+                  ? 'https://picsum.photos/400/400?image=${index + 10}'
+                  : 'https://picsum.photos/300/600?image=${index + 10}',
             );
           },
           staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
@@ -183,44 +185,59 @@ class _CustomWidgetState extends State<CustomWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _aspectRatio - 0.2,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              widget.imageUrl,
-              fit: BoxFit.scaleDown,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 50),
+      child: AspectRatio(
+        aspectRatio: _aspectRatio,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                widget.imageUrl,
+                fit: BoxFit.scaleDown,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Row(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    'Alexander',
-                    style: TextStyle(
-                      color: Colors.pink,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+            Expanded(
+              child: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0),
+                    child: Text(
+                      'Alexander',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ), overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 60.0),
-                  child: Icon(
-                    color: Color.fromRGBO(255, 191, 202, 100),
-                    Icons.heart_broken,
-                    size: 24.0,
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0),
+                    child: Text(
+                      'Alexander',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ), overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                  // Icon(
+                  //   color: Color.fromRGBO(255, 191, 202, 100),
+                  //   Icons.favorite_border_rounded,
+                  //   size: 24.0,
+                  // ),
+                  // Icon(
+                  //   color: Color.fromRGBO(255, 191, 202, 100),
+                  //   Icons.favorite_border_rounded,
+                  //   size: 24.0,
+                  // ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
