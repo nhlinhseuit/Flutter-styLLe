@@ -28,7 +28,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _lastNameController = TextEditingController();
     super.initState();
   }
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -38,7 +37,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _lastNameController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
