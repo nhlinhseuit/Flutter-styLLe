@@ -11,48 +11,36 @@ class HomePageDelegated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Container> containers = [
-      Container(color: Colors.red, height: 100),
-      Container(color: Colors.green, height: 150),
-      Container(color: Colors.blue, height: 200),
-      Container(color: Colors.yellow, height: 250),
-    ];
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          // elevation: 0,
+          shadowColor: const Color.fromARGB(250, 250, 250, 255),
+          toolbarHeight: 45,
+          // elevation: 0.16,
+          elevation: 2,
           backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          title: Text(
-            'styLLe',
-            style: GoogleFonts.allura(
-              color: Colors.pink[200],
-              fontSize: 60,
-              fontWeight: FontWeight.w600,
+          title: Container(
+            margin: const EdgeInsets.only(left: 124),
+            child: Text(
+              'styLLe',
+              style: GoogleFonts.allura(
+                color: Colors.pink[200],
+                fontSize: 35,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          actions: [
-            PopupMenuButton<MenuAction>(itemBuilder: (context) {
-              return const [
-                PopupMenuItem<MenuAction>(
-                  value: MenuAction.logout,
-                  child: Text('Logout'),
-                )
-              ];
-            }, onSelected: (value) async {
-              switch (value) {
-                case MenuAction.logout:
-                  final confirmLogout = await showLogOutDialog(context);
-                  if (confirmLogout) {
-                    await AuthService.firebase().logout();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute,
-                      (_) => false,
-                    );
-                  }
-                  break;
-              }
-            })
+          actions: <Widget>[
+            IconButton(
+              color: Colors.pink[200],
+              icon: const Icon(
+                Icons.search_rounded,
+                size: 28.0,
+              ),
+              onPressed: () {
+                // handle search action here
+              },
+            ),
           ],
         ),
 
@@ -153,7 +141,9 @@ class HomePageDelegated extends StatelessWidget {
           itemCount: 50,
           itemBuilder: (BuildContext context, int index) {
             return CustomWidget(
-              imageUrl: 'https://picsum.photos/250?image=${index + 10}',
+              imageUrl: index % 2 == 0
+                  ? 'https://picsum.photos/400/400?image=${index + 10}'
+                  : 'https://picsum.photos/300/600?image=${index + 10}',
             );
           },
           staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
@@ -195,44 +185,59 @@ class _CustomWidgetState extends State<CustomWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _aspectRatio - 0.2,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              widget.imageUrl,
-              fit: BoxFit.cover,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 50),
+      child: AspectRatio(
+        aspectRatio: _aspectRatio,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                widget.imageUrl,
+                fit: BoxFit.scaleDown,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Row(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    'Alexander',
-                    style: TextStyle(
-                      color: Colors.pink,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+            Expanded(
+              child: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0),
+                    child: Text(
+                      'Alexander',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ), overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 60.0),
-                  child: Icon(
-                    color: Color.fromRGBO(255, 191, 202, 100),
-                    Icons.heart_broken,
-                    size: 24.0,
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0),
+                    child: Text(
+                      'Alexander',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ), overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                  // Icon(
+                  //   color: Color.fromRGBO(255, 191, 202, 100),
+                  //   Icons.favorite_border_rounded,
+                  //   size: 24.0,
+                  // ),
+                  // Icon(
+                  //   color: Color.fromRGBO(255, 191, 202, 100),
+                  //   Icons.favorite_border_rounded,
+                  //   size: 24.0,
+                  // ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
