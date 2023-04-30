@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
@@ -11,6 +12,10 @@ import 'package:stylle/pages/verify_page.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+    statusBarColor: Colors.pink[200]!, // màu nền của thanh trạng thái
+    statusBarIconBrightness: Brightness.dark, // màu icon trên thanh trạng thái
+  ));
   runApp(const MyApp());
 }
 
