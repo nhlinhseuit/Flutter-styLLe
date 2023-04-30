@@ -201,27 +201,16 @@ class _CustomWidgetState extends State<CustomWidget> {
             Expanded(
               child: Row(
                 children: const [
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Text(
+                    Text(
                       'Alexander',
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
                       ), overflow: TextOverflow.ellipsis,
                     ),
-                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 20.0),
-                    child: Text(
-                      'Alexander',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ), overflow: TextOverflow.ellipsis,
-                    ),
+                    child: Icon(Icons.favorite_border)
                   ),
                   // Icon(
                   //   color: Color.fromRGBO(255, 191, 202, 100),

@@ -169,10 +169,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: Text(
                           'Log in',
-                          style: GoogleFonts.abhayaLibre(
+                          style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
-                              fontSize: 20.00,
+                              fontSize: 16.00,
                             )
                           ),
                         ),

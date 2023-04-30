@@ -43,9 +43,10 @@ class MyApp extends StatelessWidget {
             secondary: Colors.black,
           ),
           textTheme: TextTheme(
-            bodyMedium: GoogleFonts.abhayaLibre(
+            bodyMedium: GoogleFonts.poppins(
               textStyle: const TextStyle(
-                fontSize: 18,
+                fontSize: 14,
+                color: Colors.black,
               )
             )
           ),

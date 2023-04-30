@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:stylle/pages/home_page_delegated.dart';
 import 'package:stylle/pages/profile_page_delegated.dart';
+import 'package:stylle/pages/uploade_image_page.dart';
 import '../services/auth/auth_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,8 +19,8 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final tabs = const [
+    ImageCapture(),
     HomePageDelegated(),
-    Center(child: Text('ADD')),
     Center(child: Text('FAVORITE')),
     ProfilePageDelegated(),
   ];
