@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
+import 'package:stylle/pages/detail_demo.dart';
+import 'package:stylle/pages/detail_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
           homeRoute: (context) => const HomePage(),
           verifyRoute: (context) => const VerifyEmailPage(),
           forgotPasswordRoute: (context) => const ForgotPasswordPage(),
+          detailPageRout: (context) => const DetailPage(),
+          detailDemoRout: (context) => const DetailDemo(),
           imageCaptureRoute: (context) => const ImageCapture(),
         },
         theme: ThemeData(
