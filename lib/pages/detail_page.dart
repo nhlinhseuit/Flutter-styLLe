@@ -1,8 +1,6 @@
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/pages/related_page.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({
@@ -16,45 +14,69 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   int numberOfItem = 30;
 
-  List<bool> toggle = List.generate(30, (index) => false);
-
   List<String> imgUrls = List.generate(
       30,
       (index) => index % 2 == 0
           ? 'https://picsum.photos/400/400?image=${index + 10}'
           : 'https://picsum.photos/300/600?image=${index + 18}');
+
+
+
+  Icon firstIcon = Icon(
+    color: Colors.pink[200],
+    Icons.favorite_rounded,
+    size: 30,
+  );
+  Icon secondIcon = const Icon(
+    color: Colors.black,
+    size: 30,
+    Icons.favorite_border_rounded,
+  );
+  bool toggle = false;
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final imageUrl = args['imgUrlString'] ?? '';
     final idx = args['index'];
+
+    List<String> imgUrlsRelated = List.generate(
+      30,
+      (index) => index % 2 == 0 && index != idx
+          ? 'https://picsum.photos/400/400?image=${index + 10}'
+          : 'https://picsum.photos/300/600?image=${index + 18}');
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Column(children: [
             //////////////////////////////       HÌNH RENDER
             Stack(
               children: [
                 Positioned(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 650,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 650,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 Positioned(
                   child: Container(
                     height: 650,
                     width: double.infinity,
-                    decoration:
-                        BoxDecoration(color: Colors.black.withOpacity(.15)),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.2),
+                        borderRadius: BorderRadius.circular(50)),
                   ),
                 ),
                 Positioned(
@@ -78,7 +100,7 @@ class _DetailPageState extends State<DetailPage> {
                         IconButton(
                           icon: const Icon(
                             Icons.arrow_drop_up,
-                            color: Color.fromARGB(255, 234, 233, 233),
+                            color: Color.fromARGB(255, 255, 255, 255),
                             size: 40,
                           ),
                           onPressed: () {
@@ -88,7 +110,7 @@ class _DetailPageState extends State<DetailPage> {
                         const Text(
                           'Swipe up for detail',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 207, 207, 207),
+                              color: Color.fromARGB(255, 255, 255, 255),
                               fontSize: 16),
                         ),
                       ],
@@ -104,13 +126,12 @@ class _DetailPageState extends State<DetailPage> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
                   child: IconButton(
-                    icon: const Icon(
-                      Icons.favorite_border_rounded,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    onPressed: () {},
-                  ),
+                      icon: toggle ? firstIcon : secondIcon,
+                      onPressed: () {
+                        setState(() {
+                          toggle = !toggle;
+                        });
+                      }),
                 ),
                 Padding(
                   padding:
@@ -118,7 +139,7 @@ class _DetailPageState extends State<DetailPage> {
                   child: IconButton(
                     icon: const Icon(
                       Icons.file_download_outlined,
-                      color: Colors.white,
+                      color: Colors.black,
                       size: 30,
                     ),
                     onPressed: () {},
@@ -130,7 +151,7 @@ class _DetailPageState extends State<DetailPage> {
                   child: IconButton(
                     icon: const Icon(
                       Icons.copy,
-                      color: Colors.white,
+                      color: Colors.black,
                       size: 30,
                     ),
                     onPressed: () {},
@@ -142,7 +163,7 @@ class _DetailPageState extends State<DetailPage> {
                   child: IconButton(
                     icon: const Icon(
                       Icons.share,
-                      color: Colors.white,
+                      color: Colors.black,
                       size: 30,
                     ),
                     onPressed: () {},
@@ -161,7 +182,7 @@ class _DetailPageState extends State<DetailPage> {
             //////////////////////////////       INFORMATION IMG
             Positioned(
               child: Container(
-                  color: Colors.black,
+                  color: Colors.white,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [
@@ -183,14 +204,14 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
+                             Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Timothée Chalamet',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.pink[200],
                                   fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
@@ -201,12 +222,12 @@ class _DetailPageState extends State<DetailPage> {
                         margin: const EdgeInsets.only(left: 23, top: 20),
                         child: Row(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Minimalist Style',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.pink[200],
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -223,10 +244,10 @@ class _DetailPageState extends State<DetailPage> {
                                 onPressed: () {},
                               ),
                             ),
-                            const Text(
+                            Text(
                               '237',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                              style: TextStyle(
+                                  color: Colors.pink[200], fontSize: 20),
                             )
                           ],
                         ),
@@ -238,7 +259,7 @@ class _DetailPageState extends State<DetailPage> {
                             textAlign: TextAlign.justify,
                             'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.....',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 18,
                               height: 1.3,
                             )),
@@ -253,13 +274,13 @@ class _DetailPageState extends State<DetailPage> {
                                 children: const [
                                   Icon(
                                     Icons.tag,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     size: 22,
                                   ),
                                   Text(
                                     '  minimalist, fashion, black, pink',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontSize: 16,
                                     ),
                                   ),
@@ -300,48 +321,49 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
 
-            //////////////////////////////       RELATED PHOTOS IMGS
-            // const RelatedPage(),
+            //////////////////////////////      
+            /// RELATED PHOTOS IMGS
 
-
-      //       Container(
-      //   // Kích thước của Container bằng kích thước của màn hình
-      //   width: double.infinity,
-      //   height: double.infinity,
-      //   child: Column(
-      //     children: [
-      //       Expanded(
-      //         child: Center(
-      //           child: const Text('Detail Information'),
-      //         ),
-      //       ),
-      //       const RelatedPage(),
-      //     ],
-      //   ),
-      // ),
-
-       // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Colors.white,
-            //     foregroundColor: Colors.pink[200],
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(30)),
-            //     side: BorderSide(
-            //       color: Colors.pink[200]!,
-            //       width: 2,
-            //     ),
-            //     minimumSize: const Size(150, 50),
-            //   ),
-            //   child: const Text('Related Page',
-            //       style: TextStyle(fontSize: 16)),
-            //   onPressed: () {
-            //     Navigator.of(context)
-            //         .pushNamed(relatedRoute, arguments: {
-            //       'idx': idx
-            //     });
-            //   },
-            // )
+            Stack(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 560,
+                    child: MasonryGridView.builder(
+                        itemCount: numberOfItem,
+                        gridDelegate:
+                            const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0, left: 8, right: 8, bottom: 20),
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                            detailDemoRout,
+                                            arguments: {
+                                              'imgUrlString': imgUrls[index],
+                                              'idx': idx
+                                            });
+                                      },
+                                      child: Image.network(imgUrlsRelated[index]),
+                                    ),
+                                  ),
+                                ],
+                              ));
+                        }),
+                  ),
+                ),
+              ],
+            ),
           ]),
         ));
   }
 }
+

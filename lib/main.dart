@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
           verifyRoute: (context) => const VerifyEmailPage(),
           forgotPasswordRoute: (context) => const ForgotPasswordPage(),
           detailDemoRout: (context) => const DetailPage(),
-          relatedRoute: (context) => const RelatedPage(),
         },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch().copyWith(
