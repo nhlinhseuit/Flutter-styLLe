@@ -6,3 +6,4 @@ const verifyRoute = '/verify/';
 const forgotPasswordRoute = '/forgotPassword/';
 const detailPageRout = '/detail/';
 const detailDemoRout = '/detaildemo/';
+const relatedRoute = '/related/';

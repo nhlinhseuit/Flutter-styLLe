@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:stylle/pages/detail_page.dart';
 
 class HomePageDelegated extends StatefulWidget {
   const HomePageDelegated({super.key});
@@ -12,6 +11,36 @@ class HomePageDelegated extends StatefulWidget {
 }
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (!_isLoadingMore &&
+        _scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 50) {
+      print('hello');
+      int remainingItemCount =
+          numberOfItem - _scrollController.position.pixels ~/ 200;
+      if (remainingItemCount <= 5) {
+        setState(() {
+          _isLoadingMore = true;
+        });
+      }
+    }
+  }
+
   Icon firstIcon = Icon(
     color: Colors.pink[200],
     Icons.favorite_rounded,
@@ -104,67 +133,87 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
               )
             ];
           },
-          body: MasonryGridView.builder(
-              itemCount: numberOfItem,
-              gridDelegate:
-                  const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (context, index) {
-                return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 0, left: 8, right: 8, bottom: 20),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(detailDemoRout, arguments: {'imgUrlString': imgUrls[index]});
-                            },
-                            child: Image.network(imgUrls[index]),
-                          ),
-                        ),
-                        Row(
+          body: Stack(
+            children: [
+              MasonryGridView.builder(
+                  itemCount: numberOfItem,
+                  gridDelegate:
+                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0, left: 8, right: 8, bottom: 20),
+                        child: Column(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(top: 10.0, left: 14),
-                              child: Text(
-                                'Michelle',
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8, left: 45),
-                              child: IconButton(
-                                icon: toggle[index] ? firstIcon : secondIcon,
-                                onPressed: () {
-                                  setState(() {
-                                    toggle[index] = !toggle[index];
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(detailDemoRout, arguments: {
+                                    'imgUrlString': imgUrls[index],
+                                    'index': index
                                   });
-                                  // showDialog(
-                                  //     context: context,
-                                  //     builder: (BuildContext context) {
-                                  //       return AlertDialog(
-                                  //         title: Text(
-                                  //             "Thông báo của tim có index = $index"),
-                                  //         content: Text('Nội dung thông báo'),
-                                  //       );
-                                  // });
                                 },
+                                child: Image.network(imgUrls[index]),
                               ),
                             ),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 10.0, left: 14),
+                                  child: Text(
+                                    'Michelle',
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, left: 45),
+                                  child: IconButton(
+                                    icon:
+                                        toggle[index] ? firstIcon : secondIcon,
+                                    onPressed: () {
+                                      setState(() {
+                                        toggle[index] = !toggle[index];
+                                      });
+                                      // showDialog(){}
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ));
-              }),
+                        ));
+                  }),
+              if (_isLoadingMore)
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.pink[200],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        side: BorderSide(
+                          color: Colors.pink[200]!,
+                          width: 2,
+                        ),
+                        minimumSize: const Size(150, 50),
+                      ),
+                      child: const Text('Load more',
+                          style: TextStyle(fontSize: 16)),
+                      onPressed: () {},
+                    )),
+            ],
+          ),
         ));
   }
 }
