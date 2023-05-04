@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">stylle</string>
+    <string name="facebook_app_id">214068768095570</string>
+    <string name="fb_login_protocol_scheme">fb214068768095570</string>
+    <string name="facebook_client_token">2dd5b2ac9d9a7267d42df2be7034c5e1</string>
+</resources>
