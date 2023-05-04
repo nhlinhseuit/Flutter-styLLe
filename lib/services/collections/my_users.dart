@@ -8,18 +8,26 @@ class MyUser {
   final String uid;
   final String lastName;
   final String email;
-  static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
+  late bool deleted;
 
+  static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
+  
   MyUser({
     required this.uid,
     required this.firstName,
     required this.lastName,
     required this.email,
+    this.deleted = false,
   });
 
-  static Future<MyUser?> get currentUser async {
-    return readUser(uid: AuthService.firebase().currentUser?.uid);
+  static Future<MyUser?> getCurrentUser() async {
+    return await readUser(uid: AuthService.firebase().currentUser?.uid);
   }
+
+  String get getName {
+    return "$firstName $lastName";
+  }
+
   Future<void> createUser() {
     final userData = toJson();
     // Call the user's CollectionReference to add a new user
@@ -45,17 +53,21 @@ class MyUser {
       return MyUser.fromJson(snapshot.data()!);
     }
   }
+
+
   Map<String, dynamic> toJson() => {
     'uid': uid,
     'first_name': firstName,
     'last_name': lastName,
     'email': email,
+    'deleted': deleted,
   };
   static MyUser fromJson(Map<String,dynamic> json) => MyUser(
     uid: json['uid'], 
     firstName: json['first_name'], 
     lastName: json['last_name'], 
-    email: json['email']
-    );
+    email: json['email'],
+    deleted: json['deleted'],
+  );
 }
 

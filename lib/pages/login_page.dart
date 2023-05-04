@@ -6,7 +6,6 @@ import 'package:stylle/utilities/popup_dialog.dart';
 import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
-import '../services/collections/my_users.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

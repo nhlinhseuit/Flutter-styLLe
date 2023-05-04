@@ -1,10 +1,9 @@
 import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stylle/services/collections/my_images.dart';
 
 class ImageCapture extends StatefulWidget {
   const ImageCapture({super.key});
@@ -16,19 +15,33 @@ class ImageCapture extends StatefulWidget {
 class _ImageCaptureState extends State<ImageCapture> {
   final ImagePicker _picker = ImagePicker();
   final ImageCropper _cropper = ImageCropper();
-  late TextEditingController imageDiscriptionController;
+  late final TextEditingController _imageDescriptionController;
+  late final TextEditingController _imageTagsController;
+  String _imageDescriptionText = '';
+  String _imageTagsText = '';
   File? _imageFile;
 
   @override
   void initState() {
-    imageDiscriptionController = TextEditingController();
+    _imageDescriptionController = TextEditingController();
+    _imageTagsController = TextEditingController();
+    _imageDescriptionController.addListener(_updateWidgetText);
+    _imageTagsController.addListener(_updateWidgetText);
     super.initState();
   }
 
   @override
   void dispose() {
-    imageDiscriptionController.dispose();
+    _imageDescriptionController.dispose();
+    _imageTagsController.dispose();
     super.dispose();
+  }
+
+    void _updateWidgetText() {
+    setState(() {
+      _imageDescriptionText = _imageDescriptionController.text.trim();
+      _imageTagsText = _imageTagsController.text.trim();
+    });
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -75,12 +88,12 @@ class _ImageCaptureState extends State<ImageCapture> {
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(top: 0),
-        children: <Widget>[
-          if (_imageFile == null) Container(
-            padding: const EdgeInsets.all(32),
-            child: Column(
+      body: Container(
+        padding: const EdgeInsets.all(24),
+        child: ListView(
+          padding: const EdgeInsets.only(top: 0),
+          children: <Widget>[
+            if (_imageFile == null) Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
@@ -141,48 +154,63 @@ class _ImageCaptureState extends State<ImageCapture> {
                   ],
                 ),
               ],
-            ),
-          ) else ...[
-            Image.file(_imageFile!),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _cropImage,
-                  child: const Icon(Icons.crop),
+            ) else ...[
+              Image.file(_imageFile!),
+      
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _cropImage,
+                    child: const Icon(Icons.crop),
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  ElevatedButton(
+                    onPressed: _clear,
+                    child: const Icon(Icons.refresh),
+                  )
+                ],
+              ),
+      
+              Container(
+                padding: const EdgeInsets.only(top: 8,),
+                child: TextField(
+                  controller: _imageDescriptionController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 10,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Description (optional)',
+                  ),
                 ),
-                const SizedBox(
-                  width: 24,
-                ),
-                ElevatedButton(
-                  onPressed: _clear,
-                  child: const Icon(Icons.refresh),
-                )
-              ],
-            ),
-
-            Container(
-              padding: const EdgeInsets.only(left: 24, top: 8, right: 24, bottom: 24),
-              child: TextField(
-                controller: imageDiscriptionController,
-                keyboardType: TextInputType.multiline,
-                maxLines: 10,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              TextField(
+                controller: _imageTagsController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Image discription (optional)',
+                  hintText: 'jeans, vintage (optional)',
                 ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, top: 0, right: 24, bottom: 24),
-              child: Uploader(
-                file: _imageFile,
+              const SizedBox(
+                height: 12,
               ),
-            ),
-          ] 
-        ],
+              Uploader(
+                file: _imageFile, 
+                description: _imageDescriptionText,
+                tags: _imageTagsText.split(',').map((tag) => tag.trim()).toList(),
+              )
+            ]
+          ]
+        )
       ),
+
+      //// FAB VERSION //////
+
       // floatingActionButton: Column(
       //   mainAxisAlignment: MainAxisAlignment.end,
       //   children: <Widget>[
@@ -225,75 +253,5 @@ class _ImageCaptureState extends State<ImageCapture> {
       // ),
       
     );
-  }
-}
-
-class Uploader extends StatefulWidget {
-  final File? file;
-  const Uploader({super.key, this.file});
-
-  @override
-  State<Uploader> createState() => _UploaderState();
-}
-
-class _UploaderState extends State<Uploader> {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-
-  UploadTask? _uploadTask;
-
-  void _startUpload() {
-    String filepath = 'images/${DateTime.now()}.png';
-
-    setState(() {
-      _uploadTask = _storage.ref().child(filepath).putFile(widget.file!);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_uploadTask != null) {
-      return StreamBuilder(
-        stream: _uploadTask!.snapshotEvents,
-        builder: (context, snapshot) {
-          var event = snapshot.data;
-
-          double progressPercent = event != null 
-            ? event.bytesTransferred / event.totalBytes
-            : 0;
-
-          return Column(
-            children: [
-              if (event?.state == TaskState.success) 
-                const Text('Congrats'),
-              if (event?.state == TaskState.paused)
-                ElevatedButton(
-                  onPressed: _uploadTask?.resume, 
-                  child: const Icon(Icons.play_arrow)
-                ),
-              if (event?.state == TaskState.running)
-                ElevatedButton(
-                  onPressed: _uploadTask?.pause, 
-                  child: const Icon(Icons.pause)
-                ),
-
-              LinearProgressIndicator(
-                value: progressPercent,  
-              ),
-
-              Text(
-                '${(progressPercent*100).toStringAsFixed(2)}%'
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      // allow user to start the upload if uploadtask is null
-      return ElevatedButton.icon(
-        onPressed: _startUpload, 
-        icon: const Icon(Icons.cloud_upload_outlined), 
-        label: const Text('Upload')
-      );
-    }
   }
 }

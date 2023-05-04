@@ -10,7 +10,7 @@ import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
-import 'package:stylle/pages/uploade_image_page.dart';
+import 'package:stylle/pages/upload_image_page.dart';
 import 'package:stylle/pages/verify_page.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 

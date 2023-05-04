@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:stylle/pages/home_page_delegated.dart';
 import 'package:stylle/pages/profile_page_delegated.dart';
-import 'package:stylle/pages/uploade_image_page.dart';
+import 'package:stylle/pages/upload_image_page.dart';
 import '../services/auth/auth_service.dart';
 
 class HomePage extends StatefulWidget {
