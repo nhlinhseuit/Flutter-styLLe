@@ -227,16 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onPressed: () async {
-                        // try {
-                        //   await AuthService.firebase().signInWithFacebook();
-                        //   final user = AuthService.firebase().currentUser;
-                        //     if (user != null) {
-                        //       if (!mounted) return;
-                        //       Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
-                        //     }    
-                        // } on FirebaseAuthException catch(e) {
-                        //   print(e.code);
-                        // }
+                        await AuthService.facebook().login(email: '', password: '');
                       }, 
                       icon: const Icon(
                         Icons.facebook,

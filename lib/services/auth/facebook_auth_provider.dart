@@ -1,4 +1,5 @@
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:stylle/services/auth/auth_exceptions.dart';
 import 'package:stylle/services/auth/auth_provider.dart';
 import 'package:stylle/services/auth/auth_user.dart';
 
@@ -22,19 +23,25 @@ class FacebookAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<AuthUser> login({required String email, required String password}) async {
+  Future<AuthUser> login({String email = '', String password =''}) async {
     try {
-      final LoginResult result = await FacebookAuth.instance.login();
+      final LoginResult result = await FacebookAuth.instance.login(); // by default we request the email and the public profile
+      // or FacebookAuth.i.login()
       if (result.status == LoginStatus.success) {
-        _accessToken = result.accessToken;
+        // you are logged
+        // final AccessToken accessToken = result.accessToken!;
         final userData = await FacebookAuth.instance.getUserData();
-        _userData = userData;
+        print(userData['email']);
+        return AuthUser(uid: userData['uid'], email: userData['email'], isEmailVerified: true);
       } else {
         print(result.status);
         print(result.message);
+        return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
       }
-    } catch (_) {}
-      throw UnimplementedError();
+    } catch (e) {
+      print(e.toString());
+      return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
+    }
   }
 
   @override
