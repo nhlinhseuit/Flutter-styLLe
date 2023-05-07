@@ -12,7 +12,7 @@ import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
 import 'package:stylle/pages/upload_image_page.dart';
 import 'package:stylle/pages/verify_page.dart';
-import 'package:stylle/services/auth/auth_service.dart';
+import 'package:stylle/services/auth/auth_service.dart'; 
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(

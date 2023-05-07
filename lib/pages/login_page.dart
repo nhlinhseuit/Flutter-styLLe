@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -225,8 +226,17 @@ class _LoginPageState extends State<LoginPage> {
                         'Log in with Facebook',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      onPressed: () {
-                        showMessageDialog(context, 'Log in with Facebook succ essfully.');
+                      onPressed: () async {
+                        // try {
+                        //   await AuthService.firebase().signInWithFacebook();
+                        //   final user = AuthService.firebase().currentUser;
+                        //     if (user != null) {
+                        //       if (!mounted) return;
+                        //       Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+                        //     }    
+                        // } on FirebaseAuthException catch(e) {
+                        //   print(e.code);
+                        // }
                       }, 
                       icon: const Icon(
                         Icons.facebook,
