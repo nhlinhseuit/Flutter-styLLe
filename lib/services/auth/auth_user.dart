@@ -15,4 +15,11 @@ class AuthUser {
     email: user.email, 
     isEmailVerified: user.emailVerified
   );
+
+  factory AuthUser.fromFacebook(User user)
+  => AuthUser(
+    uid: user.uid,
+    email: user.email, 
+    isEmailVerified: true,
+  );
 }

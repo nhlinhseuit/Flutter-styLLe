@@ -1,60 +1,61 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:stylle/services/auth/auth_exceptions.dart';
 import 'package:stylle/services/auth/auth_provider.dart';
 import 'package:stylle/services/auth/auth_user.dart';
 
-class FacebookAuthProvider implements AuthProvider {
-  Map<String, dynamic>? _userData;
-  AccessToken? _accessToken;
+import '../../firebase_options.dart';
 
+class FacebookAuthProvider implements AuthProvider {
   @override
-  Future<AuthUser> createUser({required String firstName, required String lastName, required String email, required String password}) {
-    // TODO: implement createUser
-    throw UnimplementedError();
+  Future<AuthUser> createUser({required String firstName, required String lastName, required String email, required String password}) async {
+      return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
   }
 
   @override
-  AuthUser? get currentUser => throw UnimplementedError();
+  AuthUser? get currentUser {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return AuthUser.fromFacebook(user);
+    } else {
+      return null;
+    }
+  }
 
   @override
-  Future<void> initialize() {
-    // TODO: implement initialize
-    throw UnimplementedError();
+  Future<void> initialize() async {
+    await Firebase.initializeApp (
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
 
   @override
   Future<AuthUser> login({String email = '', String password =''}) async {
     try {
-      final LoginResult result = await FacebookAuth.instance.login(); // by default we request the email and the public profile
-      // or FacebookAuth.i.login()
+      final LoginResult result = await FacebookAuth.instance.login(); 
       if (result.status == LoginStatus.success) {
-        // you are logged
-        // final AccessToken accessToken = result.accessToken!;
         final userData = await FacebookAuth.instance.getUserData();
-        print(userData['email']);
         return AuthUser(uid: userData['uid'], email: userData['email'], isEmailVerified: true);
-      } else {
-        print(result.status);
-        print(result.message);
-        return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
+      } else if (result.status == LoginStatus.cancelled) {
+        throw UserNotLoggedInAuthException();
+      } else if (result.status == LoginStatus.failed) {
+        throw GenericAuthException();
       }
-    } catch (e) {
-      print(e.toString());
       return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
+    } catch (e) {
+      throw GenericAuthException();
     }
   }
 
   @override
   Future<void> logout() async {
     await FacebookAuth.instance.logOut();
-    _accessToken = null;
-    _userData = null;
   }
 
   @override
-  Future<void> reloadUser() {
-    // TODO: implement reloadUser
-    throw UnimplementedError();
+  Future<void> reloadUser() async {
+    await FirebaseAuth.instance.currentUser?.reload();
   }
 
   @override

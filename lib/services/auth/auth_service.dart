@@ -39,4 +39,10 @@ class AuthService implements AuthProvider{
   
   @override
   Future<void> reloadUser() => provider.reloadUser();
+  
+  @override
+  Future<AuthUser?> signInWithFacebook() {
+    // TODO: implement signInWithFacebook
+    throw UnimplementedError();
+  }
 }

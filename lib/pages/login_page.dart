@@ -227,7 +227,19 @@ class _LoginPageState extends State<LoginPage> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onPressed: () async {
-                        await AuthService.facebook().login(email: '', password: '');
+                        try {
+                          await AuthService.facebook().login(email: '', password: '');
+                          final user = AuthService.facebook().currentUser;
+                          if (!mounted) return;
+                          if (user != null) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+                          }
+                        } on UserNotLoggedInAuthException {
+                          await showMessageDialog(context, 'Login failed!');
+                        } catch (e) {
+                          await showMessageDialog(context, 'Error: ${e.toString()}');
+                        }
+                        
                       }, 
                       icon: const Icon(
                         Icons.facebook,

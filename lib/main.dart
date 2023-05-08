@@ -69,9 +69,15 @@ class MainPage extends StatelessWidget {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            final user = AuthService.firebase().currentUser;
-            if (user != null) {
-              final emailVerified = user.isEmailVerified;
+          // Facebook user dont need to  verify their emails
+            final facebookUser = AuthService.facebook().currentUser;
+            if (facebookUser != null) {
+              return const HomePage();
+            } 
+            
+            final emailUser = AuthService.firebase().currentUser;
+            if (emailUser != null) {
+              final emailVerified = emailUser.isEmailVerified;
               if (emailVerified) {
                 return const HomePage();
               } else {
