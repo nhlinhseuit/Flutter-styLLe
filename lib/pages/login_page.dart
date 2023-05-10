@@ -235,6 +235,8 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
                           }
                         } on UserNotLoggedInAuthException {
+                          await showMessageDialog(context, 'Login cancelled!');
+                        } on UserNotFoundAuthException {
                           await showMessageDialog(context, 'Login failed!');
                         } catch (e) {
                           await showMessageDialog(context, 'Error: ${e.toString()}');

@@ -87,8 +87,10 @@ class MainPage extends StatelessWidget {
               return const BoardingPage();
             }
           default:
-            return const Scaffold(
-              body: CircularProgressIndicator(),
+            return const Center(
+              child: Scaffold(
+                body: CircularProgressIndicator(),
+              ),
             );
         }
       }

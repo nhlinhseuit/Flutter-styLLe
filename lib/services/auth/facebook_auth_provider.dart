@@ -6,11 +6,19 @@ import 'package:stylle/services/auth/auth_provider.dart';
 import 'package:stylle/services/auth/auth_user.dart';
 
 import '../../firebase_options.dart';
+import '../collections/my_users.dart';
 
 class FacebookAuthProvider implements AuthProvider {
   @override
   Future<AuthUser> createUser({required String firstName, required String lastName, required String email, required String password}) async {
-      return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
+      final user = currentUser;
+      if (user != null) {
+        final MyUser newUser = MyUser(uid: user.uid!, firstName: firstName, lastName: lastName, email: email);
+        await newUser.createUser();
+        return user;
+      } else {
+        throw UserNotLoggedInAuthException();
+      }
   }
 
   @override
@@ -36,15 +44,21 @@ class FacebookAuthProvider implements AuthProvider {
       final LoginResult result = await FacebookAuth.instance.login(); 
       if (result.status == LoginStatus.success) {
         final userData = await FacebookAuth.instance.getUserData();
+        createUser(
+          firstName: userData['name'], 
+          lastName: '', 
+          email: userData['email'], 
+          password: ''
+        );
         return AuthUser(uid: userData['uid'], email: userData['email'], isEmailVerified: true);
       } else if (result.status == LoginStatus.cancelled) {
         throw UserNotLoggedInAuthException();
       } else if (result.status == LoginStatus.failed) {
-        throw GenericAuthException();
+        throw UserNotFoundAuthException();
       }
       return const AuthUser(uid: 'uid', email: 'email', isEmailVerified: false);
     } catch (e) {
-      throw GenericAuthException();
+      rethrow;
     }
   }
 
