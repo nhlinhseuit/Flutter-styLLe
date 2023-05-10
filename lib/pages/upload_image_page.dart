@@ -5,6 +5,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
+import '../utilities/image_uploader.dart';
+
 class ImageCapture extends StatefulWidget {
   const ImageCapture({super.key});
 

@@ -1,8 +1,10 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:stylle/pages/detail_page.dart';
+import 'package:stylle/services/collections/my_images.dart';
 
 class HomePageDelegated extends StatefulWidget {
   const HomePageDelegated({super.key});
