@@ -23,7 +23,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
     Icons.favorite_border_rounded,
   );
 
-  int numberOfItem = 30;
+  // int numberOfItem = 30;
 
   List<bool> toggle = List.generate(30, (index) => false);
 
@@ -35,18 +35,24 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
 
   @override
   Widget build(BuildContext context) {
-    if (numberOfItem > toggle.length) {
-      toggle.addAll(
-          List.generate(numberOfItem - toggle.length, (index) => false));
-      imgUrls.addAll(List.generate(
-          numberOfItem - toggle.length,
-          (index) => index % 2 == 0
-              ? 'https://picsum.photos/400/400?image=${index + 10}'
-              : 'https://picsum.photos/300/600?image=${index + 18}'));
-    }
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: NestedScrollView(
+    // if (numberOfItem > toggle.length) {
+    //   toggle.addAll(
+    //       List.generate(numberOfItem - toggle.length, (index) => false));
+    //   imgUrls.addAll(List.generate(
+    //       numberOfItem - toggle.length,
+    //       (index) => index % 2 == 0
+    //           ? 'https://picsum.photos/400/400?image=${index + 10}'
+    //           : 'https://picsum.photos/300/600?image=${index + 18}'));
+    // }
+    return FutureBuilder(
+      future: MyImage.readImages(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final images = snapshot.data;
+          final numberOfItem = images!.length;
+          return Scaffold(
+          backgroundColor: Colors.white,
+          body: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
@@ -122,18 +128,18 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed(detailDemoRout, arguments: {'imgUrlString': imgUrls[index]});
+                                  .pushNamed(detailDemoRout, arguments: images[index]);
                             },
-                            child: Image.network(imgUrls[index]),
+                            child: Image.network(images[index].imagePath),
                           ),
                         ),
                         Row(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(top: 10.0, left: 14),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0, left: 14),
                               child: Text(
-                                'Michelle',
-                                style: TextStyle(
+                                images[index].userName,
+                                style: const TextStyle(
                                   color: Color.fromARGB(255, 120, 120, 120),
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -165,5 +171,10 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                     ));
               }),
         ));
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      }
+    );
   }
 }

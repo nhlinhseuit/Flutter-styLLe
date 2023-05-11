@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:stylle/services/collections/my_images.dart';
 
 class DetailDemo extends StatefulWidget {
   const DetailDemo({
@@ -14,9 +15,8 @@ class DetailDemo extends StatefulWidget {
 class _DetailDemoState extends State<DetailDemo> {
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final imageUrl = args['imgUrlString'] ?? '';
+    final args = ModalRoute.of(context)!.settings.arguments as MyImage;
+    final imageUrl = args.imagePath;
     return Scaffold(
         backgroundColor: Colors.black,
         body: Stack(

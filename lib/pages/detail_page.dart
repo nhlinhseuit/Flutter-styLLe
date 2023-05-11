@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stylle/services/collections/my_images.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({
@@ -13,8 +14,8 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final imageUrl = args['imgUrlString'] ?? '';
+        ModalRoute.of(context)!.settings.arguments as MyImage;
+    final imageUrl = args.imagePath;
     return Scaffold(
       body: Stack(children: [
         ClipRRect(
@@ -97,9 +98,9 @@ class _DetailPageState extends State<DetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:  [
                   // author
-                  const Text(
-                    'Timothee',
-                    style: TextStyle(
+                  Text(
+                    args.userName,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -107,18 +108,18 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                   //description
-                  const Text(
+                  Text(
                     textAlign: TextAlign.justify,
-                    'Make sure that you choose the right platform your portfolio website that lets you achieve the unique style that best represents your peronality!',
-                    style: TextStyle(
+                    args.description,
+                    style: const TextStyle(
                         fontSize: 16, color: Colors.white, height: 1.3),
                   ),
                   //tag
                   Container(
                     margin: const EdgeInsets.only(top: 10),
-                    child: const Text(
-                      '#fashion  #modern  #2023',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    child: Text(
+                      args.tags.join(", "),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ],

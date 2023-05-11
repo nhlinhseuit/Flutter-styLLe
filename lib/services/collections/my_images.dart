@@ -1,22 +1,30 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 class MyImage {
   String id;
+  String path;
   final String name;
-  final String path;
   final String userName;
   final String description;
   final List<String> tags;
   late bool deleted;
 
+  String get imagePath {
+    return path;
+  }
+  set imagePath(String path) {
+    this.path = path;
+  }
+
   static CollectionReference dbImages = FirebaseFirestore.instance.collection('images');
 
   MyImage({
     this.id = '',
+    this.path='',
     required this.name,
-    this.path = '',
     required this.userName,
     this.description = '', 
     this.tags = const ['foryou'],
@@ -33,17 +41,30 @@ class MyImage {
         .catchError((error) => print("Failed to add image: $error"));
   }
 
-  static Future<String> getImageUrlFromFirestore({required String imageName}) async {
-    return await FirebaseStorage.instance.ref().child(imageName).getDownloadURL();
+  Future<String> getImageUrlFromFirestore() async {
+    return await FirebaseStorage.instance.ref().child(name).getDownloadURL();
   }
 
-  static Stream<List<MyImage>> readImages() => FirebaseFirestore.instance
-    .collection('images')
-    .snapshots()
-    .map((snapshot) => snapshot.docs.map(
-      (doc) => MyImage.fromJson(doc.data()))
-    .toList()
-    );
+  static Future<List<MyImage>> readImages() async {
+    // final images = FirebaseFirestore.instance
+    // .collection('images')
+    // .snapshots()
+    // .map((snapshot) => snapshot.docs.map(
+    //   (doc) => MyImage.fromJson(doc.data()))
+    // .toList()
+    // );
+    // return images;
+    Query query = FirebaseFirestore.instance.collection('images');
+    QuerySnapshot querySnapshot = await query.get();
+
+    List<MyImage> images = [];
+    for (var doc in querySnapshot.docs) {
+      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
+      image.path = await image.getImageUrlFromFirestore();
+      images.add(image);
+    }
+    return images;
+  }
 
   static Future<MyImage?> readImage({required String? id}) async {
     final docUser = FirebaseFirestore.instance.collection('images').doc(id);
@@ -57,7 +78,7 @@ class MyImage {
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'name': path,
+    'name': name,
     'user_name': userName,
     'description': description,
     'tags': tags,
