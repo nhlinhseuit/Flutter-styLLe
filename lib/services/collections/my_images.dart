@@ -11,8 +11,6 @@ class MyImage {
   final List<String> tags;
   late bool deleted;
 
-  static final StreamController<List<MyImage>> _streamController = StreamController<List<MyImage>>.broadcast();
-
   String get imagePath {
     return path;
   }
@@ -68,16 +66,17 @@ class MyImage {
     }
     return null;
   }
-  void readImagesStream() {
+  static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
     final imagesSnapshot = FirebaseFirestore.instance.collection('images').snapshots();
     imagesSnapshot.listen((querySnapshot) async { 
       final List<MyImage> imageList = [];
 
-    for (var documentSnapshot in querySnapshot.docs) {
-      final image = MyImage.fromJson(documentSnapshot.data());
-      image.path = await image.getImageUrlFromFirestore();
-      imageList.add(image);
-    }
+      for (var documentSnapshot in querySnapshot.docs) {
+        final image = MyImage.fromJson(documentSnapshot.data());
+        image.path = await image.getImageUrlFromFirestore();
+        imageList.add(image);
+      }
+      imagesStreamController.add(imageList);
     });
   }
 

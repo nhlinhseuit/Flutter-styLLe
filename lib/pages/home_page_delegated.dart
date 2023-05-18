@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
@@ -14,18 +15,23 @@ class HomePageDelegated extends StatefulWidget {
 }
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   late final int numberOfItem;
   bool _isLoadingMore = false;
+  late final StreamController<List<MyImage>> _imagesStreamController;
 
   @override
   void initState() {
     super.initState();
+    _imagesStreamController = StreamController<List<MyImage>>.broadcast();
+    _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    MyImage.readImagesStream(_imagesStreamController);
   }
 
   @override
   void dispose() {
+    _imagesStreamController.close();
     _scrollController.dispose();
     super.dispose();
   }
@@ -74,10 +80,10 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
     //           ? 'https://picsum.photos/400/400?image=${index + 10}'
     //           : 'https://picsum.photos/300/600?image=${index + 18}'));
     // }
-    return FutureBuilder(
-      future: MyImage.readImages(),
+    return StreamBuilder(
+      stream: _imagesStreamController.stream,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.hasData) {
           final images = snapshot.data;
           numberOfItem = images!.length;
           return Scaffold(
@@ -186,38 +192,24 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                                     onPressed: () {
                                       setState(() {
                                         toggle[index] = !toggle[index];
-                                      });
+                                      }
+                                    );
                                       // showDialog(){}
-                                    },
-                                  ),
+                                  },
                                 ),
-                              ],
-                            )
-                          ],
-                        ));
-                  }),
-              if (_isLoadingMore)
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.pink[200],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        side: BorderSide(
-                          color: Colors.pink[200]!,
-                          width: 2,
-                        ),
-                        minimumSize: const Size(150, 50),
-                      ),
-                      child: const Text('Load more',
-                          style: TextStyle(fontSize: 16)),
-                      onPressed: () {},
-                    )),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    );
+                  }
+                ),
             ],
           ),
         ));
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
         } else {
           return const Center(child: CircularProgressIndicator());
         }
