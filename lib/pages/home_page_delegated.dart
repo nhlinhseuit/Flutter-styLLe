@@ -14,6 +14,36 @@ class HomePageDelegated extends StatefulWidget {
 }
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
+  final ScrollController _scrollController = ScrollController();
+  late final int numberOfItem;
+  bool _isLoadingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (!_isLoadingMore &&
+        _scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 50) {
+      int remainingItemCount =
+          numberOfItem - _scrollController.position.pixels ~/ 200;
+      if (remainingItemCount <= 5) {
+        setState(() {
+          _isLoadingMore = true;
+        });
+      }
+    }
+  }
+
   Icon firstIcon = Icon(
     color: Colors.pink[200],
     Icons.favorite_rounded,
@@ -49,7 +79,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final images = snapshot.data;
-          final numberOfItem = images!.length;
+          numberOfItem = images!.length;
           return Scaffold(
           backgroundColor: Colors.white,
           body: NestedScrollView(
@@ -111,65 +141,82 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
               )
             ];
           },
-          body: MasonryGridView.builder(
-              itemCount: numberOfItem,
-              gridDelegate:
-                  const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (context, index) {
-                return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 0, left: 8, right: 8, bottom: 20),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(detailDemoRout, arguments: images[index]);
-                            },
-                            child: Image.network(images[index].imagePath),
-                          ),
-                        ),
-                        Row(
+          body: Stack(
+            children: [
+              MasonryGridView.builder(
+                  itemCount: numberOfItem,
+                  gridDelegate:
+                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0, left: 8, right: 8, bottom: 20),
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0, left: 14),
-                              child: Text(
-                                images[index].userName,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 120, 120, 120),
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8, left: 45),
-                              child: IconButton(
-                                icon: toggle[index] ? firstIcon : secondIcon,
-                                onPressed: () {
-                                  setState(() {
-                                    toggle[index] = !toggle[index];
-                                  });
-                                  // showDialog(
-                                  //     context: context,
-                                  //     builder: (BuildContext context) {
-                                  //       return AlertDialog(
-                                  //         title: Text(
-                                  //             "Thông báo của tim có index = $index"),
-                                  //         content: Text('Nội dung thông báo'),
-                                  //       );
-                                  // });
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(detailDemoRout, arguments: images[index]);
                                 },
+                                child: Image.network(images[index].imagePath),
                               ),
                             ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0, left: 14),
+                                  child: Text(                                
+                                    images[index].userName,
+                                    style: const TextStyle(
+                                      color: Colors.black38,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, left: 45),
+                                  child: IconButton(
+                                    icon:
+                                        toggle[index] ? firstIcon : secondIcon,
+                                    onPressed: () {
+                                      setState(() {
+                                        toggle[index] = !toggle[index];
+                                      });
+                                      // showDialog(){}
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ));
-              }),
+                        ));
+                  }),
+              if (_isLoadingMore)
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.pink[200],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        side: BorderSide(
+                          color: Colors.pink[200]!,
+                          width: 2,
+                        ),
+                        minimumSize: const Size(150, 50),
+                      ),
+                      child: const Text('Load more',
+                          style: TextStyle(fontSize: 16)),
+                      onPressed: () {},
+                    )),
+            ],
+          ),
         ));
         } else {
           return const Center(child: CircularProgressIndicator());
