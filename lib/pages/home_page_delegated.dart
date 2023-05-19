@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -148,9 +149,14 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context)
-                                      .pushNamed(detailDemoRout, arguments: images[index]);
+                                      .pushNamed(detailPageRout, arguments: images[index]);
                                 },
-                                child: Image.network(images[index].imagePath),
+                                child: CachedNetworkImage(
+                                  imageUrl: images[index].imagePath,
+                                  placeholder: (context, url) => const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  fit: BoxFit.cover,  
+                                ),
                               ),
                             ),
                             Row(

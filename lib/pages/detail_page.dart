@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
@@ -43,13 +44,12 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as MyImage;
+    final args = ModalRoute.of(context)!.settings.arguments as MyImage;
     final imageUrl = args.imagePath;
 
     List<String> imgUrlsRelated = List.generate(
         30,
-        (index) => index % 2 == 0 
+        (index) => index % 2 == 0
             ? 'https://picsum.photos/400/400?image=${index + 10}'
             : 'https://picsum.photos/300/600?image=${index + 18}');
     return SafeArea(
@@ -87,9 +87,11 @@ class _DetailPageState extends State<DetailPage> {
                             borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(38),
                                 bottomRight: Radius.circular(38)),
-                            child: Image.network(
-                              imageUrl,
-                              fit: BoxFit.contain,
+                            child: CachedNetworkImage(
+                              imageUrl: imageUrl,
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                              fit: BoxFit.cover,  
                             ),
                           ),
                         ),
@@ -222,9 +224,11 @@ class _DetailPageState extends State<DetailPage> {
                                 height: 30,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    imageUrl,
-                                    fit: BoxFit.cover,
+                                  child: CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fit: BoxFit.cover,  
                                   ),
                                 ),
                               ),
@@ -372,8 +376,10 @@ class _DetailPageState extends State<DetailPage> {
                                                 'imgUrlString': imgUrls[index],
                                               });
                                         },
-                                        child: Image.network(
-                                          imgUrlsRelated[index],
+                                        child: CachedNetworkImage(
+                                            imageUrl: imgUrlsRelated[index],
+                                            placeholder: (context, url) => const CircularProgressIndicator(),
+                                            errorWidget: (context, url, error) => const Icon(Icons.error),
                                         ),
                                       ),
                                     ),
