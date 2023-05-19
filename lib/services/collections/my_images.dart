@@ -94,14 +94,21 @@ class MyImage {
     'download_url': path,
     'deleted': deleted,
   };
-  static MyImage fromJson(Map<String,dynamic> json) => MyImage(
-    id: json['id'], 
-    name: json['name'],
-    userName: json['user_name'], 
-    description: json['description'],
-    tags: List<String>.from(json['tags']),
-    uploadTime: json['upload_time'],
-    path: json['download_url'], 
-    deleted: json['deleted'], 
-  );
+  static MyImage fromJson(Map<String,dynamic> json) {
+    try {
+      return MyImage(
+        id: json['id'], 
+        name: json['name'],
+        userName: json['user_name'], 
+        description: json['description'],
+        tags: List<String>.from(json['tags']),
+        uploadTime: DateTime.parse(json['upload_time'].toDate().toString()),
+        path: json['download_url'], 
+        deleted: json['deleted'], 
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+}
 }
