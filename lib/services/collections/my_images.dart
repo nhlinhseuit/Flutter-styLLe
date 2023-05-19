@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class MyImage {
   String id;
   String path;
+  final DateTime uploadTime;
   final String name;
   final String userName;
   final String description;
@@ -22,8 +23,9 @@ class MyImage {
 
   MyImage({
     this.id = '',
-    this.path='',
+    required this.path,
     required this.name,
+    required this.uploadTime,
     required this.userName,
     this.description = '', 
     this.tags = const ['foryou'],
@@ -72,13 +74,15 @@ class MyImage {
       final List<MyImage> imageList = [];
 
       for (var documentSnapshot in querySnapshot.docs) {
-        final image = MyImage.fromJson(documentSnapshot.data());
-        image.path = await image.getImageUrlFromFirestore();
-        imageList.add(image);
+        imageList.add(MyImage.fromJson(documentSnapshot.data()));
       }
       imagesStreamController.add(imageList);
     });
-  }
+   }
+
+  static Stream<List<MyImage>> imagesStream() => 
+    FirebaseFirestore.instance.collection('images')
+    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -86,6 +90,8 @@ class MyImage {
     'user_name': userName,
     'description': description,
     'tags': tags,
+    'upload_time': uploadTime,
+    'download_url': path,
     'deleted': deleted,
   };
   static MyImage fromJson(Map<String,dynamic> json) => MyImage(
@@ -94,6 +100,8 @@ class MyImage {
     userName: json['user_name'], 
     description: json['description'],
     tags: List<String>.from(json['tags']),
-    deleted: json['deleted']
+    uploadTime: json['upload_time'],
+    path: json['download_url'], 
+    deleted: json['deleted'], 
   );
 }

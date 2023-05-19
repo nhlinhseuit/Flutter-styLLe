@@ -22,13 +22,21 @@ class _UploaderState extends State<Uploader> {
 
   void _startUpload() async {
     String filepath = 'images/${DateTime.now()}.png';
+    final ref = _storage.ref().child(filepath);
 
     setState(() {
-      _uploadTask = _storage.ref().child(filepath).putFile(widget.file!);
+      _uploadTask = ref.putFile(widget.file!);
     });
 
     MyUser? user = await MyUser.getCurrentUser();
-    final newImage = MyImage(name: filepath, userName: user!.getName, description: widget.description ?? "", tags: widget.tags ?? const ['foryou']);
+    final newImage = MyImage(
+      name: filepath, 
+      userName: user!.getName, 
+      description: widget.description ?? "", 
+      tags: widget.tags ?? const ['foryou'], 
+      uploadTime: DateTime.now(),
+      path: await ref.getDownloadURL(),
+      );
     newImage.createImage();
   }
 

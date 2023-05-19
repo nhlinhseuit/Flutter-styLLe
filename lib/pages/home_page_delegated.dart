@@ -82,7 +82,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
     //           : 'https://picsum.photos/300/600?image=${index + 18}'));
     // }
     return StreamBuilder(
-      stream: _imagesStreamController.stream,
+      stream: MyImage.imagesStream(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final images = snapshot.data;
