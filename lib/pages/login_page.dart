@@ -34,15 +34,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // REMEMBER ME FEATURE
-  void _handleRemeberme(bool? value) {
-    _isCheckedRememberMe = value ?? false;
+  void _handleRemeberme() {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool('remember_me', _isCheckedRememberMe);
       prefs.setString('email', _emailController.text.trim());
       prefs.setString('password', _passwordController.text.trim());
-    });
-    setState(() {
-      _isCheckedRememberMe = value ?? false;
     });
   }
   void _loadUserEmailPassword() async {
@@ -130,8 +126,12 @@ class _LoginPageState extends State<LoginPage> {
                             Checkbox(
                               checkColor: Theme.of(context).colorScheme.primary,
                               value: _isCheckedRememberMe, 
-                              onChanged: _handleRemeberme, 
-                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  _isCheckedRememberMe = value ?? false;
+                                });
+                              }, 
+                            ),
                             Text(
                               "Remember me",
                               style: GoogleFonts.abhayaLibre(),
@@ -169,10 +169,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: Text(
                           'Log in',
-                          style: GoogleFonts.abhayaLibre(
+                          style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
-                              fontSize: 20.00,
+                              fontSize: 16.00,
                             )
                           ),
                         ),
@@ -180,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                           final emailText = _emailController.text.trim();
                           final passwordText = _passwordController.text.trim();
                           try {
+                            _handleRemeberme();
                             await AuthService.firebase().login(
                               email: emailText, 
                               password: passwordText

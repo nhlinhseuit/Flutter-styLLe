@@ -14,8 +14,8 @@ class FirebaseAuthProvider implements AuthProvider {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       final user = currentUser;
       if (user != null) {
-        final MyUser newUser = MyUser(user.uid!, firstName, lastName, email);
-        await newUser.addUser();
+        final MyUser newUser = MyUser(uid: user.uid!, firstName: firstName, lastName: lastName, email: email);
+        await newUser.createUser();
         return user;
       } else {
         throw UserNotLoggedInAuthException();

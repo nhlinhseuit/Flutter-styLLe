@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
@@ -44,15 +43,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
   @override
   Widget build(BuildContext context) {
-    // final auth = FirebaseAuth.instance;
-    // auth.authStateChanges().listen((user) {
-    // final user = AuthService.firebase().currentUser;
-    //   if (user != null) {
-    //     if (user.isEmailVerified) {
-    //           Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
-    //     }
-    //   }
-    // });
     return Stack(
       children: [
         Image.asset(
