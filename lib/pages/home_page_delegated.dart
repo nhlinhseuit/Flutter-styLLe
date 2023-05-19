@@ -12,34 +12,7 @@ class HomePageDelegated extends StatefulWidget {
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
   final ScrollController _scrollController = ScrollController();
-  bool _isLoadingMore = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    if (!_isLoadingMore &&
-        _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 50) {
-      print('hello');
-      int remainingItemCount =
-          numberOfItem - _scrollController.position.pixels ~/ 200;
-      if (remainingItemCount <= 5) {
-        setState(() {
-          _isLoadingMore = true;
-        });
-      }
-    }
-  }
 
   Icon firstIcon = Icon(
     color: Colors.pink[200],
@@ -157,7 +130,9 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                                     'index': index
                                   });
                                 },
-                                child: Image.network(imgUrls[index]),
+                                child: Image.network(
+                                  imgUrls[index],
+                                ),
                               ),
                             ),
                             Row(
@@ -193,25 +168,6 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                           ],
                         ));
                   }),
-              if (_isLoadingMore)
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.pink[200],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        side: BorderSide(
-                          color: Colors.pink[200]!,
-                          width: 2,
-                        ),
-                        minimumSize: const Size(150, 50),
-                      ),
-                      child: const Text('Load more',
-                          style: TextStyle(fontSize: 16)),
-                      onPressed: () {},
-                    )),
             ],
           ),
         ));
