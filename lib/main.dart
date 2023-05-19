@@ -82,7 +82,7 @@ class MainPage extends StatelessWidget {
             }
           default:
             return const Scaffold(
-              body: CircularProgressIndicator(),
+              body: Center(child: CircularProgressIndicator()),
             );
         }
       }

@@ -8,15 +8,20 @@ class MyUser {
   final String uid;
   final String lastName;
   final String email;
+  final String profileImage;
+  final List<String> favorites;
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
   
   MyUser({
+    this.profileImage = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+    this.favorites = const [],  
     required this.uid,
     required this.firstName,
     required this.lastName,
     required this.email,
+
     this.deleted = false,
   });
 
@@ -57,16 +62,20 @@ class MyUser {
 
   Map<String, dynamic> toJson() => {
     'uid': uid,
+    'profile_image': profileImage,
     'first_name': firstName,
     'last_name': lastName,
     'email': email,
+    'favorites': favorites,
     'deleted': deleted,
   };
   static MyUser fromJson(Map<String,dynamic> json) => MyUser(
     uid: json['uid'], 
+    profileImage: json['profile_image'],
     firstName: json['first_name'], 
     lastName: json['last_name'], 
     email: json['email'],
+    favorites: List.from(json['favorites']),
     deleted: json['deleted'],
   );
 }

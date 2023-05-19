@@ -31,7 +31,10 @@ class _HomePageState extends State<HomePage> {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     return Scaffold(
-      body: tabs[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: tabs,
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,

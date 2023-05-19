@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -16,7 +17,7 @@ class HomePageDelegated extends StatefulWidget {
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
   late final ScrollController _scrollController;
-  late final int numberOfItem;
+  late int numberOfItem;
   bool _isLoadingMore = false;
   late final StreamController<List<MyImage>> _imagesStreamController;
 
@@ -168,7 +169,12 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                                   Navigator.of(context)
                                       .pushNamed(detailDemoRout, arguments: images[index]);
                                 },
-                                child: Image.network(images[index].imagePath),
+                                child: CachedNetworkImage(
+                                  imageUrl: images[index].imagePath,
+                                  progressIndicatorBuilder: (context, url, downloadProgress) => 
+                                          CircularProgressIndicator(value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                ),
                               ),
                             ),
                             Row(
