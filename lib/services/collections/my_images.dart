@@ -11,6 +11,7 @@ class MyImage {
   final String userName;
   final String description;
   final List<String> tags;
+  int likes;
   late bool deleted;
 
   String get imagePath {
@@ -30,6 +31,7 @@ class MyImage {
     required this.userName,
     this.description = '', 
     this.tags = const ['foryou'],
+    this.likes = 0,
     this.deleted = false,
   });
 
@@ -102,6 +104,7 @@ class MyImage {
     'tags': tags,
     'upload_time': uploadTime,
     'download_url': path,
+    'likes': likes,
     'deleted': deleted,
   };
   static MyImage fromJson(Map<String,dynamic> json) {
@@ -114,6 +117,7 @@ class MyImage {
         tags: List<String>.from(json['tags']),
         uploadTime: DateTime.parse(json['upload_time'].toDate().toString()),
         path: json['download_url'], 
+        likes: json['likes'],
         deleted: json['deleted'], 
       );
     } catch (e) {

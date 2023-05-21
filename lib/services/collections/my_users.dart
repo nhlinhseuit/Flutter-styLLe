@@ -60,10 +60,16 @@ class MyUser {
     }
   }
 
-  void addFavoriteImage(MyImage image) {
+  Future<void> addFavoriteImage(MyImage image) async {
     if (image.isUserFavorite(this)) return;
+    image.likes++;
+    await FirebaseFirestore.instance.collection('images')
+      .doc(image.id)
+      .update({
+        'likes': image.likes,
+      });
     favorites.add(image);
-    FirebaseFirestore.instance.collection('users')
+    await FirebaseFirestore.instance.collection('users')
       .doc(uid)
       .update({
         'favorites': favorites.map((image) => image.toJson())

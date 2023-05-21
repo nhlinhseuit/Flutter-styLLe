@@ -22,7 +22,7 @@ class _InfiniteScrollableImageListState
   List<MyImage> images = [];
   List<bool> isUserFavorite = [];
   bool isLoading = false;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   Timestamp? lastDocumentTimestamp;
 
   @override
@@ -90,81 +90,67 @@ class _InfiniteScrollableImageListState
 
   @override
   Widget build(BuildContext context) {
-    final numberOfimages = images.length;
-    // return  ListView.builder(
-    //   controller: _scrollController,
-    //   itemCount: images.length + 1,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     if (index < images.length) {
-    //       return Image.network(images[index].imagePath);
-    //     } else {
-    //       return isLoading
-    //           ? const Center(child: CircularProgressIndicator())
-    //           : Container();
-    //     }
-    //   },
-    // );
+    var numberOfimages = images.length;
     return MasonryGridView.builder(
-                  itemCount: numberOfimages,
-                  gridDelegate:
-                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+      itemCount: numberOfimages,
+      gridDelegate:
+          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemBuilder: (context, index) {
+        return Padding(
+            padding: const EdgeInsets.only(
+                top: 0, left: 8, right: 8, bottom: 20),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(detailPageRout, arguments: images[index]);
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: images[index].imagePath,
+                      progressIndicatorBuilder: (context, url, downloadProgress) => 
+                              CircularProgressIndicator(value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),  
                   ),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: const EdgeInsets.only(
-                            top: 0, left: 8, right: 8, bottom: 20),
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(detailPageRout, arguments: images[index]);
-                                },
-                                child: CachedNetworkImage(
-                                  imageUrl: images[index].imagePath,
-                                  progressIndicatorBuilder: (context, url, downloadProgress) => 
-                                          CircularProgressIndicator(value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                ),  
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0, left: 14),
-                                  child: Text(                                
-                                    images[index].userName,
-                                    style: const TextStyle(
-                                      color: Colors.black38,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8, left: 45),
-                                  child: IconButton(
-                                    icon: isUserFavorite[index] 
-                                      ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
-                                      : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary,),
-                                    onPressed: () { 
-                                      widget.currentUser.addFavoriteImage(images[index]);
-                                      setState(() {
-                                        isUserFavorite[index] = images[index].isUserFavorite(widget.currentUser);
-                                      });
-                                    },
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    );
-                  }
-                );
-            
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0, left: 14),
+                      child: Text(                                
+                        images[index].userName,
+                        style: const TextStyle(
+                          color: Colors.black38,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8, left: 45),
+                      child: IconButton(
+                        icon: isUserFavorite[index] 
+                          ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
+                          : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary,),
+                        onPressed: () async { 
+                          await widget.currentUser.addFavoriteImage(images[index]);
+                          setState(() {
+                            isUserFavorite[index] = images[index].isUserFavorite(widget.currentUser);
+                          });
+                        },
+                    ),
+                  ),
+                ],
+              )
+            ],
+          )
+        );
+      }
+    );      
   }
 }
