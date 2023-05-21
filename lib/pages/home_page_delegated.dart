@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_images.dart';
+import 'package:stylle/utilities/infinite_scrollable_image_list.dart';
 
 class HomePageDelegated extends StatefulWidget {
   const HomePageDelegated({super.key});
@@ -16,39 +17,20 @@ class HomePageDelegated extends StatefulWidget {
 }
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
-  late final ScrollController _scrollController;
   late int numberOfItem;
-  bool _isLoadingMore = false;
   late final StreamController<List<MyImage>> _imagesStreamController;
 
   @override
   void initState() {
     super.initState();
     _imagesStreamController = StreamController<List<MyImage>>.broadcast();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
     MyImage.readImagesStream(_imagesStreamController);
   }
 
   @override
   void dispose() {
     _imagesStreamController.close();
-    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _scrollListener() {
-    if (!_isLoadingMore &&
-        _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 50) {
-      int remainingItemCount =
-          numberOfItem - _scrollController.position.pixels ~/ 200;
-      if (remainingItemCount <= 5) {
-        setState(() {
-          _isLoadingMore = true;
-        });
-      }
-    }
   }
 
   Icon firstIcon = Icon(
@@ -81,12 +63,13 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
     //           ? 'https://picsum.photos/400/400?image=${index + 10}'
     //           : 'https://picsum.photos/300/600?image=${index + 18}'));
     // }
-    return StreamBuilder(
-      stream: _imagesStreamController.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final images = snapshot.data;
-          numberOfItem = images!.length;
+    return Builder(
+      // stream: MyImage.getImagesStream(),
+      builder: (context) {
+        // if (snapshot.hasData) {
+        //   final images = snapshot.data;
+        //   numberOfItem = images!.length;
+        //   final imageUrls = images.map((image) => image.imagePath).toList();
           return Scaffold(
           backgroundColor: Colors.white,
           body: NestedScrollView(
@@ -149,76 +132,78 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
             ];
           },
           body: Stack(
-            children: [
-              MasonryGridView.builder(
-                  itemCount: numberOfItem,
-                  gridDelegate:
-                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: const EdgeInsets.only(
-                            top: 0, left: 8, right: 8, bottom: 20),
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(detailDemoRout, arguments: images[index]);
-                                },
-                                child: CachedNetworkImage(
-                                  imageUrl: images[index].imagePath,
-                                  progressIndicatorBuilder: (context, url, downloadProgress) => 
-                                          CircularProgressIndicator(value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0, left: 14),
-                                  child: Text(                                
-                                    images[index].userName,
-                                    style: const TextStyle(
-                                      color: Colors.black38,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8, left: 45),
-                                  child: IconButton(
-                                    icon:
-                                        toggle[index] ? firstIcon : secondIcon,
-                                    onPressed: () {
-                                      setState(() {
-                                        toggle[index] = !toggle[index];
-                                      }
-                                    );
-                                      // showDialog(){}
-                                  },
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    );
-                  }
-                ),
-            ],
+            children: const [
+              InfiniteScrollableImageList(),
+            ]
+            //   MasonryGridView.builder(
+            //       itemCount: numberOfItem,
+            //       gridDelegate:
+            //           const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            //         crossAxisCount: 2,
+            //       ),
+            //       itemBuilder: (context, index) {
+            //         return Padding(
+            //             padding: const EdgeInsets.only(
+            //                 top: 0, left: 8, right: 8, bottom: 20),
+            //             child: Column(
+            //               children: [
+            //                 ClipRRect(
+            //                   borderRadius: BorderRadius.circular(20),
+            //                   child: GestureDetector(
+            //                     onTap: () {
+            //                       Navigator.of(context)
+            //                           .pushNamed(detailPageRout, arguments: images[index]);
+            //                     },
+            //                     child: CachedNetworkImage(
+            //                       imageUrl: imageUrls[index],
+            //                       progressIndicatorBuilder: (context, url, downloadProgress) => 
+            //                               CircularProgressIndicator(value: downloadProgress.progress),
+            //                       errorWidget: (context, url, error) => const Icon(Icons.error),
+            //                     ),  
+            //                   ),
+            //                 ),
+            //                 Row(
+            //                   children: [
+            //                     Padding(
+            //                       padding: const EdgeInsets.only(top: 10.0, left: 14),
+            //                       child: Text(                                
+            //                         images[index].userName,
+            //                         style: const TextStyle(
+            //                           color: Colors.black38,
+            //                         ),
+            //                         overflow: TextOverflow.ellipsis,
+            //                       ),
+            //                     ),
+            //                     Padding(
+            //                       padding:
+            //                           const EdgeInsets.only(top: 8, left: 45),
+            //                       child: IconButton(
+            //                         icon:
+            //                             toggle[index] ? firstIcon : secondIcon,
+            //                         onPressed: () {
+            //                           setState(() {
+            //                             toggle[index] = !toggle[index];
+            //                           }
+            //                         );
+            //                           // showDialog(){}
+            //                       },
+            //                     ),
+            //                   ),
+            //                 ],
+            //               )
+            //             ],
+            //           )
+            //         );
+            //       }
+            //     ),
+            // ],
           ),
         ));
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
+        // } else if (snapshot.hasError) {
+        //   return Text('Error: ${snapshot.error}');
+        // } else {
+        //   return const Center(child: CircularProgressIndicator());
+        // }
       }
     );
   }

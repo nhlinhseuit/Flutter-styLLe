@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 class MyImage {
   String id;
@@ -44,19 +45,7 @@ class MyImage {
     return await FirebaseStorage.instance.ref().child(name).getDownloadURL();
   }
 
-  static Future<List<MyImage>> readImages() async {
-    Query query = FirebaseFirestore.instance.collection('images');
-    QuerySnapshot querySnapshot = await query.get();
-
-    List<MyImage> images = [];
-    for (var doc in querySnapshot.docs) {
-      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
-      image.path = await image.getImageUrlFromFirestore();
-      images.add(image);
-    }
-    return images;
-  }
-
+  
   static Future<MyImage?> readImage({required String? id}) async {
     final docUser = FirebaseFirestore.instance.collection('images').doc(id);
     final snapshot = await docUser.get();
@@ -66,18 +55,34 @@ class MyImage {
     }
     return null;
   }
+
+  static Future<List<MyImage>> readImages() async {
+    Query query = FirebaseFirestore.instance.collection('images');
+    QuerySnapshot querySnapshot = await query.get();
+
+    List<MyImage> images = [];
+    for (var doc in querySnapshot.docs) {
+      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
+      images.add(image);
+    }
+    return images;
+  }
+
   static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
     final imagesSnapshot = FirebaseFirestore.instance.collection('images').snapshots();
     imagesSnapshot.listen((querySnapshot) async { 
       final List<MyImage> imageList = [];
-
       for (var documentSnapshot in querySnapshot.docs) {
         final image = MyImage.fromJson(documentSnapshot.data());
-        image.path = await image.getImageUrlFromFirestore();
         imageList.add(image);
       }
       imagesStreamController.add(imageList);
     });
+  }
+  static Stream<List<MyImage>> getImagesStream() {
+    return FirebaseFirestore.instance.collection('images')
+      .snapshots().map((snapshot) => snapshot.docs.map((doc) => 
+      MyImage.fromJson(doc.data())).toList());
   }
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +91,7 @@ class MyImage {
     'user_name': userName,
     'description': description,
     'tags': tags,
+    'download_url': path,
     'deleted': deleted,
   };
   static MyImage fromJson(Map<String,dynamic> json) => MyImage(
@@ -93,6 +99,7 @@ class MyImage {
     name: json['name'],
     userName: json['user_name'], 
     description: json['description'],
+    path: json['download_url'],
     tags: List<String>.from(json['tags']),
     deleted: json['deleted']
   );
