@@ -47,19 +47,7 @@ class MyImage {
     return await FirebaseStorage.instance.ref().child(name).getDownloadURL();
   }
 
-  static Future<List<MyImage>> readImages() async {
-    Query query = FirebaseFirestore.instance.collection('images');
-    QuerySnapshot querySnapshot = await query.get();
-
-    List<MyImage> images = [];
-    for (var doc in querySnapshot.docs) {
-      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
-      image.path = await image.getImageUrlFromFirestore();
-      images.add(image);
-    }
-    return images;
-  }
-
+  
   static Future<MyImage?> readImage({required String? id}) async {
     final docUser = FirebaseFirestore.instance.collection('images').doc(id);
     final snapshot = await docUser.get();
@@ -69,11 +57,23 @@ class MyImage {
     }
     return null;
   }
+
+  static Future<List<MyImage>> readImages() async {
+    Query query = FirebaseFirestore.instance.collection('images');
+    QuerySnapshot querySnapshot = await query.get();
+
+    List<MyImage> images = [];
+    for (var doc in querySnapshot.docs) {
+      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
+      images.add(image);
+    }
+    return images;
+  }
+
   static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
     final imagesSnapshot = FirebaseFirestore.instance.collection('images').snapshots();
     imagesSnapshot.listen((querySnapshot) async { 
       final List<MyImage> imageList = [];
-
       for (var documentSnapshot in querySnapshot.docs) {
         imageList.add(MyImage.fromJson(documentSnapshot.data()));
       }
