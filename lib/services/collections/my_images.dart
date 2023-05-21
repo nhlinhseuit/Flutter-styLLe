@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:stylle/services/collections/my_users.dart';
 
 class MyImage {
   String id;
@@ -83,6 +84,15 @@ class MyImage {
   static Stream<List<MyImage>> imagesStream() => 
     FirebaseFirestore.instance.collection('images')
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+  bool isUserFavorite(MyUser user) {
+    for (var image in user.favorites) { 
+      if (id == image.id) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   Map<String, dynamic> toJson() => {
     'id': id,

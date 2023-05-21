@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_images.dart';
+import 'package:stylle/services/collections/my_users.dart';
 
 class HomePageDelegated extends StatefulWidget {
   const HomePageDelegated({super.key});
@@ -20,6 +21,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
   late int numberOfItem;
   bool _isLoadingMore = false;
   late final StreamController<List<MyImage>> _imagesStreamController;
+  late final MyUser currentUser;
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
     _imagesStreamController = StreamController<List<MyImage>>.broadcast();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    // currentUser = (await MyUser.getCurrentUser())!;
     MyImage.readImagesStream(_imagesStreamController);
   }
 
@@ -195,7 +198,8 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                                   child: IconButton(
                                     icon:
                                         toggle[index] ? firstIcon : secondIcon,
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      (await MyUser.getCurrentUser())?.addFavoriteImage(images[index]);
                                       setState(() {
                                         toggle[index] = !toggle[index];
                                       }

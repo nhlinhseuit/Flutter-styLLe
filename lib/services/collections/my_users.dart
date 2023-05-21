@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stylle/services/auth/auth_service.dart';
+import 'package:stylle/services/collections/my_images.dart';
 
 class MyUser {
   final String firstName;
@@ -9,7 +10,7 @@ class MyUser {
   final String lastName;
   final String email;
   final String profileImage;
-  final List<String> favorites;
+  final List<MyImage> favorites;
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
@@ -59,6 +60,16 @@ class MyUser {
     }
   }
 
+  void addFavoriteImage(MyImage image) {
+    if (image.isUserFavorite(this)) return;
+    favorites.add(image);
+    FirebaseFirestore.instance.collection('users')
+      .doc(uid)
+      .update({
+        'favorites': favorites.map((image) => image.toJson())
+      })
+      .catchError((error) => print("Failed to add fav image: $error"));
+  }
 
   Map<String, dynamic> toJson() => {
     'uid': uid,
@@ -66,7 +77,7 @@ class MyUser {
     'first_name': firstName,
     'last_name': lastName,
     'email': email,
-    'favorites': favorites,
+    'favorites': favorites.map((image) => image.toJson()),
     'deleted': deleted,
   };
   static MyUser fromJson(Map<String,dynamic> json) => MyUser(
@@ -75,7 +86,9 @@ class MyUser {
     firstName: json['first_name'], 
     lastName: json['last_name'], 
     email: json['email'],
-    favorites: List.from(json['favorites']),
+    favorites: List<MyImage>.from(json['favorites'].map((doc) {
+      return MyImage.fromJson(doc);
+    })),
     deleted: json['deleted'],
   );
 }
