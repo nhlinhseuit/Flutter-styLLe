@@ -17,9 +17,7 @@ class HomePageDelegated extends StatefulWidget {
 }
 
 class _HomePageDelegatedState extends State<HomePageDelegated> {
-  late final ScrollController _scrollController;
   late int numberOfItem;
-  bool _isLoadingMore = false;
   late final StreamController<List<MyImage>> _imagesStreamController;
   late final MyUser currentUser;
 
@@ -27,32 +25,15 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
   void initState() {
     super.initState();
     _imagesStreamController = StreamController<List<MyImage>>.broadcast();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    // currentUser = (await MyUser.getCurrentUser())!;
     MyImage.readImagesStream(_imagesStreamController);
   }
 
   @override
   void dispose() {
     _imagesStreamController.close();
-    _scrollController.dispose();
     super.dispose();
   }
 
-  void _scrollListener() {
-    if (!_isLoadingMore &&
-        _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 50) {
-      int remainingItemCount =
-          numberOfItem - _scrollController.position.pixels ~/ 200;
-      if (remainingItemCount <= 5) {
-        setState(() {
-          _isLoadingMore = true;
-        });
-      }
-    }
-  }
 
   Icon firstIcon = Icon(
     color: Colors.pink[200],
@@ -170,7 +151,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context)
-                                      .pushNamed(detailDemoRout, arguments: images[index]);
+                                      .pushNamed(detailPageRout, arguments: images[index]);
                                 },
                                 child: CachedNetworkImage(
                                   imageUrl: images[index].imagePath,

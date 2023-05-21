@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
+import 'package:stylle/pages/detail_page.dart';
 
 class RelatedPage extends StatefulWidget {
   const RelatedPage({super.key});
@@ -50,13 +52,18 @@ class _RelatedPageState extends State<RelatedPage> {
                           borderRadius: BorderRadius.circular(20),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed(detailDemoRout,
+                              Navigator.of(context).pushNamed(detailPageRout,
                                   arguments: {
                                     'imgUrlString': imgUrls[index],
                                     'idx': idx
                                   });
                             },
-                            child: Image.network(imgUrls[index]),
+                            child: CachedNetworkImage(
+                                  imageUrl: imgUrls[index],
+                                  placeholder: (context, url) => const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  fit: BoxFit.cover,  
+                                ),
                           ),
                         ),
                       ],
