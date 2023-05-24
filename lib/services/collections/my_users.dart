@@ -97,12 +97,14 @@ class MyUser {
   Future<void> handleFavorite(MyImage image) async {
     if (image.isUserFavorite(this)) {
       await removeFavoriteImage(image);
+      favorites.remove(image.id);
     } else {
       await addFavoriteImage(image);
+      favorites.add(image.id);
     }
   }
 
-  Stream<List<MyImage>> imagesStream() => 
+  Stream<List<MyImage>> favoriteImagesStream() => 
   FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites)
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 

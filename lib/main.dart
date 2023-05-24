@@ -7,6 +7,7 @@ import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
 import 'package:stylle/pages/detail_demo.dart';
 import 'package:stylle/pages/detail_page.dart';
+import 'package:stylle/pages/favorites_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';

@@ -1,9 +1,10 @@
-import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/services/collections/my_users.dart';
-import 'package:stylle/components/infinite_scrollable_image_list.dart';
+
+import '../components/image_stream_viewer.dart';
+import '../services/collections/my_images.dart';
 
 class HomePageDelegated extends StatefulWidget {
   const HomePageDelegated({super.key});
@@ -100,7 +101,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
             },
             body: Stack(
               children: [
-                InfiniteScrollableImageList(currentUser: currentUser),
+                ImageStreamView(currentUser: currentUser, imagesStream: MyImage.imagesStream()),
               ]
             ),
           ));

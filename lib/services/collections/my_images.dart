@@ -14,6 +14,7 @@ class MyImage {
   final String userProfilePic;
   final String description;
   final List<String> tags;
+  bool isFavorite;
   int likes;
   late bool deleted;
 
@@ -39,6 +40,7 @@ class MyImage {
     this.tags = const ['foryou'],
     this.likes = 0,
     this.deleted = false, 
+    this.isFavorite = false,
   });
 
   Future<void> createImage() {
@@ -66,32 +68,37 @@ class MyImage {
     return null;
   }
 
-  static Future<List<MyImage>> readImages() async {
-    Query query = FirebaseFirestore.instance.collection('images');
-    QuerySnapshot querySnapshot = await query.get();
-
-    List<MyImage> images = [];
-    for (var doc in querySnapshot.docs) {
-      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
-      images.add(image);
-    }
-    return images;
-  }
-
-  static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
-    final imagesSnapshot = FirebaseFirestore.instance.collection('images').snapshots();
-    imagesSnapshot.listen((querySnapshot) async { 
-      final List<MyImage> imageList = [];
-      for (var documentSnapshot in querySnapshot.docs) {
-        imageList.add(MyImage.fromJson(documentSnapshot.data()));
-      }
-      imagesStreamController.add(imageList);
-    });
-   }
-
-  static Stream<List<MyImage>> imagesStream() => 
-    FirebaseFirestore.instance.collection('images')
+    static Stream<List<MyImage>> imagesStream() => 
+    FirebaseFirestore.instance.collection('images').orderBy('upload_time', descending: true)
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+  // static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
+  //   final imagesSnapshot = FirebaseFirestore.instance
+  //     .collection('images')
+  //     .orderBy('upload_time', descending: true)
+  //     .snapshots();
+  //   imagesSnapshot.listen((querySnapshot) async { 
+  //     final List<MyImage> imageList = [];
+  //     for (var documentSnapshot in querySnapshot.docs) {
+  //       imageList.add(MyImage.fromJson(documentSnapshot.data()));
+  //     }
+  //     imagesStreamController.add(imageList);
+  //   });
+  // }
+
+  // static void readUserFavoritesStream(StreamController<List<MyImage>> imagesStreamController, MyUser user) {
+  //   final imagesSnapshot = FirebaseFirestore.instance
+  //     .collection('images')
+  //     .where('id', whereIn: user.favorites)
+  //     .snapshots();
+  //   imagesSnapshot.listen((querySnapshot) async { 
+  //     final List<MyImage> imageList = [];
+  //     for (var documentSnapshot in querySnapshot.docs) {
+  //       imageList.add(MyImage.fromJson(documentSnapshot.data()));
+  //     }
+  //     imagesStreamController.add(imageList);
+  //   });
+  // }
 
   bool isUserFavorite(MyUser user) {
     for (var imageID in user.favorites) { 

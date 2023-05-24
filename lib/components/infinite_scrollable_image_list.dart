@@ -17,8 +17,7 @@ class InfiniteScrollableImageList extends StatefulWidget {
       _InfiniteScrollableImageListState();
 }
 
-class _InfiniteScrollableImageListState
-    extends State<InfiniteScrollableImageList> {
+class _InfiniteScrollableImageListState extends State<InfiniteScrollableImageList> {
   List<MyImage> images = [];
   List<bool> isUserFavorite = [];
   bool isLoading = false;
