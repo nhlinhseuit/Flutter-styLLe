@@ -27,17 +27,21 @@ class _UploaderState extends State<Uploader> {
     setState(() {
       _uploadTask = ref.putFile(widget.file!);
     });
-
-    MyUser? user = await MyUser.getCurrentUser();
-    final newImage = MyImage(
-      name: filepath, 
-      userName: user!.getName, 
-      description: widget.description ?? "", 
-      tags: widget.tags ?? const ['foryou'], 
-      uploadTime: DateTime.now(),
-      path: await ref.getDownloadURL(),
+    _uploadTask?.whenComplete(() async {
+      MyUser? user = await MyUser.getCurrentUser();
+      final newImage = MyImage(
+        name: filepath, 
+        userName: user!.getName, 
+        description: widget.description ?? "", 
+        tags: widget.tags ?? const ['foryou'], 
+        uploadTime: DateTime.now(),
+        path: await ref.getDownloadURL(), 
+        userEmail: user.email, 
+        userID: user.uid, 
+        userProfilePic: user.profileImage,
       );
-    newImage.createImage();
+      newImage.createImage();
+    });
   }
 
   @override

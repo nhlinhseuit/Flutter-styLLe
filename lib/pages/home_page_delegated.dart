@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/services/collections/my_users.dart';
-import 'package:stylle/utilities/infinite_scrollable_image_list.dart';
+import 'package:stylle/components/infinite_scrollable_image_list.dart';
 
 class HomePageDelegated extends StatefulWidget {
   const HomePageDelegated({super.key});

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../utilities/image_uploader.dart';
+import '../components/image_uploader.dart';
 
 class ImageCapture extends StatefulWidget {
   const ImageCapture({super.key});

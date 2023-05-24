@@ -102,6 +102,10 @@ class MyUser {
     }
   }
 
+  Stream<List<MyImage>> imagesStream() => 
+  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites)
+  .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
   Map<String, dynamic> toJson() => {
     'uid': uid,
     'profile_image': profileImage,

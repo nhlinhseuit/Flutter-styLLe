@@ -9,6 +9,9 @@ class MyImage {
   final DateTime uploadTime;
   final String name;
   final String userName;
+  final String userEmail;
+  final String userID;
+  final String userProfilePic;
   final String description;
   final List<String> tags;
   int likes;
@@ -29,10 +32,13 @@ class MyImage {
     required this.name,
     required this.uploadTime,
     required this.userName,
+    required this.userEmail, 
+    required this.userID, 
+    required this.userProfilePic,
     this.description = '', 
     this.tags = const ['foryou'],
     this.likes = 0,
-    this.deleted = false,
+    this.deleted = false, 
   });
 
   Future<void> createImage() {
@@ -105,6 +111,12 @@ class MyImage {
     'upload_time': uploadTime,
     'download_url': path,
     'likes': likes,
+    'user_info': {
+      'name': userName,
+      'email': userEmail,
+      'id': userID,
+      'profile': userProfilePic,
+    },
     'deleted': deleted,
   };
   static MyImage fromJson(Map<String,dynamic> json) {
@@ -112,7 +124,10 @@ class MyImage {
       return MyImage(
         id: json['id'], 
         name: json['name'],
-        userName: json['user_name'], 
+        userName: json['user_info']['name'], 
+        userEmail: json['user_info']['email'], 
+        userID: json['user_info']['id'], 
+        userProfilePic: json['user_info']['profile'], 
         description: json['description'],
         tags: List<String>.from(json['tags']),
         uploadTime: DateTime.parse(json['upload_time'].toDate().toString()),
@@ -124,5 +139,5 @@ class MyImage {
       print(e);
       rethrow;
     }
-}
+  }
 }
