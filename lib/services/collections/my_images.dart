@@ -88,8 +88,8 @@ class MyImage {
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   bool isUserFavorite(MyUser user) {
-    for (var image in user.favorites) { 
-      if (id == image.id) {
+    for (var imageID in user.favorites) { 
+      if (id == imageID) {
         return true;
       }
     }

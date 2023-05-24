@@ -138,7 +138,7 @@ class _InfiniteScrollableImageListState
                           ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
                           : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary,),
                         onPressed: () async { 
-                          await widget.currentUser.addFavoriteImage(images[index]);
+                          await widget.currentUser.handleFavorite(images[index]);
                           setState(() {
                             isUserFavorite[index] = images[index].isUserFavorite(widget.currentUser);
                           });

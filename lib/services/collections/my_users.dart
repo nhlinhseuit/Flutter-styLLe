@@ -10,7 +10,7 @@ class MyUser {
   final String lastName;
   final String email;
   final String profileImage;
-  final List<MyImage> favorites;
+  final List<String> favorites;
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
@@ -68,13 +68,38 @@ class MyUser {
       .update({
         'likes': image.likes,
       });
-    favorites.add(image);
+    favorites.add(image.id);
     await FirebaseFirestore.instance.collection('users')
       .doc(uid)
       .update({
-        'favorites': favorites.map((image) => image.toJson())
+        'favorites': favorites.map((imageID) => imageID)
       })
       .catchError((error) => print("Failed to add fav image: $error"));
+  }
+  
+  Future<void> removeFavoriteImage(MyImage image) async {
+    if (!image.isUserFavorite(this)) return;
+    image.likes--;
+    await FirebaseFirestore.instance.collection('images')
+      .doc(image.id)
+      .update({
+        'likes': image.likes,
+      });
+    favorites.remove(image.id);
+    await FirebaseFirestore.instance.collection('users')
+      .doc(uid)
+      .update({
+        'favorites': favorites.map((imageID) => imageID)
+      })
+      .catchError((error) => print("Failed to add fav image: $error"));
+  }
+
+  Future<void> handleFavorite(MyImage image) async {
+    if (image.isUserFavorite(this)) {
+      await removeFavoriteImage(image);
+    } else {
+      await addFavoriteImage(image);
+    }
   }
 
   Map<String, dynamic> toJson() => {
@@ -83,7 +108,7 @@ class MyUser {
     'first_name': firstName,
     'last_name': lastName,
     'email': email,
-    'favorites': favorites.map((image) => image.toJson()),
+    'favorites': favorites,
     'deleted': deleted,
   };
   static MyUser fromJson(Map<String,dynamic> json) => MyUser(
@@ -92,9 +117,10 @@ class MyUser {
     firstName: json['first_name'], 
     lastName: json['last_name'], 
     email: json['email'],
-    favorites: List<MyImage>.from(json['favorites'].map((doc) {
-      return MyImage.fromJson(doc);
-    })),
+    favorites: List<String>.from(json['favorites']),
+    // favorites: List<MyImage>.from(json['favorites'].map((doc) {
+    //   return MyImage.fromJson(doc);
+    // })),
     deleted: json['deleted'],
   );
 }
