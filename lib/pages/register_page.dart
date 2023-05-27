@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
-import '../utilities/popup_dialog.dart';
+import '../components/popup_dialog.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:stylle/services/collections/my_images.dart';
 
-import '../utilities/image_uploader.dart';
+import '../components/image_uploader.dart';
 
 class ImageCapture extends StatefulWidget {
   const ImageCapture({super.key});
@@ -39,7 +38,7 @@ class _ImageCaptureState extends State<ImageCapture> {
     super.dispose();
   }
 
-    void _updateWidgetText() {
+  void _updateWidgetText() {
     setState(() {
       _imageDescriptionText = _imageDescriptionController.text.trim();
       _imageTagsText = _imageTagsController.text.trim();

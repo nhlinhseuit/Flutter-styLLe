@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:stylle/utilities/popup_dialog.dart';
+import 'package:stylle/components/popup_dialog.dart';
 
 import '../services/auth/auth_service.dart';
 

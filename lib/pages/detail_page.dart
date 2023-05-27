@@ -9,8 +9,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart' as http;
 import 'package:stylle/services/collections/my_images.dart';
+
+import '../services/collections/my_users.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({
@@ -110,7 +111,8 @@ class _DetailPageState extends State<DetailPage> {
                         vertical: 8.0, horizontal: 20),
                     child: IconButton(
                         icon: toggle ? firstIcon : secondIcon,
-                        onPressed: () {
+                        onPressed: () async {
+                          await (await MyUser.getCurrentUser())!.addFavoriteImage(args);
                           setState(() {
                             toggle = !toggle;
                           });
@@ -274,7 +276,7 @@ class _DetailPageState extends State<DetailPage> {
                               ),
                             ),
                             Text(
-                              '237',
+                              args.likes.toString(),
                               style: TextStyle(
                                   color: Colors.pink[200], fontSize: 20),
                             )

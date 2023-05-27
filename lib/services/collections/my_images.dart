@@ -1,14 +1,21 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:stylle/services/collections/my_users.dart';
 
 class MyImage {
   String id;
   String path;
+  final DateTime uploadTime;
   final String name;
   final String userName;
+  final String userEmail;
+  final String userID;
+  final String userProfilePic;
   final String description;
   final List<String> tags;
+  bool isFavorite;
+  int likes;
   late bool deleted;
 
   String get imagePath {
@@ -22,12 +29,18 @@ class MyImage {
 
   MyImage({
     this.id = '',
-    this.path='',
+    required this.path,
     required this.name,
+    required this.uploadTime,
     required this.userName,
+    required this.userEmail, 
+    required this.userID, 
+    required this.userProfilePic,
     this.description = '', 
     this.tags = const ['foryou'],
-    this.deleted = false,
+    this.likes = 0,
+    this.deleted = false, 
+    this.isFavorite = false,
   });
 
   Future<void> createImage() {
@@ -44,19 +57,7 @@ class MyImage {
     return await FirebaseStorage.instance.ref().child(name).getDownloadURL();
   }
 
-  static Future<List<MyImage>> readImages() async {
-    Query query = FirebaseFirestore.instance.collection('images');
-    QuerySnapshot querySnapshot = await query.get();
-
-    List<MyImage> images = [];
-    for (var doc in querySnapshot.docs) {
-      final image = MyImage.fromJson(doc.data() as Map<String,dynamic>);
-      image.path = await image.getImageUrlFromFirestore();
-      images.add(image);
-    }
-    return images;
-  }
-
+  
   static Future<MyImage?> readImage({required String? id}) async {
     final docUser = FirebaseFirestore.instance.collection('images').doc(id);
     final snapshot = await docUser.get();
@@ -66,18 +67,50 @@ class MyImage {
     }
     return null;
   }
-  static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
-    final imagesSnapshot = FirebaseFirestore.instance.collection('images').snapshots();
-    imagesSnapshot.listen((querySnapshot) async { 
-      final List<MyImage> imageList = [];
 
-      for (var documentSnapshot in querySnapshot.docs) {
-        final image = MyImage.fromJson(documentSnapshot.data());
-        image.path = await image.getImageUrlFromFirestore();
-        imageList.add(image);
+  static Stream<List<MyImage>> imagesStream() => 
+    FirebaseFirestore.instance.collection('images').orderBy('upload_time', descending: true)
+    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+  static Stream<List<MyImage>> imagesTagsStream(List<String> tags) => 
+    FirebaseFirestore.instance.collection('images').where('tags', arrayContainsAny: tags)
+    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+  // static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
+  //   final imagesSnapshot = FirebaseFirestore.instance
+  //     .collection('images')
+  //     .orderBy('upload_time', descending: true)
+  //     .snapshots();
+  //   imagesSnapshot.listen((querySnapshot) async { 
+  //     final List<MyImage> imageList = [];
+  //     for (var documentSnapshot in querySnapshot.docs) {
+  //       imageList.add(MyImage.fromJson(documentSnapshot.data()));
+  //     }
+  //     imagesStreamController.add(imageList);
+  //   });
+  // }
+
+  // static void readUserFavoritesStream(StreamController<List<MyImage>> imagesStreamController, MyUser user) {
+  //   final imagesSnapshot = FirebaseFirestore.instance
+  //     .collection('images')
+  //     .where('id', whereIn: user.favorites)
+  //     .snapshots();
+  //   imagesSnapshot.listen((querySnapshot) async { 
+  //     final List<MyImage> imageList = [];
+  //     for (var documentSnapshot in querySnapshot.docs) {
+  //       imageList.add(MyImage.fromJson(documentSnapshot.data()));
+  //     }
+  //     imagesStreamController.add(imageList);
+  //   });
+  // }
+
+  bool isUserFavorite(MyUser user) {
+    for (var imageID in user.favorites) { 
+      if (id == imageID) {
+        return true;
       }
-      imagesStreamController.add(imageList);
-    });
+    }
+    return false;
   }
 
   Map<String, dynamic> toJson() => {
@@ -86,14 +119,36 @@ class MyImage {
     'user_name': userName,
     'description': description,
     'tags': tags,
+    'upload_time': uploadTime,
+    'download_url': path,
+    'likes': likes,
+    'user_info': {
+      'name': userName,
+      'email': userEmail,
+      'id': userID,
+      'profile': userProfilePic,
+    },
     'deleted': deleted,
   };
-  static MyImage fromJson(Map<String,dynamic> json) => MyImage(
-    id: json['id'], 
-    name: json['name'],
-    userName: json['user_name'], 
-    description: json['description'],
-    tags: List<String>.from(json['tags']),
-    deleted: json['deleted']
-  );
+  static MyImage fromJson(Map<String,dynamic> json) {
+    try {
+      return MyImage(
+        id: json['id'], 
+        name: json['name'],
+        userName: json['user_info']['name'], 
+        userEmail: json['user_info']['email'], 
+        userID: json['user_info']['id'], 
+        userProfilePic: json['user_info']['profile'], 
+        description: json['description'],
+        tags: List<String>.from(json['tags']),
+        uploadTime: DateTime.parse(json['upload_time'].toDate().toString()),
+        path: json['download_url'], 
+        likes: json['likes'],
+        deleted: json['deleted'], 
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }
