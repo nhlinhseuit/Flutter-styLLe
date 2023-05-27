@@ -107,7 +107,7 @@ class MyUser {
   }
 
   Stream<List<MyImage>> favoriteImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites)
+  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Stream<List<MyImage>> userImagesStream() => 

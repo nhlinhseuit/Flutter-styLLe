@@ -35,6 +35,11 @@ class _ImageStreamViewState extends State<ImageStreamView> {
             image.isFavorite = image.isUserFavorite(widget.currentUser);
             precacheImage(NetworkImage(image.imagePath), context);
           }
+          if (numberOfImages == 0) {
+            return const Center(
+              child: Text("You haven't liked any images! :("),
+            );
+          }
           return MasonryGridView.builder(
             itemCount: numberOfImages,
             gridDelegate:

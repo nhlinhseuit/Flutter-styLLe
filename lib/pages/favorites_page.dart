@@ -27,19 +27,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
         } else {
           final MyUser currentUser = snapshot.data!;
           return Scaffold (
-            // appBar: AppBar(
-            //   title: Text(
-            //     'Favorites',
-            //     style: GoogleFonts.poppins(
-            //       textStyle: const TextStyle(
-            //         color: Colors.black,
-            //         fontSize: 24.00,
-            //       )
-            //     ),
-            //   ),
-            //   backgroundColor: Colors.transparent,
-            //   elevation: 0,
-            // ),
             body: NestedScrollView(
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
