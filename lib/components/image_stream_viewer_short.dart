@@ -20,7 +20,6 @@ class ImageStreamView extends StatefulWidget {
 }
 
 class _ImageStreamViewState extends State<ImageStreamView> {
-  List<bool> isUserFavorite = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +30,6 @@ class _ImageStreamViewState extends State<ImageStreamView> {
           final images = snapshot.data;
           var numberOfImages = images!.length;
           for (var image in images) {
-            isUserFavorite.add(image.isUserFavorite(widget.currentUser));
-            image.isFavorite = image.isUserFavorite(widget.currentUser);
             precacheImage(NetworkImage(image.imagePath), context);
           }
           return MasonryGridView.builder(
@@ -62,29 +59,6 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                           ),  
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(                                
-                            images[index].userName,
-                            style: const TextStyle(
-                              color: Colors.black38,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          IconButton(
-                            icon: images[index].isFavorite
-                              ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
-                              : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary,),
-                            onPressed: () async { 
-                              await widget.currentUser.handleFavorite(images[index]);
-                              setState(() {
-                                images[index].isFavorite = images[index].isUserFavorite(widget.currentUser);
-                              });
-                            },
-                        ),
-                      ],
-                    )
                   ],
                 )
               );

@@ -68,8 +68,12 @@ class MyImage {
     return null;
   }
 
-    static Stream<List<MyImage>> imagesStream() => 
+  static Stream<List<MyImage>> imagesStream() => 
     FirebaseFirestore.instance.collection('images').orderBy('upload_time', descending: true)
+    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+  static Stream<List<MyImage>> imagesTagsStream(List<String> tags) => 
+    FirebaseFirestore.instance.collection('images').where('tags', arrayContainsAny: tags)
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   // static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {

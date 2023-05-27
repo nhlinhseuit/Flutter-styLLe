@@ -1,14 +1,10 @@
 import 'dart:async';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/components/image_stream_viewer.dart';
 import 'package:stylle/services/collections/my_images.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
-import '../constants/routes.dart';
 
 class UsersFavoritesView extends StatefulWidget {
   const UsersFavoritesView({super.key, required this.currentUser});
@@ -26,15 +22,12 @@ class _UsersFavoritesViewState extends State<UsersFavoritesView> {
   bool isLoading = false;
   final ScrollController _scrollController = ScrollController();
   Timestamp? lastDocumentTimestamp;
-  late final StreamController<List<MyImage>> _imagesStreamController;
   
   @override
   void initState() {
     super.initState();
     _fetchImages();
     _scrollController.addListener(_scrollListener);
-    _imagesStreamController = StreamController<List<MyImage>>.broadcast();
-    MyImage.readImagesStream(_imagesStreamController);
   }
 
   @override
@@ -95,7 +88,7 @@ class _UsersFavoritesViewState extends State<UsersFavoritesView> {
 
   @override
   Widget build(BuildContext context) {
-    return ImageStreamView(currentUser: widget.currentUser, imagesStreamController: _imagesStreamController);
+    return ImageStreamView(currentUser: widget.currentUser, imagesStream: widget.currentUser.favoriteImagesStream(),);
   //   return StreamBuilder(
   //     stream: _imagesStreamController.stream,
   //     builder:(context, snapshot) {

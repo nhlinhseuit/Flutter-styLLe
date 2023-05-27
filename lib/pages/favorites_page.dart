@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/services/collections/my_images.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
 import '../components/image_stream_viewer.dart';

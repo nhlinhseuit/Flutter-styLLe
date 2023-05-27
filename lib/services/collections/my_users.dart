@@ -57,6 +57,8 @@ class MyUser {
 
     if (snapshot.exists) {
       return MyUser.fromJson(snapshot.data()!);
+    } else {
+      return null;
     }
   }
 
@@ -106,6 +108,10 @@ class MyUser {
 
   Stream<List<MyImage>> favoriteImagesStream() => 
   FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites)
+  .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+  Stream<List<MyImage>> userImagesStream() => 
+  FirebaseFirestore.instance.collection('images').where('user_id', isEqualTo: uid)
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Map<String, dynamic> toJson() => {

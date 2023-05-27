@@ -1,13 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
 import 'package:stylle/pages/detail_demo.dart';
 import 'package:stylle/pages/detail_page.dart';
-import 'package:stylle/pages/favorites_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';
