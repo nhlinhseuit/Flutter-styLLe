@@ -173,7 +173,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(top: 8, left: 45),
+                                      const EdgeInsets.only(top: 8, left: 10),
                                   child: IconButton(
                                     icon:
                                         toggle[index] ? firstIcon : secondIcon,
