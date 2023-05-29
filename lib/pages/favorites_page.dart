@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/services/collections/my_users.dart';
+import 'package:provider/provider.dart';
+import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../components/image_stream_viewer.dart';
 
@@ -17,40 +18,31 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: MyUser.getCurrentUser(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          final MyUser currentUser = snapshot.data!;
-          return Scaffold (
-            body: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                    title: Text(
-                      'Favorites',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 24.00,
-                        )
-                      ),
-                    ),
-                    floating: true,
-                    backgroundColor: Colors.transparent,
-                    forceElevated: innerBoxIsScrolled,
-                  ),
-                ];
-              },
-              body: ImageStreamView(currentUser: currentUser, imagesStream: currentUser.favoriteImagesStream()),
-            )
-          );
-        }
-      },
+    return Scaffold (
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: Text(
+                'Favorites',
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 24.00,
+                  )
+                ),
+              ),
+              floating: true,
+              backgroundColor: Colors.transparent,
+              forceElevated: innerBoxIsScrolled,
+            ),
+          ];
+        },
+        body: ImageStreamView(
+          user: Provider.of<CurrentUser>(context, listen: false).user, 
+          imagesStream: Provider.of<CurrentUser>(context, listen: false).user.favoriteImagesStream()
+        ),
+      )
     );
   }
 }

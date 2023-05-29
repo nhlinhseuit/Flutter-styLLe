@@ -46,7 +46,10 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    XFile? selected = await _picker.pickImage(source: source);
+    XFile? selected = await _picker.pickImage(
+      source: source,
+      maxWidth: 400,
+    );
 
     setState(() {
       _imageFile = selected == null ? _imageFile : File(selected.path);

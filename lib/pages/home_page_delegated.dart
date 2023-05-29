@@ -101,7 +101,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
             },
             body: Stack(
               children: [
-                ImageStreamView(currentUser: currentUser, imagesStream: MyImage.imagesStream()),
+                ImageStreamView(user: currentUser, imagesStream: MyImage.imagesStream()),
               ]
             ),
           ));
