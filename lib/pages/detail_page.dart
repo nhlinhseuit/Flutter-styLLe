@@ -229,11 +229,13 @@ class _DetailPageState extends State<DetailPage> {
                                     height: 30,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
-                                      child: CachedNetworkImage(
-                                        imageUrl: imageUrl,
-                                        placeholder: (context, url) => const CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                                        fit: BoxFit.cover,  
+                                      child: InteractiveViewer(
+                                        child: CachedNetworkImage(
+                                          imageUrl: imageUrl,
+                                          placeholder: (context, url) => const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          fit: BoxFit.cover,  
+                                        ),
                                       ),
                                     ),
                                   ),

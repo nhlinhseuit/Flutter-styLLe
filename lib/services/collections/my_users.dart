@@ -95,7 +95,7 @@ class MyUser {
       .update({
         'favorites': favorites.isNotEmpty ? favorites : []
       })
-      .catchError((error) => print("Failed to add fav image: $error"));
+      .catchError((error) => print("Failed to remove fav image: $error"));
   }
 
   Future<void> handleFavorite(MyImage image) async {
