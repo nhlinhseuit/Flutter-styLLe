@@ -10,7 +10,7 @@ class MyUser {
   final String lastName;
   final String email;
   final String profileImage;
-  final List<String> favorites;
+  List<String> favorites;
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
@@ -71,16 +71,17 @@ class MyUser {
         'likes': image.likes,
       });
     favorites.add(image.id);
+    // image.isFavorite = false;
     await FirebaseFirestore.instance.collection('users')
       .doc(uid)
       .update({
-        'favorites': favorites.map((imageID) => imageID)
+        'favorites': favorites.isNotEmpty ? favorites : []
       })
       .catchError((error) => print("Failed to add fav image: $error"));
   }
   
   Future<void> removeFavoriteImage(MyImage image) async {
-    if (!image.isUserFavorite(this)) return;
+    if (!image.isUserFavorite(this) || image.likes == 0) return;
     image.likes--;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)
@@ -88,26 +89,29 @@ class MyUser {
         'likes': image.likes,
       });
     favorites.remove(image.id);
+    // image.isFavorite = false;
     await FirebaseFirestore.instance.collection('users')
       .doc(uid)
       .update({
-        'favorites': favorites.map((imageID) => imageID)
+        'favorites': favorites.isNotEmpty ? favorites : []
       })
-      .catchError((error) => print("Failed to add fav image: $error"));
+      .catchError((error) => print("Failed to remove fav image: $error"));
   }
 
   Future<void> handleFavorite(MyImage image) async {
     if (image.isUserFavorite(this)) {
       await removeFavoriteImage(image);
       favorites.remove(image.id);
+      print(1);
     } else {
       await addFavoriteImage(image);
+      print(2);
       favorites.add(image.id);
     }
   }
 
   Stream<List<MyImage>> favoriteImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites)
+  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Stream<List<MyImage>> userImagesStream() => 

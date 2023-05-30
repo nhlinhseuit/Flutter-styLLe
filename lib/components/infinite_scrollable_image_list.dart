@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import 'package:stylle/services/collections/my_images.dart';
 import 'package:stylle/services/collections/my_users.dart';
+import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../constants/routes.dart';
 
@@ -90,66 +92,76 @@ class _InfiniteScrollableImageListState extends State<InfiniteScrollableImageLis
   @override
   Widget build(BuildContext context) {
     var numberOfimages = images.length;
-    return MasonryGridView.builder(
-      itemCount: numberOfimages,
-      gridDelegate:
-          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemBuilder: (context, index) {
-        return Padding(
-            padding: const EdgeInsets.only(
-                top: 0, left: 8, right: 8, bottom: 20),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(detailPageRout, arguments: images[index]);
-                    },
-                    child: CachedNetworkImage(
-                      imageUrl: images[index].imagePath,
-                      progressIndicatorBuilder: (context, url, downloadProgress) => 
-                              CircularProgressIndicator(value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                    ),  
+    return Consumer<CurrentUser>(
+      builder: (context, currentUser, child) {
+        if (currentUser.user == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return MasonryGridView.builder(
+        itemCount: numberOfimages,
+        gridDelegate:
+            const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (context, index) {
+          return Padding(
+              padding: const EdgeInsets.only(
+                  top: 0, left: 8, right: 8, bottom: 20),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(detailPageRout, arguments: images[index]);
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: images[index].imagePath,
+                        progressIndicatorBuilder: (context, url, downloadProgress) => 
+                                CircularProgressIndicator(value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),  
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0, left: 14),
-                      child: Text(                                
-                        images[index].userName,
-                        style: const TextStyle(
-                          color: Colors.black38,
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, left: 14),
+                        child: Text(                                
+                          images[index].userName,
+                          style: const TextStyle(
+                            color: Colors.black38,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 8, left: 45),
+                        child: IconButton(
+                          icon: isUserFavorite[index] 
+                            ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
+                            : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary,),
+                          onPressed: () async { 
+                            await currentUser.user.handleFavorite(images[index]);
+                            context.watch<CurrentUser>().userFavorites = currentUser.user.favorites;
+                            setState(() {
+                              isUserFavorite[index] = images[index].isUserFavorite(widget.currentUser);
+                            });
+                          },
                       ),
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8, left: 45),
-                      child: IconButton(
-                        icon: isUserFavorite[index] 
-                          ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
-                          : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary,),
-                        onPressed: () async { 
-                          await widget.currentUser.handleFavorite(images[index]);
-                          setState(() {
-                            isUserFavorite[index] = images[index].isUserFavorite(widget.currentUser);
-                          });
-                        },
-                    ),
-                  ),
-                ],
-              )
-            ],
-          )
-        );
-      }
+                  ],
+                )
+              ],
+            )
+          );
+        }
+      );
+      },
     );      
   }
 }
