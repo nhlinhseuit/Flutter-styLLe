@@ -55,6 +55,11 @@ class _DetailPageState extends State<DetailPage> {
             : 'https://picsum.photos/300/600?image=${index + 18}');
     return Consumer<CurrentUser>(
       builder: (context, currentUser, child) {
+        if (currentUser.user == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         return SafeArea(
           child: Scaffold(
               floatingActionButton: Container(
@@ -115,7 +120,7 @@ class _DetailPageState extends State<DetailPage> {
                             icon: args.isFavorite ? firstIcon : secondIcon,
                             onPressed: () {
                               currentUser.user.handleFavorite(args);
-                              Provider.of<CurrentUser>(context, listen: false).userFavorites = currentUser.user.favorites;
+                              Provider.of<CurrentUser>(context, listen: false).userFavorites = currentUser.user!.favorites;
                               setState(() {
                                 args.isFavorite = args.isFavorite;
                               });

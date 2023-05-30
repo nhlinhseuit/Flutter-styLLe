@@ -83,179 +83,188 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        elevation: 0,
+    return RefreshIndicator(
+      onRefresh: () async { 
+        setState(() {
+          _imageFile = null;
+          _imageDescriptionController.text = "";
+          _imageTagsController.text = "";
+        });
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(24),
-        child: ListView(
-          padding: const EdgeInsets.only(top: 0),
-          children: <Widget>[
-            if (_imageFile == null) Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 32,
-                ),
-                Text(
-                  "Upload image",
-                  style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 24.00,
-                    )
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => _pickImage(ImageSource.camera),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25), // <-- Radius
-                            ),
-                            minimumSize: Size(MediaQuery.of(context).size.width / 2.6, 120),
-                          ),
-                          child: const Icon(Icons.camera_alt_outlined),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        const Text('Camera'),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => _pickImage(ImageSource.gallery),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25), // <-- Radius
-                            ),
-                            minimumSize: Size(MediaQuery.of(context).size.width / 2.6, 120),
-                          ),
-                          child: const Icon(Icons.image_search),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        const Text('Gallery'),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ) else ...[
-              Image.file(_imageFile!),
-      
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.black,
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(24),
+          child: ListView(
+            padding: const EdgeInsets.only(top: 0),
+            children: <Widget>[
+              if (_imageFile == null) Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed: _cropImage,
-                    child: const Icon(Icons.crop),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Text(
+                    "Upload image",
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 24.00,
+                      )
+                    ),
                   ),
                   const SizedBox(
-                    width: 24,
+                    height: 40,
                   ),
-                  ElevatedButton(
-                    onPressed: _clear,
-                    child: const Icon(Icons.refresh),
-                  )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _pickImage(ImageSource.camera),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25), // <-- Radius
+                              ),
+                              minimumSize: Size(MediaQuery.of(context).size.width / 2.6, 120),
+                            ),
+                            child: const Icon(Icons.camera_alt_outlined),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          const Text('Camera'),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _pickImage(ImageSource.gallery),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25), // <-- Radius
+                              ),
+                              minimumSize: Size(MediaQuery.of(context).size.width / 2.6, 120),
+                            ),
+                            child: const Icon(Icons.image_search),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          const Text('Gallery'),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
-              ),
-      
-              Container(
-                padding: const EdgeInsets.only(top: 8,),
-                child: TextField(
-                  controller: _imageDescriptionController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 10,
+              ) else ...[
+                Image.file(_imageFile!),
+        
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _cropImage,
+                      child: const Icon(Icons.crop),
+                    ),
+                    const SizedBox(
+                      width: 24,
+                    ),
+                    ElevatedButton(
+                      onPressed: _clear,
+                      child: const Icon(Icons.refresh),
+                    )
+                  ],
+                ),
+        
+                Container(
+                  padding: const EdgeInsets.only(top: 8,),
+                  child: TextField(
+                    controller: _imageDescriptionController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 10,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Description (optional)',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextField(
+                  controller: _imageTagsController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Description (optional)',
+                    hintText: 'jeans, vintage (optional)',
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextField(
-                controller: _imageTagsController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'jeans, vintage (optional)',
+                const SizedBox(
+                  height: 12,
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Uploader(
-                file: _imageFile, 
-                description: _imageDescriptionText,
-                tags: _imageTagsText.split(',').map((tag) => tag.trim()).toList(),
-              )
+                Uploader(
+                  file: _imageFile, 
+                  description: _imageDescriptionText,
+                  tags: _imageTagsText.split(',').map((tag) => tag.trim()).toList(),
+                )
+              ]
             ]
-          ]
-        )
+          )
+        ),
+    
+        //// FAB VERSION //////
+    
+        // floatingActionButton: Column(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget>[
+        //     AnimatedSwitcher(
+        //       duration: const Duration(milliseconds: 360),
+        //       child: _showFabMenu
+        //           ? Column(
+        //               // crossAxisAlignment: CrossAxisAlignment.end,
+        //               children: <Widget>[
+        //                 FloatingActionButton(
+        //                   heroTag: 'camera',
+        //                   onPressed: () => _pickImage(ImageSource.camera),
+        //                   tooltip: 'Camera',
+        //                   child: const Icon(Icons.camera_alt_outlined),
+        //                 ),
+        //                 const SizedBox(height: 16),
+        //                 FloatingActionButton(
+        //                   heroTag: 'gallery',
+        //                   onPressed: () => _pickImage(ImageSource.gallery),
+        //                   tooltip: 'Gallery',
+        //                   child: const Icon(Icons.image_search),
+        //                 ),
+        //                 const SizedBox(height: 16),
+        //               ],
+        //             )
+        //           : const SizedBox.shrink(),
+        //     ),
+        //     FloatingActionButton(
+        //       onPressed: () {
+        //         setState(() {
+        //           _showFabMenu = !_showFabMenu;
+        //         });
+        //       },
+        //       tooltip: 'Show menu',
+        //       child: Icon(_showFabMenu ? Icons.close : Icons.publish),
+        //     ),
+        //     if (_imageFile != null)
+        //       Uploader(file: _imageFile),
+        //   ]
+        // ),
+        
       ),
-
-      //// FAB VERSION //////
-
-      // floatingActionButton: Column(
-      //   mainAxisAlignment: MainAxisAlignment.end,
-      //   children: <Widget>[
-      //     AnimatedSwitcher(
-      //       duration: const Duration(milliseconds: 360),
-      //       child: _showFabMenu
-      //           ? Column(
-      //               // crossAxisAlignment: CrossAxisAlignment.end,
-      //               children: <Widget>[
-      //                 FloatingActionButton(
-      //                   heroTag: 'camera',
-      //                   onPressed: () => _pickImage(ImageSource.camera),
-      //                   tooltip: 'Camera',
-      //                   child: const Icon(Icons.camera_alt_outlined),
-      //                 ),
-      //                 const SizedBox(height: 16),
-      //                 FloatingActionButton(
-      //                   heroTag: 'gallery',
-      //                   onPressed: () => _pickImage(ImageSource.gallery),
-      //                   tooltip: 'Gallery',
-      //                   child: const Icon(Icons.image_search),
-      //                 ),
-      //                 const SizedBox(height: 16),
-      //               ],
-      //             )
-      //           : const SizedBox.shrink(),
-      //     ),
-      //     FloatingActionButton(
-      //       onPressed: () {
-      //         setState(() {
-      //           _showFabMenu = !_showFabMenu;
-      //         });
-      //       },
-      //       tooltip: 'Show menu',
-      //       child: Icon(_showFabMenu ? Icons.close : Icons.publish),
-      //     ),
-      //     if (_imageFile != null)
-      //       Uploader(file: _imageFile),
-      //   ]
-      // ),
-      
     );
   }
 }

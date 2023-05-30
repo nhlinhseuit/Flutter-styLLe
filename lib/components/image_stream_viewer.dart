@@ -35,6 +35,11 @@ class _ImageStreamViewState extends State<ImageStreamView> {
   Widget build(BuildContext context) {
     return Consumer<CurrentUser> (
       builder: (context, currentUser, child) {
+        if (currentUser.user == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         return StreamBuilder(
         stream: widget.imagesStream,
         builder:(context, snapshot) {

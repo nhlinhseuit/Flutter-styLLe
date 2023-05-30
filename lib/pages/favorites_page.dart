@@ -18,31 +18,40 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              title: Text(
-                'Favorites',
-                style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 24.00,
-                  )
-                ),
-              ),
-              floating: true,
-              backgroundColor: Colors.transparent,
-              forceElevated: innerBoxIsScrolled,
-            ),
-          ];
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+        });
+      },
+      notificationPredicate: (ScrollNotification notification) {
+          return notification.depth == 1;
         },
-        body: ImageStreamView(
-          user: Provider.of<CurrentUser>(context, listen: false).user, 
-          imagesStream: Provider.of<CurrentUser>(context, listen: false).user.favoriteImagesStream()
-        ),
-      )
+      child: Scaffold (
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                title: Text(
+                  "Favorites",
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 24.00,
+                    )
+                  ),
+                ),
+                floating: true,
+                backgroundColor: Colors.transparent,
+                forceElevated: innerBoxIsScrolled,
+              ),
+            ];
+          },
+          body: ImageStreamView(
+            user: Provider.of<CurrentUser>(context, listen: false).user, 
+            imagesStream: Provider.of<CurrentUser>(context, listen: false).user.favoriteImagesStream()
+          ),
+        )
+      ),
     );
   }
 }
