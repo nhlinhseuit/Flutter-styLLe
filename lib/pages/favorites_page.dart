@@ -25,7 +25,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       },
       notificationPredicate: (ScrollNotification notification) {
           return notification.depth == 1;
-        },
+      },
       child: Scaffold (
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stylle/components/popup_dialog.dart';
+import 'package:stylle/services/collections/my_users.dart';
+import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
@@ -187,6 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                             final user = AuthService.firebase().currentUser;
                             if (user != null) {
+                              Provider.of<CurrentUser>(context, listen: false).user = (await MyUser.getCurrentUser())!;
                               final emailVerified = user.isEmailVerified;
                               if (!mounted) return;
                               if (emailVerified) {

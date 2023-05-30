@@ -120,7 +120,7 @@ class _DetailPageState extends State<DetailPage> {
                             icon: args.isFavorite ? firstIcon : secondIcon,
                             onPressed: () {
                               currentUser.user.handleFavorite(args);
-                              Provider.of<CurrentUser>(context, listen: false).userFavorites = currentUser.user!.favorites;
+                              Provider.of<CurrentUser>(context, listen: false).userFavorites = currentUser.user.favorites;
                               setState(() {
                                 args.isFavorite = args.isFavorite;
                               });

@@ -51,8 +51,16 @@ class _ImageStreamViewState extends State<ImageStreamView> {
               precacheImage(NetworkImage(image.imagePath), context);
             }
             if (numberOfImages == 0) {
-              return const Center(
-                child: Text("You haven't liked any images! :("),
+              return const SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 80),
+                      Center(
+                        child: Text("No image found!"),
+                      ),
+                    ],
+                  ),
               );
             }
             return MasonryGridView.builder(
