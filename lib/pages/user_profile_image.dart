@@ -110,9 +110,11 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          automaticallyImplyLeading: false
         ),
         body: Container(
+          color: Colors.white,
           padding: const EdgeInsets.all(24),
           child: ListView(
             padding: const EdgeInsets.only(top: 0),
@@ -123,14 +125,30 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
                   const SizedBox(
                     height: 32,
                   ),
-                  Text(
-                    "Change profile image",
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24.00,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Change profile pic",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 24.00,
+                          )
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }, 
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            fontSize: 16
+                          ),
+                        )
                       )
-                    ),
+                    ],
                   ),
                   const SizedBox(
                     height: 40,
