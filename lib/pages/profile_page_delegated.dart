@@ -13,11 +13,6 @@ class ProfilePageDelegated extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CurrentUser>(
       builder: (context, currentUser, child) {
-        if (currentUser.user == null) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
         return Scaffold(
         appBar: AppBar(
             shadowColor: const Color.fromARGB(250, 250, 250, 255),
@@ -43,6 +38,9 @@ class ProfilePageDelegated extends StatelessWidget {
               Text(
                 currentUser.user.getName
               ),
+              ElevatedButton(onPressed: () {
+                Navigator.of(context).pushNamed(userProfileUploadRoute);
+              }, child: const Text("Change profile pic")),
               TextButton(
                   onPressed: () async {
                     final confirmLogout = await showLogOutDialog(context);
