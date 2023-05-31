@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stylle/services/auth/auth_service.dart';
-import 'package:stylle/utilities/popup_dialog.dart';
+import 'package:stylle/components/popup_dialog.dart';
 
 import '../services/auth/auth_exceptions.dart';
 
