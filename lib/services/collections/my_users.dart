@@ -101,12 +101,9 @@ class MyUser {
   Future<void> handleFavorite(MyImage image) async {
     if (image.isUserFavorite(this)) {
       await removeFavoriteImage(image);
-      print(1);
     } else {
       await addFavoriteImage(image);
-      print(2);
     }
-    print(favorites);
   }
 
   Stream<List<MyImage>> favoriteImagesStream() => 
