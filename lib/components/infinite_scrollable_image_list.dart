@@ -94,6 +94,11 @@ class _InfiniteScrollableImageListState extends State<InfiniteScrollableImageLis
     var numberOfimages = images.length;
     return Consumer<CurrentUser>(
       builder: (context, currentUser, child) {
+        if (currentUser.user == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         return MasonryGridView.builder(
         itemCount: numberOfimages,
         gridDelegate:
