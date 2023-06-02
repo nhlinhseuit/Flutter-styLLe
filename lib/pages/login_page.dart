@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
           width: (MediaQuery.of(context).size.width),
         ),
         Scaffold ( 
-          resizeToAvoidBottomInset: false,
+          // resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
@@ -79,177 +79,182 @@ class _LoginPageState extends State<LoginPage> {
             foregroundColor: Colors.black,
             // title: const Text("Login"),
           ),
-          body: Container(
-            margin: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Log into \nyour account",
-                  style: GoogleFonts.abhayaLibre(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 36.00,
-                      fontWeight: FontWeight.w900)
-                  ),
-                ),
-                Column(
+          body: ListView (
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height - 160,
+                margin: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your email',
-                        hintStyle: GoogleFonts.abhayaLibre(),
-                        prefixIcon: const Icon(Icons.email_outlined),
+                    Text(
+                      "Log into \nyour account",
+                      style: GoogleFonts.abhayaLibre(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 36.00,
+                          fontWeight: FontWeight.w900)
                       ),
                     ),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        hintStyle: GoogleFonts.abhayaLibre(),
-                        prefixIcon: const Icon(Icons.lock_outline),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
+                        TextField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your email',
+                            hintStyle: GoogleFonts.abhayaLibre(),
+                            prefixIcon: const Icon(Icons.email_outlined),
+                          ),
+                        ),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your password',
+                            hintStyle: GoogleFonts.abhayaLibre(),
+                            prefixIcon: const Icon(Icons.lock_outline),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Checkbox(
-                              checkColor: Theme.of(context).colorScheme.primary,
-                              value: _isCheckedRememberMe, 
-                              onChanged: (value) {
-                                setState(() {
-                                  _isCheckedRememberMe = value ?? false;
-                                });
-                              }, 
+                            Row(
+                              children: [
+                                Checkbox(
+                                  checkColor: Theme.of(context).colorScheme.primary,
+                                  value: _isCheckedRememberMe, 
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _isCheckedRememberMe = value ?? false;
+                                    });
+                                  }, 
+                                ),
+                                Text(
+                                  "Remember me",
+                                  style: GoogleFonts.abhayaLibre(),
+                                )
+                              ],
                             ),
-                            Text(
-                              "Remember me",
-                              style: GoogleFonts.abhayaLibre(),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(forgotPasswordRoute);
+                              }, 
+                              child: Text(
+                                "Forgot password?",
+                                style: GoogleFonts.abhayaLibre(
+                                  fontSize: 16,
+                                  color: const Color.fromARGB(255, 100, 100, 100)
+                                ),
+                              )
                             )
                           ],
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(forgotPasswordRoute);
-                          }, 
-                          child: Text(
-                            "Forgot password?",
-                            style: GoogleFonts.abhayaLibre(
-                              fontSize: 16,
-                              color: const Color.fromARGB(255, 100, 100, 100)
-                            ),
-                          )
-                        )
                       ],
                     ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: ElevatedButton(
-                  // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25), // <-- Radius
-                          ),
-                          backgroundColor: Colors.black,
-                          minimumSize: const Size.fromHeight(50),
-                        ),
-                        child: Text(
-                          'Log in',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 16.00,
-                            )
-                          ),
-                        ),
-                        onPressed: () async {
-                          final emailText = _emailController.text.trim();
-                          final passwordText = _passwordController.text.trim();
-                          try {
-                            _handleRemeberme();
-                            await AuthService.firebase().login(
-                              email: emailText, 
-                              password: passwordText
-                            );
-                            final user = AuthService.firebase().currentUser;
-                            if (user != null) {
-                              Provider.of<CurrentUser>(context, listen: false).user = (await MyUser.getCurrentUser())!;
-                              final emailVerified = user.isEmailVerified;
-                              if (!mounted) return;
-                              if (emailVerified) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
-                              } else {              
-                                Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route) => false);
+                    Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: ElevatedButton(
+                      // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25), // <-- Radius
+                              ),
+                              backgroundColor: Colors.black,
+                              minimumSize: const Size.fromHeight(50),
+                            ),
+                            child: Text(
+                              'Log in',
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 16.00,
+                                )
+                              ),
+                            ),
+                            onPressed: () async {
+                              final emailText = _emailController.text.trim();
+                              final passwordText = _passwordController.text.trim();
+                              try {
+                                _handleRemeberme();
+                                await AuthService.firebase().login(
+                                  email: emailText, 
+                                  password: passwordText
+                                );
+                                final user = AuthService.firebase().currentUser;
+                                if (user != null) {
+                                  Provider.of<CurrentUser>(context, listen: false).user = (await MyUser.getCurrentUser())!;
+                                  final emailVerified = user.isEmailVerified;
+                                  if (!mounted) return;
+                                  if (emailVerified) {
+                                    Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+                                  } else {              
+                                    Navigator.of(context).pushNamedAndRemoveUntil(verifyRoute, (route) => false);
+                                  }
+                                }         
+                              } on UserNotFoundAuthException {
+                                await showMessageDialog(context, 'This email has not been registered.');
+                              } on InvalidEmailAuthException {
+                                await showMessageDialog(context, 'Invalid email.');
+                              } on WrongPasswordAuthException {
+                                await showMessageDialog(context, 'Wrong password.');
+                              } on GenericAuthException {
+                                await showMessageDialog(context, 'Authentication Error.');
                               }
-                            }         
-                          } on UserNotFoundAuthException {
-                            await showMessageDialog(context, 'This email has not been registered.');
-                          } on InvalidEmailAuthException {
-                            await showMessageDialog(context, 'Invalid email.');
-                          } on WrongPasswordAuthException {
-                            await showMessageDialog(context, 'Wrong password.');
-                          } on GenericAuthException {
-                            await showMessageDialog(context, 'Authentication Error.');
-                          }
-                          catch (e) {
-                            await showMessageDialog(context, 'Error: ${e.toString()}');
-                          }
-                        }
-                      )
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    ElevatedButton.icon(
-                  // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25), // <-- Radius
+                              catch (e) {
+                                await showMessageDialog(context, 'Error: ${e.toString()}');
+                              }
+                            }
+                          )
                         ),
-                        minimumSize: const Size.fromHeight(50),
-                      ),
-                      label: Text(
-                        'Log in with Facebook',
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        ElevatedButton.icon(
+                      // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25), // <-- Radius
+                            ),
+                            minimumSize: const Size.fromHeight(50),
+                          ),
+                          label: Text(
+                            'Log in with Facebook',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          onPressed: () {
+                            showMessageDialog(context, 'Log in with Facebook succ essfully.');
+                          }, 
+                          icon: const Icon(
+                            Icons.facebook,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    TextButton(
+                      child: Text(
+                        "New to this app? Sign up.",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onPressed: () {
-                        showMessageDialog(context, 'Log in with Facebook succ essfully.');
+                        Navigator.of(context).popAndPushNamed(registerRoute);
                       }, 
-                      icon: const Icon(
-                        Icons.facebook,
-                        color: Colors.black,
-                      ),
                     ),
                   ],
-                ),
-                TextButton(
-                  child: Text(
-                    "New to this app? Sign up.",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).popAndPushNamed(registerRoute);
-                  }, 
-                ),
-              ],
-            )
+                )
+              ),
+            ]
           ),
         ),
       ]

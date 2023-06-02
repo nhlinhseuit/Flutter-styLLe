@@ -12,6 +12,7 @@ import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
 import 'package:stylle/pages/upload_image_page.dart';
+import 'package:stylle/pages/user_profile_image.dart';
 import 'package:stylle/pages/verify_page.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_users.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
             detailPageRout: (context) => const DetailPage(),
             detailDemoRout: (context) => const DetailDemo(),
             imageCaptureRoute: (context) => const ImageCapture(),
+            userProfileUploadRoute: (context) => const UserProfileUpload(),
           },
           theme: ThemeData(
             // brightness: Brightness.dark,
