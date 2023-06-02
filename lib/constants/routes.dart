@@ -7,5 +7,5 @@ const forgotPasswordRoute = '/forgotPassword/';
 const detailPageRout = '/detail/';
 const detailDemoRout = '/detaildemo/';
 const favoritesRout = '/favorites/';
+
 const imageCaptureRoute = '/imageCapture/';
-const userProfileUploadRoute = '/profile_upload/';
