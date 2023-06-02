@@ -69,12 +69,12 @@ class MyImage {
   }
 
   static Stream<List<MyImage>> imagesStream() => 
-    FirebaseFirestore.instance.collection('images').orderBy('upload_time', descending: true)
+    FirebaseFirestore.instance.collection('images').where('deleted', isEqualTo: false).orderBy('upload_time', descending: true)
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
 
   static Stream<List<MyImage>> imagesTagsStream(List<String> tags) => 
-    FirebaseFirestore.instance.collection('images').where('tags', arrayContainsAny: tags)
+    FirebaseFirestore.instance.collection('images').where('tags', arrayContainsAny: tags).where('deleted', isEqualTo: false)
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   static Stream<List<MyImage>> searchImages(String searchInput) {
@@ -87,7 +87,7 @@ class MyImage {
 
   static void readImagesStream(StreamController<List<MyImage>> imagesStreamController) {
     final imagesSnapshot = FirebaseFirestore.instance
-      .collection('images')
+      .collection('images').where('deleted', isEqualTo: false)
       .orderBy('upload_time', descending: true)
       .snapshots();
     imagesSnapshot.listen((querySnapshot) async { 
@@ -102,6 +102,7 @@ class MyImage {
   static void readUserFavoritesStream(StreamController<List<MyImage>> imagesStreamController, MyUser user) {
     final imagesSnapshot = FirebaseFirestore.instance
       .collection('images')
+      .where('deleted', isEqualTo: false)
       .where('id', whereIn: user.favorites)
       .snapshots();
     imagesSnapshot.listen((querySnapshot) async { 
@@ -111,6 +112,15 @@ class MyImage {
       }
       imagesStreamController.add(imageList);
     });
+  }
+
+  Future<void> delete() async {
+    await FirebaseFirestore.instance.collection('images')
+      .doc(id)
+      .update({
+        'deleted': true,
+      })
+      .onError((error, stackTrace) => print(error.toString()));
   }
 
   bool isUserFavorite(MyUser user) {

@@ -101,12 +101,8 @@ class MyUser {
   Future<void> handleFavorite(MyImage image) async {
     if (image.isUserFavorite(this)) {
       await removeFavoriteImage(image);
-      favorites.remove(image.id);
-      print(1);
     } else {
       await addFavoriteImage(image);
-      print(2);
-      favorites.add(image.id);
     }
   }
 
