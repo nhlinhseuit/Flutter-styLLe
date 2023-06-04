@@ -219,7 +219,7 @@ class _DetailPageState extends State<DetailPage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(26),
                                     child: CachedNetworkImage(
-                                      imageUrl: imageUrl,
+                                      imageUrl: args.userProfilePic,
                                       placeholder: (context, url) =>
                                           const CircularProgressIndicator(),
                                       errorWidget: (context, url, error) =>
@@ -242,35 +242,33 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
-                          child: const Expanded (
-                            child: EllipsisText(
-                              // args.description,
-                              maxLines: 4, 
-                              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                            ),
+                          margin: const EdgeInsets.only(
+                              left: 28, right: 20, top: 8, bottom: 8),
+                          child: Row(
+                            children: [
+                              EllipsisText(
+                                maxLines: 4,
+                                text: args.description,
+                              ),
+                            ],
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 20, bottom: 20),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.tag,
-                                      color: Colors.black,
-                                      size: 22,
-                                    ),
-                                    Text(
-                                      args.tags.join(", "),
-                                    ),
-                                  ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.tag,
+                                  color: Colors.black,
+                                  size: 22,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  args.tags.join(", "),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

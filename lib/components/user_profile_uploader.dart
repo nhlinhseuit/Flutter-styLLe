@@ -10,7 +10,8 @@ class UserProfileUploader extends StatefulWidget {
   final File? file;
   final String? description;
   final List<String>? tags;
-  const UserProfileUploader({super.key, this.file, this.description, this.tags});
+  const UserProfileUploader(
+      {super.key, this.file, this.description, this.tags});
 
   @override
   State<UserProfileUploader> createState() => _UserProfileUploaderState();
@@ -30,12 +31,29 @@ class _UserProfileUploaderState extends State<UserProfileUploader> {
       _uploadTask = ref.putFile(widget.file!);
     });
     _uploadTask?.whenComplete(() async {
-      await FirebaseFirestore.instance.collection('users')
-      .doc(user.uid)
-      .update({
-        'profile_image': await ref.getDownloadURL()
-      })
-      .catchError((error) => showMessageDialog(context, "Failed to upload profile image: $error"));
+      final imagePath = await ref.getDownloadURL();
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({'profile_image': imagePath}).catchError(
+              (error) => showMessageDialog(
+                  context, "Failed to upload profile image: $error"));
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('images')
+          .where('user_info.id', isEqualTo: user.uid)
+          .get();
+
+      querySnapshot.docs.forEach((DocumentSnapshot doc) async {
+        DocumentReference documentRef = doc.reference;
+        print(documentRef);
+        try {
+          await documentRef.update({
+            'user_info.profile': imagePath, 
+          });
+          print('Document successfully updated!');
+        } catch (error) {
+          print('Error updating document: $error');
+        }
+      });
     });
   }
 
@@ -47,9 +65,8 @@ class _UserProfileUploaderState extends State<UserProfileUploader> {
         builder: (context, snapshot) {
           var event = snapshot.data;
 
-          double progressPercent = event != null 
-            ? event.bytesTransferred / event.totalBytes
-            : 0;
+          double progressPercent =
+              event != null ? event.bytesTransferred / event.totalBytes : 0;
 
           return Column(
             children: [
@@ -58,22 +75,16 @@ class _UserProfileUploaderState extends State<UserProfileUploader> {
               },
               if (event?.state == TaskState.paused)
                 ElevatedButton(
-                  onPressed: _uploadTask?.resume, 
-                  child: const Icon(Icons.play_arrow)
-                ),
+                    onPressed: _uploadTask?.resume,
+                    child: const Icon(Icons.play_arrow)),
               if (event?.state == TaskState.running)
                 ElevatedButton(
-                  onPressed: _uploadTask?.pause, 
-                  child: const Icon(Icons.pause)
-                ),
-
+                    onPressed: _uploadTask?.pause,
+                    child: const Icon(Icons.pause)),
               LinearProgressIndicator(
-                value: progressPercent,  
+                value: progressPercent,
               ),
-
-              Text(
-                '${(progressPercent*100).toStringAsFixed(2)}%'
-              ),
+              Text('${(progressPercent * 100).toStringAsFixed(2)}%'),
             ],
           );
         },
@@ -81,10 +92,9 @@ class _UserProfileUploaderState extends State<UserProfileUploader> {
     } else {
       // allow user to start the upload if uploadtask is null
       return ElevatedButton.icon(
-        onPressed:_startUpload,
-        icon: const Icon(Icons.cloud_upload_outlined), 
-        label: const Text('Upload')
-      );
+          onPressed: _startUpload,
+          icon: const Icon(Icons.cloud_upload_outlined),
+          label: const Text('Upload'));
     }
   }
 }
