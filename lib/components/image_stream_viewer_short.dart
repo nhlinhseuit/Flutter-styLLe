@@ -2,24 +2,21 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:stylle/services/collections/my_users.dart';
 
 import '../constants/routes.dart';
 import '../services/collections/my_images.dart';
 
-class ImageStreamView extends StatefulWidget {
-  const ImageStreamView({
+class ImageStreamViewShort extends StatefulWidget {
+  const ImageStreamViewShort({
     super.key, 
-    required this.currentUser, 
     required this.imagesStream,
   });
-  final MyUser currentUser;
   final Stream<List<MyImage>> imagesStream;
   @override
-  State<ImageStreamView> createState() => _ImageStreamViewState();
+  State<ImageStreamViewShort> createState() => _ImageStreamViewShortState();
 }
 
-class _ImageStreamViewState extends State<ImageStreamView> {
+class _ImageStreamViewShortState extends State<ImageStreamViewShort> {
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +30,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
             precacheImage(NetworkImage(image.imagePath), context);
           }
           return MasonryGridView.builder(
+            shrinkWrap: true,
             itemCount: numberOfImages,
             gridDelegate:
                 const SliverSimpleGridDelegateWithFixedCrossAxisCount(

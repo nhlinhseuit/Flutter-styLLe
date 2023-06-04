@@ -39,15 +39,32 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
       _uploadTask = ref.putFile(_imageFile!);
     });
     _uploadTask?.whenComplete(() async {
+      final imagePath = await ref.getDownloadURL();
       await FirebaseFirestore.instance.collection('users')
       .doc(user.uid)
       .update({
-        'profile_image': await ref.getDownloadURL()
+        'profile_image': imagePath
       })
       .catchError((error) async {
         await showMessageDialog(context, "Failed to upload profile image: $error");
         await _storage.ref().child(filepath).delete();
         return;
+      });
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('images')
+          .where('user_info.id', isEqualTo: user.uid)
+          .get();
+
+      querySnapshot.docs.forEach((DocumentSnapshot doc) async {
+        DocumentReference documentRef = doc.reference;
+        print(documentRef);
+        try {
+          await documentRef.update({
+            'user_info.profile': imagePath, 
+          });
+          print('Document successfully updated!');
+        } catch (error) {
+          print('Error updating document: $error');
+        }
       });
       await showMessageDialog(context, "Update successdully!", title: 'Congrats');
       Navigator.of(context).pop();
