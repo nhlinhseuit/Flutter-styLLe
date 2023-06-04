@@ -72,6 +72,10 @@ class MyImage {
     FirebaseFirestore.instance.collection('images').where('deleted', isEqualTo: false).orderBy('upload_time', descending: true)
     .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
+  static Stream<List<MyImage>> imagesPopularStream() => 
+    FirebaseFirestore.instance.collection('images').where('deleted', isEqualTo: false).orderBy('likes', descending: true)
+    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
 
   static Stream<List<MyImage>> imagesTagsStream(List<String> tags) => 
     FirebaseFirestore.instance.collection('images').where('tags', arrayContainsAny: tags).where('deleted', isEqualTo: false)
