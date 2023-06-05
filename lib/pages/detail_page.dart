@@ -257,7 +257,7 @@ class _DetailPageState extends State<DetailPage> {
                           margin: const EdgeInsets.only(left: 20, bottom: 20),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: args.tags.isEmpty ?
+                            child: args.tags.isNotEmpty ?
                             Row(
                               children: [
                                 const Icon(
@@ -299,7 +299,7 @@ class _DetailPageState extends State<DetailPage> {
                 /// RELATED PHOTOS IMGS
 
                 ImageStreamViewShort(
-                    imagesStream: MyImage.imagesTagsStream(args.tags))
+                    imagesStream: args.getRelatedImages())
               ]),
             )),
       );

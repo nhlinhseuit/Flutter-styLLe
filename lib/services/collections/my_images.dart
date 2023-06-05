@@ -60,6 +60,20 @@ class MyImage {
     return await FirebaseStorage.instance.ref().child(name).getDownloadURL();
   }
 
+  Stream<List<MyImage>> getRelatedImages() {
+    return FirebaseFirestore.instance.collection('images')
+    .where('deleted', isEqualTo: false)
+    .where(Filter.or(
+      Filter('tags', arrayContainsAny: tags),
+      Filter('user_info.id', isEqualTo: userID),
+    ))
+    .where('id', isNotEqualTo: id)
+    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList())
+    .handleError((e) {
+      print(e);
+    });
+  }
+  
   static Future<MyImage?> readImage({required String? id}) async {
     final docUser = FirebaseFirestore.instance.collection('images').doc(id);
     final snapshot = await docUser.get();
@@ -109,8 +123,8 @@ class MyImage {
         .where(Filter.or(
           Filter('tags', arrayContainsAny: searchInput.split(' ')),
           Filter.and(
-            Filter('description', isGreaterThanOrEqualTo: '$searchInput~'),
             Filter('description', isGreaterThanOrEqualTo: searchInput),
+            Filter('description', isLessThan: searchInput + 'z'),
           )
         ))
         .snapshots()
