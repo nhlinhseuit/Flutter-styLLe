@@ -61,6 +61,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
             return MasonryGridView.builder(
               shrinkWrap: true,
               itemCount: numberOfImages,
+              physics: const ScrollPhysics(),
               gridDelegate:
                   const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

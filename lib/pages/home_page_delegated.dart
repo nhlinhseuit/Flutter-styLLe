@@ -35,7 +35,9 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
         future: MyUser.getCurrentUser(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+            return const Center(
+                child:
+                    CircularProgressIndicator()); // Show a loading indicator while waiting
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -104,48 +106,48 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                       )
                     ];
                   },
-                  body: Stack(children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: [
-                          ChoiceChip(
-                            label: Text(_choiceChips[0]),
-                            selectedColor: Theme.of(context).colorScheme.primary,
-                            selected: _selectedChoiceIndex == 0,
-                            onSelected: (bool selected) {
-                              setState(() {
-                                _selectedChoiceIndex = selected ? 0 : -1;
-                              });
-                            },
+                  body: ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Row(
+                            children: [
+                              ChoiceChip(
+                                label: Text(_choiceChips[0]),
+                                selectedColor:
+                                    Theme.of(context).colorScheme.primary,
+                                selected: _selectedChoiceIndex == 0,
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    _selectedChoiceIndex = selected ? 0 : -1;
+                                  });
+                                },
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              ChoiceChip(
+                                label: Text(_choiceChips[1]),
+                                selectedColor:
+                                    Theme.of(context).colorScheme.primary,
+                                selected: _selectedChoiceIndex == 1,
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    _selectedChoiceIndex = selected ? 1 : -1;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          ChoiceChip(
-                            label: Text(_choiceChips[1]),
-                            selectedColor: Theme.of(context).colorScheme.primary,
-                            selected: _selectedChoiceIndex == 1,
-                            onSelected: (bool selected) {
-                              setState(() {
-                                _selectedChoiceIndex = selected ? 1 : -1;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 28),
-                      child: _selectedChoiceIndex == 0
-                          ? ImageStreamView(
-                              user: currentUser,
-                              imagesStream: MyImage.imagesStream())
-                          : ImageStreamView(
-                              user: currentUser,
-                              imagesStream: MyImage.imagesPopularStream()),
-                    )
-                  ]),
+                        ),
+                        _selectedChoiceIndex == 0
+                            ? ImageStreamView(
+                                user: currentUser,
+                                imagesStream: MyImage.imagesStream())
+                            : ImageStreamView(
+                                user: currentUser,
+                                imagesStream: MyImage.imagesPopularStream()),
+                      ]),
                 ));
           }
         });
