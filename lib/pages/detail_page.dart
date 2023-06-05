@@ -298,7 +298,7 @@ class _DetailPageState extends State<DetailPage> {
                 /// RELATED PHOTOS IMGS
 
                 ImageStreamViewShort(
-                    imagesStream: MyImage.imagesTagsStream(args.tags))
+                    imagesStream: args.getRelatedImages())
               ]),
             )),
       );
