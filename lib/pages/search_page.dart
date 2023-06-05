@@ -12,7 +12,6 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late final TextEditingController _searchController;
   String _searchInput ='';
-  bool _isLoading = false;
   @override
   void initState() {
     _searchController = TextEditingController();
@@ -27,11 +26,7 @@ class _SearchPageState extends State<SearchPage> {
 
    Future<void> _performSearch() async {
     setState(() {
-      _isLoading = true;
-    });
-    setState(() {
       _searchInput = _searchController.text.toLowerCase();
-      _isLoading = false;
     });
   }
 

@@ -257,7 +257,8 @@ class _DetailPageState extends State<DetailPage> {
                           margin: const EdgeInsets.only(left: 20, bottom: 20),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
+                            child: args.tags.isEmpty ?
+                            Row(
                               children: [
                                 const Icon(
                                   Icons.tag,
@@ -268,7 +269,7 @@ class _DetailPageState extends State<DetailPage> {
                                   args.tags.join(", "),
                                 ),
                               ],
-                            ),
+                            ) : const SizedBox(),
                           ),
                         ),
                       ],
