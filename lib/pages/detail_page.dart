@@ -244,32 +244,29 @@ class _DetailPageState extends State<DetailPage> {
                         Container(
                           margin: const EdgeInsets.only(
                               left: 28, right: 20, top: 8, bottom: 8),
-                          child: Row(
-                            children: [
-                              EllipsisText(
-                                maxLines: 4,
-                                text: args.description,
-                              ),
-                            ],
+                          child: EllipsisText(
+                            maxLines: 4,
+                            text: args.description,
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 20, bottom: 20),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: args.tags.isNotEmpty ?
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.tag,
-                                  color: Colors.black,
-                                  size: 22,
-                                ),
-                                Text(
-                                  args.tags.join(", "),
-                                ),
-                              ],
-                            ) : const SizedBox(),
+                            child: args.tags.isNotEmpty
+                                ? Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.tag,
+                                        color: Colors.black,
+                                        size: 22,
+                                      ),
+                                      Text(
+                                        args.tags.join(", "),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
                           ),
                         ),
                       ],
@@ -298,8 +295,7 @@ class _DetailPageState extends State<DetailPage> {
                 //////////////////////////////
                 /// RELATED PHOTOS IMGS
 
-                ImageStreamViewShort(
-                    imagesStream: args.getRelatedImages())
+                ImageStreamViewShort(imagesStream: args.getRelatedImages())
               ]),
             )),
       );
