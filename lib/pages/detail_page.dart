@@ -244,13 +244,12 @@ class _DetailPageState extends State<DetailPage> {
                         Container(
                           margin: const EdgeInsets.only(
                               left: 28, right: 20, top: 8, bottom: 8),
-                          child: Row(
-                            children: [
-                              EllipsisText(
-                                maxLines: 4,
-                                text: args.description,
-                              ),
-                            ],
+                          child: Container(
+                            alignment: Alignment.topLeft,
+                            child: EllipsisText(
+                              maxLines: 4,
+                              text: args.description,
+                            ),
                           ),
                         ),
                         Container(
@@ -297,8 +296,7 @@ class _DetailPageState extends State<DetailPage> {
                 //////////////////////////////
                 /// RELATED PHOTOS IMGS
 
-                ImageStreamViewShort(
-                    imagesStream: args.getRelatedImages())
+                ImageStreamViewShort(imagesStream: args.getRelatedImages())
               ]),
             )),
       );
