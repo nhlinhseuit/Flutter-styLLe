@@ -12,10 +12,10 @@ import '../services/collections/my_images.dart';
 class ImageStreamView extends StatefulWidget {
   const ImageStreamView({
     super.key, 
-    required this.user, 
+    this.user, 
     required this.imagesStream,
   });
-  final MyUser user;
+  final MyUser? user;
   final Stream<List<MyImage>> imagesStream;
   @override
   State<ImageStreamView> createState() => _ImageStreamViewState();

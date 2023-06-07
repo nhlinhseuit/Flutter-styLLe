@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
+import 'package:stylle/pages/change_password_page.dart';
 import 'package:stylle/pages/detail_page.dart';
 import 'package:stylle/pages/edit_info_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
@@ -11,6 +12,7 @@ import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
+import 'package:stylle/pages/search_page.dart';
 import 'package:stylle/pages/upload_image_page.dart';
 import 'package:stylle/pages/user_profile_image.dart';
 import 'package:stylle/pages/verify_page.dart';
@@ -44,8 +46,10 @@ class MyApp extends StatelessWidget {
             homeRoute: (context) => const HomePage(),
             verifyRoute: (context) => const VerifyEmailPage(),
             forgotPasswordRoute: (context) => const ForgotPasswordPage(),
+            changePasswordRoute: (context) => const ChangePasswordPage(),
             editInfoRoute: (context) => const EditInfoPage(),
             detailPageRout: (context) => const DetailPage(),
+            searchRoute:(context) => const SearchPage(),
             imageCaptureRoute: (context) => const ImageCapture(),
             userProfileUploadRoute: (context) => const UserProfileUpload(),
           },

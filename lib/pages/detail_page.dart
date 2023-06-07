@@ -256,18 +256,20 @@ class _DetailPageState extends State<DetailPage> {
                           margin: const EdgeInsets.only(left: 20, bottom: 20),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.tag,
-                                  color: Colors.black,
-                                  size: 22,
-                                ),
-                                Text(
-                                  args.tags.join(", "),
-                                ),
-                              ],
-                            ),
+                            child: args.tags.isNotEmpty
+                                ? Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.tag,
+                                        color: Colors.black,
+                                        size: 22,
+                                      ),
+                                      Text(
+                                        args.tags.join(", "),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
                           ),
                         ),
                       ],

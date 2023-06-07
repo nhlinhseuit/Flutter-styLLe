@@ -19,7 +19,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   late final TextEditingController _imageDescriptionController;
   late final TextEditingController _imageTagsController;
   String _imageDescriptionText = '';
-  String _imageTagsText = '';
+  String? _imageTagsText;
   File? _imageFile;
 
   @override
@@ -41,7 +41,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   void _updateWidgetText() {
     setState(() {
       _imageDescriptionText = _imageDescriptionController.text.trim();
-      _imageTagsText = _imageTagsController.text.trim();
+      _imageTagsText = _imageTagsController.text.isEmpty ? null : _imageTagsController.text.trim();
     });
   }
 
@@ -214,7 +214,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                 Uploader(
                   file: _imageFile, 
                   description: _imageDescriptionText,
-                  tags: _imageTagsText.split(',').map((tag) => tag.trim()).toList(),
+                  tags: _imageTagsText?.split(',').map((tag) => tag.trim()).toList(),
                 )
               ]
             ]

@@ -39,6 +39,9 @@ class ProfilePageDelegated extends StatelessWidget {
                 currentUser.user.getName
               ),
               ElevatedButton(onPressed: () {
+                Navigator.of(context).pushNamed(changePasswordRoute);
+              }, child: const Text("Change password")),
+              ElevatedButton(onPressed: () {
                 Navigator.of(context).pushNamed(userProfileUploadRoute);
               }, child: const Text("Change profile pic")),
               ElevatedButton(onPressed: () {
