@@ -41,6 +41,9 @@ class ProfilePageDelegated extends StatelessWidget {
               ElevatedButton(onPressed: () {
                 Navigator.of(context).pushNamed(userProfileUploadRoute);
               }, child: const Text("Change profile pic")),
+              ElevatedButton(onPressed: () {
+                Navigator.of(context).pushNamed(editInfoRoute);
+              }, child: const Text("Update profile")),
               TextButton(
                   onPressed: () async {
                     final confirmLogout = await showLogOutDialog(context);
