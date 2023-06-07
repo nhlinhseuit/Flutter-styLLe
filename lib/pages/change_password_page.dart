@@ -61,51 +61,87 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Change Password'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _currentPasswordController,
-                decoration:
-                    const InputDecoration(labelText: 'Current Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your current password';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _newPasswordController,
-                decoration: const InputDecoration(labelText: 'New Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a new password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters long';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _changePassword,
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Change Password'),
-              ),
-            ],
+      body: Form(
+        key: _formKey,
+        child: ListView(children: [
+          Container(
+            height: MediaQuery.of(context).size.height - 160,
+            margin: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text(
+                  "Change password",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30.00,
+                      fontWeight: FontWeight.w900),
+                ),
+                Column(
+                  children: [
+                    TextFormField(
+                      controller: _currentPasswordController,
+                      decoration:
+                          const InputDecoration(labelText: 'Current Password'),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your current password';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _newPasswordController,
+                      decoration:
+                          const InputDecoration(labelText: 'New Password'),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a new password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters long';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25), // <-- Radius
+                        ),
+                        backgroundColor: Colors.black,
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      onPressed: _isLoading ? null : _changePassword,
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Confirm'),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      child: const Text("Cancel",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.00,
+                          )),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
+        ]),
       ),
     );
   }
