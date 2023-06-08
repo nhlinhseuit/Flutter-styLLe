@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:stylle/components/circle_image.dart';
+import 'package:stylle/components/user_images_viewer.dart';
+import 'package:stylle/constants/enums.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
+import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
 import '../constants/routes.dart';
 
@@ -15,81 +18,85 @@ class ProfilePageDelegated extends StatelessWidget {
       builder: (context, currentUser, child) {
         return Scaffold(
         appBar: AppBar(
-            shadowColor: const Color.fromARGB(250, 250, 250, 255),
-            toolbarHeight: 45,
-            // elevation: 0.16,
-            elevation: 2,
-            backgroundColor: Colors.white,
-            title: Container(
-              margin: const EdgeInsets.only(left: 130),
-              child: Text(
-                'profile',
-                style: GoogleFonts.allura(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 35,
-                  fontWeight: FontWeight.w600,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          foregroundColor: Colors.black,
+          actions: [
+            PopupMenuButton<MenuAction>(
+              itemBuilder: (context) {
+                return const [
+                  PopupMenuItem<MenuAction>(
+                    value: MenuAction.logout,
+                    child: Text('Logout'),
+                  ),
+                  PopupMenuItem<MenuAction>(
+                    value: MenuAction.changePassword,
+                    child: Text('Change password'),
+                  )
+                ];
+              },
+              onSelected: (value) async {
+                switch(value) {
+                  case MenuAction.logout:
+                    final confirmLogout = await showLogOutDialog(context, content: 'Logging out?', title: 'Log out');
+                    if (confirmLogout) {
+                      await AuthService.firebase().logout();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        loginRoute, 
+                        (_) => false,
+                        );
+                    }
+                    break;
+                  case MenuAction.changePassword:
+                    Navigator.of(context).pushNamed(changePasswordRoute);
+                }
+              }
+            )
+          ],
+        ),
+        body: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 24, top: 8),
+                child: Row(
+                  children: [
+                    CircleImage(size: 128, imgUrl: currentUser.user.profileImage),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(currentUser.user.getName),
+                          Text(currentUser.user.email),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              maximumSize: const Size(200, 32),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(16), // <-- Radius
+                              ),
+                              backgroundColor: Colors.black,
+                              minimumSize: const Size(120, 32),
+                            ),
+                            child: const Text(
+                              'Edit profile',
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(editInfoRoute);
+                            }),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
-            
-          ),
-          body: Column(
-            children: [
-              Text(
-                currentUser.user.getName
-              ),
-              ElevatedButton(onPressed: () {
-                Navigator.of(context).pushNamed(changePasswordRoute);
-              }, child: const Text("Change password")),
-              ElevatedButton(onPressed: () {
-                Navigator.of(context).pushNamed(userProfileUploadRoute);
-              }, child: const Text("Change profile pic")),
-              ElevatedButton(onPressed: () {
-                Navigator.of(context).pushNamed(editInfoRoute);
-              }, child: const Text("Update profile")),
-              TextButton(
-                  onPressed: () async {
-                    final confirmLogout = await showLogOutDialog(context);
-                        if (confirmLogout) {
-                          await AuthService.firebase().logout();
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            loginRoute,
-                            (_) => false,
-                          );
-                        }
-                  },
-                  child: Text(
-                    "LOG OUT?",
-                    style: GoogleFonts.abhayaLibre(
-                        color: const Color.fromARGB(255, 100, 100, 100),
-                        fontWeight: FontWeight.w800),
-                  )),
+              const SizedBox(height: 40,),
+              const UserImagesView()
             ],
-          ));
+          ),
+        );
       }
     );
   }
-}
-
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Sign out'),
-          content: const Text('Are you sure you want to log out'),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: const Text('Cancel')),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                child: const Text('Log out')),
-          ],
-        );
-      }).then((value) => value ?? false);
 }

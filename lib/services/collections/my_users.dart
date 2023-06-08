@@ -140,11 +140,14 @@ class MyUser {
   }
 
   Stream<List<MyImage>> favoriteImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
+  FirebaseFirestore.instance.collection('images')
+  .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Stream<List<MyImage>> userImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('user_id', isEqualTo: uid)
+  FirebaseFirestore.instance.collection('images')
+  .where('user_info.id', isEqualTo: uid)
+  .orderBy('upload_time', descending: true)
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Map<String, dynamic> toJson() => {

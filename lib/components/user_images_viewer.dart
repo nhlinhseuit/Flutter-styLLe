@@ -3,25 +3,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
+import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
 import '../constants/routes.dart';
 import '../services/collections/my_images.dart';
 
-class ImageStreamView extends StatefulWidget {
-  const ImageStreamView({
-    super.key, 
-    this.user, 
-    required this.imagesStream,
-  });
-  final MyUser? user;
-  final Stream<List<MyImage>> imagesStream;
+class UserImagesView extends StatefulWidget {
+  const UserImagesView({super.key});
   @override
-  State<ImageStreamView> createState() => _ImageStreamViewState();
+  State<UserImagesView> createState() => UserImagesViewState();
 }
 
-class _ImageStreamViewState extends State<ImageStreamView> {
+class UserImagesViewState extends State<UserImagesView> {
   late final StreamController<List<MyImage>> imagesStreamController;
 
   @override
@@ -36,7 +30,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
     return Consumer<CurrentUser> (
       builder: (context, currentUser, child) {
         return StreamBuilder(
-        stream: widget.imagesStream,
+        stream: currentUser.user.userImagesStream(),
         builder:(context, snapshot) {
           if (snapshot.hasData) {
             final images = snapshot.data;
@@ -46,16 +40,24 @@ class _ImageStreamViewState extends State<ImageStreamView> {
               precacheImage(NetworkImage(image.imagePath), context);
             }
             if (numberOfImages == 0) {
-              return const SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 80),
-                      Center(
-                        child: Text("No image found!"),
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 80),
+                    const Center(
+                      child: Text("It's empty here."),
+                    ),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(imageCaptureRoute);
+                        }, 
+                        child: const Text("Upload something?")
                       ),
-                    ],
-                  ),
+                    )
+                  ],
+                ),
               );
             }
             return MasonryGridView.builder(
@@ -90,13 +92,6 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(                                
-                              images[index].userName,
-                              style: const TextStyle(
-                                color: Colors.black38,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
                             IconButton(
                               icon: images[index].isFavorite
                                 ? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary,) 
@@ -107,6 +102,15 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                   images[index].isFavorite = !images[index].isFavorite;
                                   Provider.of<CurrentUser>(context, listen: false).userFavorites = currentUser.user.favorites;
                                 });
+                              },
+                          ),
+                            IconButton(
+                              icon: Icon(Icons.delete_outline, color: Colors.red.shade300,),
+                              onPressed: () async {
+                                final confirmLogout = await showLogOutDialog(context, content: 'Delete this image?\nThis action cannot be revert.', title: 'Delete');
+                                if (confirmLogout) {
+                                  images[index].delete();
+                                }
                               },
                           ),
                         ],

@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:stylle/components/circle_image.dart';
 import 'package:stylle/components/popup_dialog.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_users.dart';
@@ -50,31 +50,19 @@ class _EditInfoPageState extends State<EditInfoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Update profile",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 36.00,
-                            fontWeight: FontWeight.w900),
+                      const Center(
+                        child: Text(
+                          "Update profile",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 36.00,
+                              fontWeight: FontWeight.w900),
+                        ),
                       ),
                       Center(
                         child: Stack(
                           children: [
-                            SizedBox(
-                              width: 80,
-                              height: 80,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: CachedNetworkImage(
-                                  imageUrl: user!.profileImage,
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                            CircleImage(size: 80, imgUrl: user!.profileImage),
                             Container(
                               width: 80,
                               height: 80,
@@ -136,8 +124,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                             await user.updateInfo(
                                 firstName: firstNameText,
                                 lastName: lastNameText);
-                            await showMessageDialog(
-                                context, "Update profile successfully.");
+                            await showMessageDialog(context, "Update profile successfully.");
                             Navigator.of(context).pop();
                           }),
                       TextButton(

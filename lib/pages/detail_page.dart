@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:stylle/components/circle_image.dart';
 import 'package:stylle/components/ellipsis_text.dart';
 import 'package:stylle/components/image_stream_viewer_short.dart';
 import 'package:http/http.dart' as http;
@@ -213,21 +214,8 @@ class _DetailPageState extends State<DetailPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  width: 52,
-                                  height: 52,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(26),
-                                    child: CachedNetworkImage(
-                                      imageUrl: args.userProfilePic,
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
+                                child: CircleImage(
+                                    size: 52, imgUrl: args.userProfilePic),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
