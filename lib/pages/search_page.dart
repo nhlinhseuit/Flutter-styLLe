@@ -4,6 +4,7 @@ import 'package:stylle/constants/colors.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
 import '../components/image_stream_viewer_short.dart';
+import '../components/images_stream_ideas.dart';
 import '../components/images_stream_popular_search.dart';
 import '../services/collections/my_users.dart';
 
@@ -17,6 +18,9 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late final TextEditingController _searchController;
   String _searchInput = '';
+
+  // DEFAULT TAGS IN SEARCH
+  List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
 
   get args => null;
   @override
@@ -40,7 +44,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: primaryBackgroundColor,
       appBar: AppBar(
@@ -54,10 +57,15 @@ class _SearchPageState extends State<SearchPage> {
           width: 600,
           child: TextField(
             controller: _searchController,
-            style: const TextStyle(color: primaryPinkColor),
+            style: const TextStyle(color: Colors.white),
             cursorColor: primaryPinkColor,
-            decoration: const InputDecoration(
-              suffixIcon: Padding(
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: primaryPinkColor, width: 2.0),
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              suffixIcon: const Padding(
                 padding: EdgeInsetsDirectional.only(end: 12.0),
                 child: Icon(
                   Icons.search,
@@ -65,15 +73,15 @@ class _SearchPageState extends State<SearchPage> {
                   size: 28,
                 ), // myIcon is a 48px-wide widget.
               ),
-              contentPadding: EdgeInsets.only(left: 20),
+              contentPadding: const EdgeInsets.only(left: 20),
               filled: true, //<-- SEE HERE
               fillColor: primaryPinkColor,
               hintText: 'Find you style...',
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
             ),
@@ -114,36 +122,36 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ),
                         ),
-                  
+
                         // LIST POPULAR IMG
-                        Container(
-                          margin: EdgeInsets.only( top: 20, bottom: 20),
-                          child: ImageStreamPopularSearch(
-                              user: currentUser,
-                              imagesPopularStream: MyImage.imagesPopularStream()),
-                        ),
-                  
+                        // Container(
+                        //   margin: EdgeInsets.only(top: 20, bottom: 20),
+                        //   child: ImageStreamPopularSearch(
+                        //       user: currentUser,
+                        //       imagesPopularStream:
+                        //           MyImage.imagesPopularStream()),
+                        // ),
+
                         // IDEAS FOR YOU
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             'IDEAS FOR YOU:',
                             style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w900,
-                                color: whiteColor,
-                              ),
+                              fontSize: 25,
+                              fontWeight: FontWeight.w900,
+                              color: whiteColor,
+                            ),
                           ),
                         ),
-                  
+
                         // LIST COLLECTION
-                        // ListView(
-                        //   shrinkWrap: true,
-                        //   scrollDirection: Axis.vertical,
-                        //   children: const [
-                        //     // Your vertical image widgets go here
-                        //   ],
-                        // ),
+                        Container(
+                          margin: EdgeInsets.only(top: 20, bottom: 20),
+                          child: ImageStreamIdeas(
+                              user: currentUser,
+                              imagesTagsStream: MyImage.imagesTagsStream(tags)),
+                        ),
                       ],
                     ),
                   );
