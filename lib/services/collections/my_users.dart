@@ -141,11 +141,13 @@ class MyUser {
 
   Stream<List<MyImage>> favoriteImagesStream() => 
   FirebaseFirestore.instance.collection('images')
+  .where('deleted', isEqualTo: false)
   .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Stream<List<MyImage>> userImagesStream() => 
   FirebaseFirestore.instance.collection('images')
+  .where('deleted', isEqualTo: false)
   .where('user_info.id', isEqualTo: uid)
   .orderBy('upload_time', descending: true)
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
