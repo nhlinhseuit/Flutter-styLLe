@@ -11,4 +11,5 @@ const favoritesRout = '/favorites/';
 const imageCaptureRoute = '/imageCapture/';
 const userProfileUploadRoute = '/profile_upload/';
 const editInfoRoute = '/edit_info/';
+const editImageRoute = '/edit_image/';
 const searchRoute = '/search/';

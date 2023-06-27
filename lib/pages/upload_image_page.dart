@@ -41,7 +41,9 @@ class _ImageCaptureState extends State<ImageCapture> {
   void _updateWidgetText() {
     setState(() {
       _imageDescriptionText = _imageDescriptionController.text.trim();
-      _imageTagsText = _imageTagsController.text.isEmpty ? null : _imageTagsController.text.trim();
+      _imageTagsText = _imageTagsController.text.isEmpty
+          ? null
+          : _imageTagsController.text.trim();
     });
   }
 
@@ -57,20 +59,18 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   Future<void> _cropImage() async {
-    CroppedFile? cropped = await  _cropper.cropImage(
-      sourcePath: _imageFile!.path,
-      uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Theme.of(context).colorScheme.primary,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        IOSUiSettings(
-          title: 'Cropper',
-        ),
-      ]
-    );
+    CroppedFile? cropped =
+        await _cropper.cropImage(sourcePath: _imageFile!.path, uiSettings: [
+      AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Theme.of(context).colorScheme.primary,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+      IOSUiSettings(
+        title: 'Cropper',
+      ),
+    ]);
 
     setState(() {
       _imageFile = cropped == null ? _imageFile : File(cropped.path);
@@ -84,7 +84,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async { 
+      onRefresh: () async {
         setState(() {
           _imageFile = null;
           _imageDescriptionController.text = "";
@@ -101,128 +101,144 @@ class _ImageCaptureState extends State<ImageCapture> {
           foregroundColor: Colors.black,
         ),
         body: Container(
-          padding: const EdgeInsets.all(24),
-          child: ListView(
-            padding: const EdgeInsets.only(top: 0),
-            children: <Widget>[
-              if (_imageFile == null) Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Text(
-                    "Upload image",
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 24.00,
-                      )
+            padding: const EdgeInsets.all(24),
+            child: ListView(
+                padding: const EdgeInsets.only(top: 0),
+                children: <Widget>[
+                  if (_imageFile == null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Text(
+                          "Upload image",
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 24.00,
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () =>
+                                      _pickImage(ImageSource.camera),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          25), // <-- Radius
+                                    ),
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width / 2.6,
+                                        120),
+                                  ),
+                                  child: const Icon(Icons.camera_alt_outlined),
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                const Text('Camera'),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () =>
+                                      _pickImage(ImageSource.gallery),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          25), // <-- Radius
+                                    ),
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width / 2.6,
+                                        120),
+                                  ),
+                                  child: const Icon(Icons.image_search),
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                const Text('Gallery'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  else ...[
+                    SizedBox(
+                      width: double.infinity,
+                      // height: 610,
+                      child: ClipRRect(
+                        child: Image.file(_imageFile!),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _pickImage(ImageSource.camera),
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25), // <-- Radius
-                              ),
-                              minimumSize: Size(MediaQuery.of(context).size.width / 2.6, 120),
-                            ),
-                            child: const Icon(Icons.camera_alt_outlined),
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          const Text('Camera'),
-                        ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _cropImage,
+                          child: const Icon(Icons.crop),
+                        ),
+                        const SizedBox(
+                          width: 24,
+                        ),
+                        ElevatedButton(
+                          onPressed: _clear,
+                          child: const Icon(Icons.refresh),
+                        )
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 8,
                       ),
-                      const SizedBox(height: 16),
-                      Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _pickImage(ImageSource.gallery),
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25), // <-- Radius
-                              ),
-                              minimumSize: Size(MediaQuery.of(context).size.width / 2.6, 120),
-                            ),
-                            child: const Icon(Icons.image_search),
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          const Text('Gallery'),
-                        ],
+                      child: TextField(
+                        controller: _imageDescriptionController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 10,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Description (optional)',
+                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ) else ...[
-                Image.file(_imageFile!),
-        
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _cropImage,
-                      child: const Icon(Icons.crop),
                     ),
                     const SizedBox(
-                      width: 24,
+                      height: 12,
                     ),
-                    ElevatedButton(
-                      onPressed: _clear,
-                      child: const Icon(Icons.refresh),
+                    TextField(
+                      controller: _imageTagsController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'jeans, vintage (optional)',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Uploader(
+                      file: _imageFile,
+                      description: _imageDescriptionText,
+                      tags: _imageTagsText
+                          ?.split(',')
+                          .map((tag) => tag.trim())
+                          .toList(),
                     )
-                  ],
-                ),
-        
-                Container(
-                  padding: const EdgeInsets.only(top: 8,),
-                  child: TextField(
-                    controller: _imageDescriptionController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Description (optional)',
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                TextField(
-                  controller: _imageTagsController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'jeans, vintage (optional)',
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Uploader(
-                  file: _imageFile, 
-                  description: _imageDescriptionText,
-                  tags: _imageTagsText?.split(',').map((tag) => tag.trim()).toList(),
-                )
-              ]
-            ]
-          )
-        ),
-    
+                  ]
+                ])),
+
         //// FAB VERSION //////
-    
+
         // floatingActionButton: Column(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
@@ -263,7 +279,6 @@ class _ImageCaptureState extends State<ImageCapture> {
         //       Uploader(file: _imageFile),
         //   ]
         // ),
-        
       ),
     );
   }

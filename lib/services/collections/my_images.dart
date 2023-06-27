@@ -12,8 +12,8 @@ class MyImage {
   final String userEmail;
   final String userID;
   final String userProfilePic;
-  final String description;
-  final List<String> tags;
+  String description;
+  List<String> tags;
   bool isFavorite;
   int likes;
   late bool deleted;
@@ -162,6 +162,15 @@ class MyImage {
       }
       imagesStreamController.add(imageList);
     });
+  }
+
+  Future<void> update() async {
+    await FirebaseFirestore.instance.collection('images')
+      .doc(id)
+      .update({
+        'description': description,
+        'tags': tags,
+      });
   }
 
   Future<void> delete() async {

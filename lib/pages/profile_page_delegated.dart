@@ -14,62 +14,24 @@ class ProfilePageDelegated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CurrentUser>(
-      builder: (context, currentUser, child) {
-        return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          foregroundColor: Colors.black,
-          actions: [
-            PopupMenuButton<MenuAction>(
-              itemBuilder: (context) {
-                return const [
-                  PopupMenuItem<MenuAction>(
-                    value: MenuAction.logout,
-                    child: Text('Logout'),
-                  ),
-                  PopupMenuItem<MenuAction>(
-                    value: MenuAction.changePassword,
-                    child: Text('Change password'),
-                  )
-                ];
-              },
-              onSelected: (value) async {
-                switch(value) {
-                  case MenuAction.logout:
-                    final confirmLogout = await showLogOutDialog(context, content: 'Logging out?', title: 'Log out');
-                    if (confirmLogout) {
-                      await AuthService.firebase().logout();
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        loginRoute, 
-                        (_) => false,
-                        );
-                    }
-                    break;
-                  case MenuAction.changePassword:
-                    Navigator.of(context).pushNamed(changePasswordRoute);
-                }
-              }
-            )
-          ],
-        ),
+    return Consumer<CurrentUser>(builder: (context, currentUser, child) {
+      return Scaffold(
         body: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 24, top: 8),
-                child: Row(
-                  children: [
-                    CircleImage(size: 128, imgUrl: currentUser.user.profileImage),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(currentUser.user.getName),
-                          Text(currentUser.user.email),
-                          ElevatedButton(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24, top: 40),
+              child: Row(
+                children: [
+                  CircleImage(size: 128, imgUrl: currentUser.user.profileImage),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(currentUser.user.getName),
+                        Text(currentUser.user.email),
+                        ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               maximumSize: const Size(200, 32),
                               shape: RoundedRectangleBorder(
@@ -85,18 +47,53 @@ class ProfilePageDelegated extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pushNamed(editInfoRoute);
                             }),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuButton<MenuAction>(
+                      icon: const Icon(Icons.menu),
+                      itemBuilder: (context) {
+                        return const [
+                          PopupMenuItem<MenuAction>(
+                            value: MenuAction.logout,
+                            child: Text('Logout'),
+                          ),
+                          PopupMenuItem<MenuAction>(
+                            value: MenuAction.changePassword,
+                            child: Text('Change password'),
+                          )
+                        ];
+                      },
+                      onSelected: (value) async {
+                        switch (value) {
+                          case MenuAction.logout:
+                            final confirmLogout = await showLogOutDialog(
+                                context,
+                                content: 'Logging out?',
+                                title: 'Log out');
+                            if (confirmLogout) {
+                              await AuthService.firebase().logout();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                loginRoute,
+                                (_) => false,
+                              );
+                            }
+                            break;
+                          case MenuAction.changePassword:
+                            Navigator.of(context)
+                                .pushNamed(changePasswordRoute);
+                        }
+                      })
+                ],
               ),
-              const SizedBox(height: 40,),
-              const UserImagesView()
-            ],
-          ),
-        );
-      }
-    );
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            const UserImagesView()
+          ],
+        ),
+      );
+    });
   }
 }

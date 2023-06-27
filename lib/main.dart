@@ -6,6 +6,7 @@ import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
 import 'package:stylle/pages/change_password_page.dart';
 import 'package:stylle/pages/detail_page.dart';
+import 'package:stylle/pages/edit_image_page.dart';
 import 'package:stylle/pages/edit_info_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
             detailPageRout: (context) => const DetailPage(),
             searchRoute:(context) => const SearchPage(),
             imageCaptureRoute: (context) => const ImageCapture(),
+            editImageRoute: (context) => const EditImagePage(),
             userProfileUploadRoute: (context) => const UserProfileUpload(),
           },
           theme: ThemeData(

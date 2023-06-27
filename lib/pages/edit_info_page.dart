@@ -62,10 +62,10 @@ class _EditInfoPageState extends State<EditInfoPage> {
                       Center(
                         child: Stack(
                           children: [
-                            CircleImage(size: 80, imgUrl: user!.profileImage),
+                            CircleImage(size: 120, imgUrl: user!.profileImage),
                             Container(
-                              width: 80,
-                              height: 80,
+                              width: 120,
+                              height: 120,
                               decoration: const BoxDecoration(
                                 color: Color.fromARGB(50, 0, 0, 0),
                                 shape: BoxShape.circle,
