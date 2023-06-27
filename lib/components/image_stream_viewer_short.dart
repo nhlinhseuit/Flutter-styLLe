@@ -64,6 +64,7 @@ class _ImageStreamViewShortState extends State<ImageStreamViewShort> {
             }
           );      
         } else if (snapshot.hasError) {
+          print(snapshot.error);
           return Text('Error: ${snapshot.error}');
         } else {
           return const Center(child: CircularProgressIndicator());

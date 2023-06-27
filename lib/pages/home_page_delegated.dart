@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
 import '../components/image_stream_viewer.dart';
@@ -99,7 +100,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                               size: 28.0,
                             ),
                             onPressed: () {
-                              // handle search action here
+                              Navigator.of(context).pushNamed(searchRoute);
                             },
                           ),
                         ],
@@ -113,7 +114,10 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                           child: Row(
                             children: [
                               ChoiceChip(
-                                label: Text(_choiceChips[0]),
+                                label: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(_choiceChips[0]),
+                                ),
                                 selectedColor:
                                     Theme.of(context).colorScheme.primary,
                                 selected: _selectedChoiceIndex == 0,
@@ -127,7 +131,10 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                                 width: 8,
                               ),
                               ChoiceChip(
-                                label: Text(_choiceChips[1]),
+                                label: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Text(_choiceChips[1]),
+                                ),
                                 selectedColor:
                                     Theme.of(context).colorScheme.primary,
                                 selected: _selectedChoiceIndex == 1,
