@@ -22,8 +22,9 @@ import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
-    statusBarColor: Color.fromARGB(255, 252, 200, 209), // màu nền của thanh trạng thái
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor:
+        Color.fromARGB(255, 252, 200, 209), // màu nền của thanh trạng thái
     statusBarIconBrightness: Brightness.dark, // màu icon trên thanh trạng thái
   ));
   runApp(const MyApp());
@@ -34,42 +35,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider<CurrentUser>.value(
       value: CurrentUser(),
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: const MainPage(),
-          routes: {
-            preLoginRoute: (context) => const PreLoginPage(),
-            loginRoute: (context) => const LoginPage(),
-            registerRoute: (context) => const RegisterPage(),
-            homeRoute: (context) => const HomePage(),
-            verifyRoute: (context) => const VerifyEmailPage(),
-            forgotPasswordRoute: (context) => const ForgotPasswordPage(),
-            changePasswordRoute: (context) => const ChangePasswordPage(),
-            editInfoRoute: (context) => const EditInfoPage(),
-            detailPageRout: (context) => const DetailPage(),
-            searchRoute:(context) => const SearchPage(),
-            imageCaptureRoute: (context) => const ImageCapture(),
-            editImageRoute: (context) => const EditImagePage(),
-            userProfileUploadRoute: (context) => const UserProfileUpload(),
-          },
-          theme: ThemeData(
-            // brightness: Brightness.dark,
-            colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: const Color.fromARGB(255, 252, 200, 209),
-              secondary: Colors.black,
-            ),
-            textTheme: TextTheme(
-              bodyMedium: GoogleFonts.poppins(
-                textStyle: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                )
-              )
-            ),
+        debugShowCheckedModeBanner: false,
+        home: const MainPage(),
+        routes: {
+          preLoginRoute: (context) => const PreLoginPage(),
+          loginRoute: (context) => const LoginPage(),
+          registerRoute: (context) => const RegisterPage(),
+          homeRoute: (context) => const HomePage(),
+          verifyRoute: (context) => const VerifyEmailPage(),
+          forgotPasswordRoute: (context) => const ForgotPasswordPage(),
+          changePasswordRoute: (context) => const ChangePasswordPage(),
+          editInfoRoute: (context) => const EditInfoPage(),
+          detailPageRout: (context) => const DetailPage(),
+          searchRoute: (context) => const SearchPage(),
+          imageCaptureRoute: (context) => const ImageCapture(),
+          editImageRoute: (context) => const EditImagePage(),
+          userProfileUploadRoute: (context) => const UserProfileUpload(),
+        },
+        theme: ThemeData(
+          // brightness: Brightness.dark,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: const Color.fromARGB(255, 252, 200, 209),
+            secondary: Colors.black,
           ),
+          textTheme: TextTheme(
+              bodyMedium: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+          ))),
+        ),
       ),
     );
   }
@@ -80,19 +78,19 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: AuthService.firebase().initialize(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            final user = AuthService.firebase().currentUser;
-            if (user != null) {
-              final emailVerified = user.isEmailVerified;
-              if (emailVerified) {
+        future: AuthService.firebase().initialize(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              final googleUser = AuthService.google().currentUser;
+              if (googleUser != null) {
+                MyUser.isGoogleAuth = true;
                 return FutureBuilder(
                   future: MyUser.getCurrentUser(),
                   builder: (context, userSnapshot) {
                     if (userSnapshot.connectionState == ConnectionState.done) {
-                      Provider.of<CurrentUser>(context,listen: false).user = userSnapshot.data!;
+                      Provider.of<CurrentUser>(context, listen: false).user =
+                          userSnapshot.data!;
                       return const HomePage();
                     } else {
                       return const Scaffold(
@@ -101,19 +99,38 @@ class MainPage extends StatelessWidget {
                     }
                   },
                 );
-              } else {
-                return const VerifyEmailPage();
               }
-            } else {
-              return const BoardingPage();
-            }
-          default:
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-        }
-      }
-    );
+              final emailUser = AuthService.firebase().currentUser;
+              if (emailUser != null) {
+                MyUser.isGoogleAuth = false;
+                final emailVerified = emailUser.isEmailVerified;
+                if (emailVerified) {
+                  return FutureBuilder(
+                    future: MyUser.getCurrentUser(),
+                    builder: (context, userSnapshot) {
+                      if (userSnapshot.connectionState ==
+                          ConnectionState.done) {
+                        Provider.of<CurrentUser>(context, listen: false).user =
+                            userSnapshot.data!;
+                        return const HomePage();
+                      } else {
+                        return const Scaffold(
+                          body: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                    },
+                  );
+                } else {
+                  return const VerifyEmailPage();
+                }
+              } else {
+                return const BoardingPage();
+              }
+            default:
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+          }
+        });
   }
-} 
-
+}

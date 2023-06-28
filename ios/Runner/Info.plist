@@ -42,6 +42,19 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
+	<!-- Google Sign-In section -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1024287017546-dln47v1oq4i72s7q5o2oml30o0lttkmg</string>
+			</array>
+		</dict>
+	</array>
+	<!-- End of the Google Sign-In section -->
 
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
