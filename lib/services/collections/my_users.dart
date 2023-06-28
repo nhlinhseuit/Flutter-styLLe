@@ -48,12 +48,10 @@ class MyUser {
 
       querySnapshot.docs.forEach((DocumentSnapshot doc) async {
         DocumentReference documentRef = doc.reference;
-        print(documentRef);
         try {
           await documentRef.update({
             'user_info.name': getName, 
           });
-          print('Document successfully updated!');
         } catch (error) {
           print('Error updating document: $error');
         }
@@ -63,11 +61,10 @@ class MyUser {
   static Future<MyUser?> getCurrentUser() async {
     final googleUser = await readUser(uid: AuthService.google().currentUser?.uid);
     if (googleUser != null) {
-      print("Google");
       isGoogleAuth = true;
       return googleUser;
     }
-      print("Google failed");
+    isGoogleAuth = false;
     return await readUser(uid: AuthService.firebase().currentUser?.uid);
   }
 

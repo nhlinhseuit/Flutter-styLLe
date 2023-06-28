@@ -198,6 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                                             .user =
                                         (await MyUser.getCurrentUser())!;
                                     final emailVerified = user.isEmailVerified;
+                                    MyUser.isGoogleAuth = false;
                                     if (!mounted) return;
                                     if (emailVerified) {
                                       Navigator.of(context)
@@ -249,10 +250,9 @@ class _LoginPageState extends State<LoginPage> {
                             final user = AuthService.google().currentUser;
                             if (!mounted) return;
                             if (user != null) {
-                              Provider.of<CurrentUser>(context,
-                                                listen: false)
-                                            .user =
-                                        (await MyUser.getCurrentUser())!;
+                              Provider.of<CurrentUser>(context, listen: false)
+                                  .user = (await MyUser.getCurrentUser())!;
+                              MyUser.isGoogleAuth = true;
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   homeRoute, (route) => false);
                             }
