@@ -14,6 +14,7 @@ class MyUser {
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
+  static bool isGoogleAuth = false;
   
   MyUser({
     this.profileImage = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
@@ -47,12 +48,10 @@ class MyUser {
 
       querySnapshot.docs.forEach((DocumentSnapshot doc) async {
         DocumentReference documentRef = doc.reference;
-        print(documentRef);
         try {
           await documentRef.update({
             'user_info.name': getName, 
           });
-          print('Document successfully updated!');
         } catch (error) {
           print('Error updating document: $error');
         }
@@ -60,6 +59,12 @@ class MyUser {
   }
 
   static Future<MyUser?> getCurrentUser() async {
+    final googleUser = await readUser(uid: AuthService.google().currentUser?.uid);
+    if (googleUser != null) {
+      isGoogleAuth = true;
+      return googleUser;
+    }
+    isGoogleAuth = false;
     return await readUser(uid: AuthService.firebase().currentUser?.uid);
   }
 

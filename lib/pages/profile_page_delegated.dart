@@ -1,21 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stylle/components/circle_image.dart';
+import 'package:stylle/components/ellipsis_text.dart';
 import 'package:stylle/components/user_images_viewer.dart';
 import 'package:stylle/constants/enums.dart';
 import 'package:stylle/services/auth/auth_service.dart';
+import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
 import '../constants/routes.dart';
 
-class ProfilePageDelegated extends StatelessWidget {
+class ProfilePageDelegated extends StatefulWidget {
   const ProfilePageDelegated({super.key});
 
+  @override
+  State<ProfilePageDelegated> createState() => _ProfilePageDelegatedState();
+}
+
+class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CurrentUser>(builder: (context, currentUser, child) {
       return Scaffold(
+        floatingActionButton: PopupMenuButton<MenuAction>(
+            icon: const Icon(Icons.menu),
+            itemBuilder: (context) {
+              return [
+                if (!MyUser.isGoogleAuth)
+                  const PopupMenuItem<MenuAction>(
+                    value: MenuAction.changePassword,
+                    child: Text('Change password'),
+                  ),
+                const PopupMenuItem<MenuAction>(
+                  value: MenuAction.logout,
+                  child: Text('Logout'),
+                ),
+              ];
+            },
+            onSelected: (value) async {
+              switch (value) {
+                case MenuAction.logout:
+                  final confirmLogout = await showLogOutDialog(context,
+                      content: 'Logging out?', title: 'Log out');
+                  if (confirmLogout) {
+                    await AuthService.firebase().logout();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      loginRoute,
+                      (_) => false,
+                    );
+                  }
+                  break;
+                case MenuAction.changePassword:
+                  Navigator.of(context).pushNamed(changePasswordRoute);
+              }
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         body: ListView(
           children: [
             Padding(
@@ -30,7 +70,10 @@ class ProfilePageDelegated extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(currentUser.user.getName),
-                        Text(currentUser.user.email),
+                        Text(
+                          currentUser.user.email,
+                          overflow: TextOverflow.fade,
+                        ),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               maximumSize: const Size(200, 32),
@@ -50,40 +93,6 @@ class ProfilePageDelegated extends StatelessWidget {
                       ],
                     ),
                   ),
-                  PopupMenuButton<MenuAction>(
-                      icon: const Icon(Icons.menu),
-                      itemBuilder: (context) {
-                        return const [
-                          PopupMenuItem<MenuAction>(
-                            value: MenuAction.logout,
-                            child: Text('Logout'),
-                          ),
-                          PopupMenuItem<MenuAction>(
-                            value: MenuAction.changePassword,
-                            child: Text('Change password'),
-                          )
-                        ];
-                      },
-                      onSelected: (value) async {
-                        switch (value) {
-                          case MenuAction.logout:
-                            final confirmLogout = await showLogOutDialog(
-                                context,
-                                content: 'Logging out?',
-                                title: 'Log out');
-                            if (confirmLogout) {
-                              await AuthService.firebase().logout();
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                loginRoute,
-                                (_) => false,
-                              );
-                            }
-                            break;
-                          case MenuAction.changePassword:
-                            Navigator.of(context)
-                                .pushNamed(changePasswordRoute);
-                        }
-                      })
                 ],
               ),
             ),

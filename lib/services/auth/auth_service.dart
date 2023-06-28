@@ -1,5 +1,7 @@
 
 
+import 'package:stylle/services/auth/google_auth_service.dart';
+
 import 'auth_provider.dart';
 import 'auth_user.dart';
 import 'firebase_auth_provider.dart';
@@ -9,6 +11,7 @@ class AuthService implements AuthProvider{
   const AuthService(this.provider);
   
   factory AuthService.firebase() => AuthService(FirebaseAuthProvider());
+  factory AuthService.google() => AuthService(AuthProviderGoogle());
 
   @override
   Future<AuthUser> createUser({required String firstName, required String lastName, required String email, required String password}) 
