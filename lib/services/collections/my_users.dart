@@ -14,6 +14,7 @@ class MyUser {
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
+  static bool isGoogleAuth = false;
   
   MyUser({
     this.profileImage = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
@@ -60,6 +61,13 @@ class MyUser {
   }
 
   static Future<MyUser?> getCurrentUser() async {
+    final googleUser = await readUser(uid: AuthService.google().currentUser?.uid);
+    if (googleUser != null) {
+      print("Google");
+      isGoogleAuth = true;
+      return googleUser;
+    }
+      print("Google failed");
     return await readUser(uid: AuthService.firebase().currentUser?.uid);
   }
 
