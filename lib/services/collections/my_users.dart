@@ -5,9 +5,9 @@ import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
 class MyUser {
-  final String firstName;
+  String firstName;
   final String uid;
-  final String lastName;
+  String lastName;
   final String email;
   final String profileImage;
   List<String> favorites;
@@ -25,6 +25,39 @@ class MyUser {
 
     this.deleted = false,
   });
+
+  Future<void> updateInfo({String? firstName, String? lastName}) async {
+    if ((firstName == null || firstName.isEmpty) && (lastName == null || lastName.isEmpty)) {
+      return;
+    }
+    firstName = firstName == null || firstName.isEmpty ? this.firstName : firstName.trim();
+    lastName = lastName == null || lastName.isEmpty ? this.lastName : lastName.trim();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    await FirebaseFirestore.instance.collection('users')
+      .doc(uid)
+      .update({
+        'first_name': firstName,
+        'last_name': lastName,
+      })
+      .catchError((error) => print("Failed to update info: $error"));
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('images')
+          .where('user_info.id', isEqualTo: uid)
+          .get();
+
+      querySnapshot.docs.forEach((DocumentSnapshot doc) async {
+        DocumentReference documentRef = doc.reference;
+        print(documentRef);
+        try {
+          await documentRef.update({
+            'user_info.name': getName, 
+          });
+          print('Document successfully updated!');
+        } catch (error) {
+          print('Error updating document: $error');
+        }
+      });
+  }
 
   static Future<MyUser?> getCurrentUser() async {
     return await readUser(uid: AuthService.firebase().currentUser?.uid);
@@ -107,11 +140,16 @@ class MyUser {
   }
 
   Stream<List<MyImage>> favoriteImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
+  FirebaseFirestore.instance.collection('images')
+  .where('deleted', isEqualTo: false)
+  .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Stream<List<MyImage>> userImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('user_id', isEqualTo: uid)
+  FirebaseFirestore.instance.collection('images')
+  .where('deleted', isEqualTo: false)
+  .where('user_info.id', isEqualTo: uid)
+  .orderBy('upload_time', descending: true)
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Map<String, dynamic> toJson() => {

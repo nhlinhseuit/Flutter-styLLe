@@ -16,7 +16,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
-  late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _confirmPasswordController; 
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   @override

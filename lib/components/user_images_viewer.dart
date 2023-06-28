@@ -3,27 +3,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
+import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
 import '../constants/enums.dart';
 import '../constants/routes.dart';
 import '../services/collections/my_images.dart';
-import '../utilities/popup_confirm_dialog.dart';
 
-class ImageStreamView extends StatefulWidget {
-  const ImageStreamView({
-    super.key,
-    this.user,
-    required this.imagesStream,
-  });
-  final MyUser? user;
-  final Stream<List<MyImage>> imagesStream;
+class UserImagesView extends StatefulWidget {
+  const UserImagesView({super.key});
   @override
-  State<ImageStreamView> createState() => _ImageStreamViewState();
+  State<UserImagesView> createState() => UserImagesViewState();
 }
 
-class _ImageStreamViewState extends State<ImageStreamView> {
+class UserImagesViewState extends State<UserImagesView> {
   late final StreamController<List<MyImage>> imagesStreamController;
 
   @override
@@ -38,7 +31,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
     return Consumer<CurrentUser>(
       builder: (context, currentUser, child) {
         return StreamBuilder(
-          stream: widget.imagesStream,
+          stream: currentUser.user.userImagesStream(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final images = snapshot.data;
@@ -48,14 +41,22 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                 precacheImage(NetworkImage(image.imagePath), context);
               }
               if (numberOfImages == 0) {
-                return const SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                return SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
-                      SizedBox(height: 80),
-                      Center(
-                        child: Text("No image found!"),
+                      const SizedBox(height: 80),
+                      const Center(
+                        child: Text("It's empty here."),
                       ),
+                      Center(
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(imageCaptureRoute);
+                            },
+                            child: const Text("Upload something?")),
+                      )
                     ],
                   ),
                 );
@@ -96,15 +97,6 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if (images[index].userID !=
-                                    currentUser.user.uid)
-                                Text(
-                                  images[index].userName,
-                                  style: const TextStyle(
-                                    color: Colors.black38,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
                                 IconButton(
                                   icon: images[index].isFavorite
                                       ? Icon(
@@ -132,55 +124,53 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                     });
                                   },
                                 ),
-                                if (images[index].userID ==
-                                    currentUser.user.uid)
-                                  PopupMenuButton<MyImageAction>(
-                                      itemBuilder: (context) {
-                                    return const [
-                                      PopupMenuItem<MyImageAction>(
-                                        value: MyImageAction.update,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.edit),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text('Edit'),
-                                          ],
-                                        ),
+                                PopupMenuButton<MyImageAction>(
+                                    itemBuilder: (context) {
+                                  return const [
+                                    PopupMenuItem<MyImageAction>(
+                                      value: MyImageAction.update,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(Icons.edit),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text('Edit'),
+                                        ],
                                       ),
-                                      PopupMenuItem<MyImageAction>(
-                                        value: MyImageAction.delete,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.delete_outline),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text('Delete'),
-                                          ],
-                                        ),
-                                      )
-                                    ];
-                                  }, onSelected: (value) async {
-                                    switch (value) {
-                                      case MyImageAction.update:
-                                        Navigator.of(context).popAndPushNamed(
-                                            editImageRoute,
-                                            arguments: images[index]);
-                                        break;
-                                      case MyImageAction.delete:
-                                        final confirmLogout =
-                                            await showLogOutDialog(context,
-                                                content:
-                                                    'Delete this image?\nThis action cannot be revert.',
-                                                title: 'Delete');
-                                        if (confirmLogout) {
-                                          images[index].delete();
-                                          Navigator.of(context).pop();
-                                        }
-                                    }
-                                  })
+                                    ),
+                                    PopupMenuItem<MyImageAction>(
+                                      value: MyImageAction.delete,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(Icons.delete_outline),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text('Delete'),
+                                        ],
+                                      ),
+                                    )
+                                  ];
+                                }, onSelected: (value) async {
+                                  switch (value) {
+                                    case MyImageAction.update:
+                                      Navigator.of(context).popAndPushNamed(
+                                          editImageRoute,
+                                          arguments: images[index]);
+                                      break;
+                                    case MyImageAction.delete:
+                                      final confirmLogout = await showLogOutDialog(
+                                          context,
+                                          content:
+                                              'Delete this image?\nThis action cannot be revert.',
+                                          title: 'Delete');
+                                      if (confirmLogout) {
+                                        images[index].delete();
+                                        Navigator.of(context).pop();
+                                      }
+                                  }
+                                }),
                               ],
                             )
                           ],
