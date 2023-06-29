@@ -99,6 +99,7 @@ class MyUser {
 
   Future<void> addFavoriteImage(MyImage image) async {
     if (image.isUserFavorite(this)) return;
+    image.isFavorite = true;
     image.likes++;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)
@@ -117,6 +118,7 @@ class MyUser {
   
   Future<void> removeFavoriteImage(MyImage image) async {
     if (!image.isUserFavorite(this) || image.likes == 0) return;
+    image.isFavorite = false;
     image.likes--;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)
