@@ -84,7 +84,6 @@ class MainPage extends StatelessWidget {
             case ConnectionState.done:
               final googleUser = AuthService.google().currentUser;
               if (googleUser != null) {
-                MyUser.isGoogleAuth = true;
                 return FutureBuilder(
                   future: MyUser.getCurrentUser(),
                   builder: (context, userSnapshot) {
@@ -102,7 +101,6 @@ class MainPage extends StatelessWidget {
               }
               final emailUser = AuthService.firebase().currentUser;
               if (emailUser != null) {
-                MyUser.isGoogleAuth = false;
                 final emailVerified = emailUser.isEmailVerified;
                 if (emailVerified) {
                   return FutureBuilder(

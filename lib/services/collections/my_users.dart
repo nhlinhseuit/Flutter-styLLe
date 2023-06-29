@@ -14,7 +14,6 @@ class MyUser {
   late bool deleted;
 
   static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
-  static bool isGoogleAuth = false;
   
   MyUser({
     this.profileImage = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
@@ -61,10 +60,8 @@ class MyUser {
   static Future<MyUser?> getCurrentUser() async {
     final googleUser = await readUser(uid: AuthService.google().currentUser?.uid);
     if (googleUser != null) {
-      isGoogleAuth = true;
       return googleUser;
     }
-    isGoogleAuth = false;
     return await readUser(uid: AuthService.firebase().currentUser?.uid);
   }
 
@@ -102,6 +99,7 @@ class MyUser {
 
   Future<void> addFavoriteImage(MyImage image) async {
     if (image.isUserFavorite(this)) return;
+    image.isFavorite = true;
     image.likes++;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)
@@ -120,6 +118,7 @@ class MyUser {
   
   Future<void> removeFavoriteImage(MyImage image) async {
     if (!image.isUserFavorite(this) || image.likes == 0) return;
+    image.isFavorite = false;
     image.likes--;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)

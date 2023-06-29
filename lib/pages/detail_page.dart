@@ -34,7 +34,7 @@ class _DetailPageState extends State<DetailPage> {
   //         : 'https://picsum.photos/300/600?image=${index + 18}');
 
   Icon firstIcon = Icon(
-    color: Colors.pink[200],
+    color: Colors.pink.shade200,
     Icons.favorite_rounded,
     size: 30,
   );
@@ -44,15 +44,14 @@ class _DetailPageState extends State<DetailPage> {
     Icons.favorite_border_rounded,
   );
 
+  late Icon likeIcon;
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as MyImage;
     final imageUrl = args.imagePath;
     var isUserFavorite = args.isFavorite;
-
-    Icon getIconButtonIcon() {
-      return isUserFavorite ? firstIcon : secondIcon;
-    }
+    likeIcon = isUserFavorite ? firstIcon : secondIcon;
 
     // List<String> imgUrlsRelated = List.generate(
     //     30,
@@ -111,13 +110,12 @@ class _DetailPageState extends State<DetailPage> {
                   Row(
                     children: [
                       IconButton(
-                          icon: getIconButtonIcon(),
-                          onPressed: () {
-                            currentUser.user.handleFavorite(args);
-                            Provider.of<CurrentUser>(context, listen: false)
-                                .userFavorites = currentUser.user.favorites;
+                          icon: isUserFavorite ? firstIcon : secondIcon,
+                          onPressed: () async {
+                            await currentUser.user.handleFavorite(args);
                             setState(() {
-                              isUserFavorite = !isUserFavorite;
+                              Provider.of<CurrentUser>(context, listen: false)
+                                  .userFavorites = currentUser.user.favorites;
                             });
                           }),
                       Text(
