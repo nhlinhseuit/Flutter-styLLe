@@ -4,6 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:stylle/pages/favorites_page.dart';
 import 'package:stylle/pages/home_page_delegated.dart';
 import 'package:stylle/pages/profile_page_delegated.dart';
+import 'package:stylle/pages/search_page.dart';
 import 'package:stylle/pages/upload_image_page.dart';
 import '../services/auth/auth_service.dart';
 
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   final tabs = const [
     HomePageDelegated(),
     ImageCapture(),
-    FavoritesPage(),
+    SearchPage(),
     ProfilePageDelegated(),
   ];
 
@@ -57,9 +58,6 @@ class _HomePageState extends State<HomePage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: GNav(
-                  backgroundColor: Colors.white,
-                  color: Colors.white,
-                  activeColor: Colors.white,
                   // tabBackgroundColor: const Color.fromRGBO(255, 191, 202, 100),
                   tabBackgroundColor: Theme.of(context).colorScheme.primary,
                   padding: const EdgeInsets.all(7),
@@ -77,10 +75,11 @@ class _HomePageState extends State<HomePage> {
                       gap: 6,
                     ),
                     GButton(
-                      icon: Icons.favorite_rounded,
+                      icon: Icons.search_rounded,
+                      iconSize: 28,
                       iconColor: Theme.of(context).colorScheme.primary,
                       gap: 6,
-                      text: 'Favorite',
+                      text: 'Search',
                     ),
                     GButton(
                       icon: Icons.person_2,

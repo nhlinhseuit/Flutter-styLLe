@@ -18,7 +18,7 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
   late int numberOfItem;
   late final MyUser currentUser;
   int _selectedChoiceIndex = 0;
-  List<String> _choiceChips = ['Newest', 'Popular'];
+  final List<String> _choiceChips = ['Newest', 'Popular'];
 
   @override
   void initState() {
