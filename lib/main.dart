@@ -19,9 +19,13 @@ import 'package:stylle/pages/user_profile_image.dart';
 import 'package:stylle/pages/verify_page.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_users.dart';
+import 'package:stylle/services/notif_api/notif_api.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.firebase().initialize();
+  await NotifAPI().init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor:
         Color.fromARGB(255, 252, 200, 209), // màu nền của thanh trạng thái
