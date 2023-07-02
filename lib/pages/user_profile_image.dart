@@ -131,7 +131,6 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
           automaticallyImplyLeading: false
         ),
         body: Container(
-          color: Colors.white,
           padding: const EdgeInsets.all(24),
           child: ListView(
             padding: const EdgeInsets.only(top: 0),
@@ -149,7 +148,7 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
                         "Change profile pic",
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 24.00,
                           )
                         ),

@@ -43,14 +43,14 @@ class _HomePageState extends State<HomePage> {
               children: tabs,
             ),
             bottomNavigationBar: Container(
+              // color: const Color(0xFF303030),
               decoration: const BoxDecoration(
-                color: Colors.white,
-                // borderRadius: BorderRadius.all(Radius.circular(25)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 1,
-                    color: Color.fromARGB(255, 160, 160, 160),
-                    blurRadius: 2.5,
+                    color: Color(0xFF303030),
+                    blurRadius: 0,
                     offset: Offset(0, 2), // changes position of shadow
                   ),
                 ],
@@ -66,18 +66,21 @@ class _HomePageState extends State<HomePage> {
                       icon: Icons.home,
                       iconColor: Theme.of(context).colorScheme.primary,
                       text: 'Home',
+                      textColor: Colors.black,
                       gap: 6,
                     ),
                     GButton(
                       icon: Icons.add_box_rounded,
                       iconColor: Theme.of(context).colorScheme.primary,
                       text: 'Add',
+                      textColor: Colors.black,
                       gap: 6,
                     ),
                     GButton(
                       icon: Icons.search_rounded,
                       iconSize: 28,
                       iconColor: Theme.of(context).colorScheme.primary,
+                      textColor: Colors.black,
                       gap: 6,
                       text: 'Search',
                     ),
@@ -85,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                       icon: Icons.person_2,
                       iconColor: Theme.of(context).colorScheme.primary,
                       text: 'Profile',
+                      textColor: Colors.black,
                       gap: 6,
                     ),
                   ],

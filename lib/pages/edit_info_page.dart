@@ -85,14 +85,14 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         children: [
                           TextField(
                             controller: _firstNameController,
-                            cursorColor: Colors.black,
+                            cursorColor: Colors.white,
                             decoration: const InputDecoration(
                               hintText: 'Your first name',
                             ),
                           ),
                           TextField(
                             controller: _lastNameController,
-                            cursorColor: Colors.black,
+                            cursorColor: Colors.white,
                             decoration: const InputDecoration(
                               hintText: 'Your last name',
                             ),

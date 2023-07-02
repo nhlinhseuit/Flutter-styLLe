@@ -101,7 +101,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                 Text(
                                   images[index].userName,
                                   style: const TextStyle(
-                                    color: Colors.black38,
+                                    color: Colors.white70,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),

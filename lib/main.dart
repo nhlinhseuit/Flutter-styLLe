@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
           userProfileUploadRoute: (context) => const UserProfileUpload(),
         },
         theme: ThemeData(
+          scaffoldBackgroundColor: Colors.black,
           // brightness: Brightness.dark,
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: const Color.fromARGB(255, 252, 200, 209),
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
               bodyMedium: GoogleFonts.poppins(
                   textStyle: const TextStyle(
             fontSize: 14,
-            color: Colors.black,
+            color: Colors.white,
           ))),
         ),
       ),

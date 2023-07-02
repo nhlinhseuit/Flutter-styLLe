@@ -94,7 +94,6 @@ class _ImageCaptureState extends State<ImageCapture> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -116,7 +115,6 @@ class _ImageCaptureState extends State<ImageCapture> {
                           "Upload image",
                           style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
-                            color: Colors.black,
                             fontSize: 24.00,
                           )),
                         ),
@@ -140,7 +138,8 @@ class _ImageCaptureState extends State<ImageCapture> {
                                         MediaQuery.of(context).size.width / 2.6,
                                         120),
                                   ),
-                                  child: const Icon(Icons.camera_alt_outlined),
+                                  child: const Icon(Icons.camera_alt_outlined,
+                                      color: Colors.black),
                                 ),
                                 const SizedBox(
                                   height: 12,
@@ -163,7 +162,8 @@ class _ImageCaptureState extends State<ImageCapture> {
                                         MediaQuery.of(context).size.width / 2.6,
                                         120),
                                   ),
-                                  child: const Icon(Icons.image_search),
+                                  child: const Icon(Icons.image_search,
+                                      color: Colors.black),
                                 ),
                                 const SizedBox(
                                   height: 12,
@@ -188,14 +188,17 @@ class _ImageCaptureState extends State<ImageCapture> {
                       children: [
                         ElevatedButton(
                           onPressed: _cropImage,
-                          child: const Icon(Icons.crop),
+                          child: const Icon(
+                            Icons.crop,
+                            color: Colors.black,
+                          ),
                         ),
                         const SizedBox(
                           width: 24,
                         ),
                         ElevatedButton(
                           onPressed: _clear,
-                          child: const Icon(Icons.refresh),
+                          child: const Icon(Icons.refresh, color: Colors.black),
                         )
                       ],
                     ),
@@ -208,9 +211,11 @@ class _ImageCaptureState extends State<ImageCapture> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 10,
                         decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Description (optional)',
-                        ),
+                            filled: true,
+                            fillColor: Color(0xFF303030),
+                            border: OutlineInputBorder(),
+                            hintText: 'Description (optional)',
+                            hintStyle: TextStyle(color: Colors.white60)),
                       ),
                     ),
                     const SizedBox(
@@ -219,9 +224,11 @@ class _ImageCaptureState extends State<ImageCapture> {
                     TextField(
                       controller: _imageTagsController,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'jeans, vintage (optional)',
-                      ),
+                          filled: true,
+                          fillColor: Color(0xFF303030),
+                          border: OutlineInputBorder(),
+                          hintText: 'jeans, vintage (optional)',
+                          hintStyle: TextStyle(color: Colors.white60)),
                     ),
                     const SizedBox(
                       height: 12,

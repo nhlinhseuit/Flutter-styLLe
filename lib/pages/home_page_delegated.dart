@@ -44,7 +44,6 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
           } else {
             final MyUser currentUser = snapshot.data!;
             return Scaffold(
-                backgroundColor: Colors.white,
                 body: NestedScrollView(
                   floatHeaderSlivers: true,
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -57,7 +56,6 @@ class _HomePageDelegatedState extends State<HomePageDelegated> {
                         floating: true,
                         shadowColor: Colors.black,
                         toolbarHeight: 55,
-                        backgroundColor: Colors.white,
                         bottom: PreferredSize(
                           preferredSize: const Size.fromHeight(
                               0.0), // chiều cao đường kẻ ngang

@@ -33,6 +33,7 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                 return Scaffold(
                   floatingActionButton: PopupMenuButton<MenuAction>(
                       icon: const Icon(Icons.menu),
+                      color: Colors.white,
                       itemBuilder: (context) {
                         return [
                           if (!snapshot.data!.contains("google.com"))
@@ -96,11 +97,14 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                                           borderRadius: BorderRadius.circular(
                                               16), // <-- Radius
                                         ),
-                                        backgroundColor: Colors.black,
+                                        backgroundColor: Theme.of(context).colorScheme.primary,
                                         minimumSize: const Size(120, 32),
                                       ),
                                       child: const Text(
                                         'Edit profile',
+                                        style: TextStyle(
+                                          color: Colors.black
+                                        ),
                                       ),
                                       onPressed: () {
                                         Navigator.of(context)
