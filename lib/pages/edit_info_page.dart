@@ -4,6 +4,8 @@ import 'package:stylle/components/popup_dialog.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
+import '../utilities/check_connectivity.dart';
+
 class EditInfoPage extends StatefulWidget {
   const EditInfoPage({super.key});
 
@@ -54,8 +56,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         child: Text(
                           "Update profile",
                           style: TextStyle(
-                              fontSize: 36.00,
-                              fontWeight: FontWeight.w900),
+                              fontSize: 36.00, fontWeight: FontWeight.w900),
                         ),
                       ),
                       Center(
@@ -84,6 +85,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         children: [
                           TextField(
                             controller: _firstNameController,
+                            style: const TextStyle(color: Colors.white),
                             cursorColor: Colors.white,
                             decoration: const InputDecoration(
                                 filled: true,
@@ -92,6 +94,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                                 hintStyle: TextStyle(color: Colors.white60)),
                           ),
                           TextField(
+                            style: const TextStyle(color: Colors.white),
                             controller: _lastNameController,
                             cursorColor: Colors.white,
                             decoration: const InputDecoration(
@@ -109,7 +112,8 @@ class _EditInfoPageState extends State<EditInfoPage> {
                               borderRadius:
                                   BorderRadius.circular(25), // <-- Radius
                             ),
-                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
                             minimumSize: const Size.fromHeight(50),
                           ),
                           child: const Text(
@@ -120,6 +124,10 @@ class _EditInfoPageState extends State<EditInfoPage> {
                             ),
                           ),
                           onPressed: () async {
+                            if (!(await checkInternetConnectivity())) {
+                              displayNoInternet();
+                              return;
+                            }
                             final firstNameText =
                                 _firstNameController.text.trim();
                             final lastNameText =

@@ -112,7 +112,10 @@ class _ImageCaptureState extends State<ImageCapture> {
                         const SizedBox(
                           height: 32,
                         ),
-                        const Header(firstLine: 'Upload', secondLine: 'your idea',),
+                        const Header(
+                          firstLine: 'Upload',
+                          secondLine: 'your idea',
+                        ),
                         // Text(
                         //   "Upload image",
                         //   style: GoogleFonts.poppins(
@@ -210,6 +213,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                       ),
                       child: TextField(
                         controller: _imageDescriptionController,
+                        style: const TextStyle(color: Colors.white),
                         keyboardType: TextInputType.multiline,
                         maxLines: 10,
                         decoration: const InputDecoration(
@@ -225,6 +229,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                     ),
                     TextField(
                       controller: _imageTagsController,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                           filled: true,
                           fillColor: Color(0xFF303030),

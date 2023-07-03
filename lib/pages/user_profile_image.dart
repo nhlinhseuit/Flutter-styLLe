@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../components/popup_dialog.dart';
 import '../services/collections/my_users.dart';
+import '../utilities/check_connectivity.dart';
 
 class UserProfileUpload extends StatefulWidget {
   const UserProfileUpload({super.key});
@@ -31,6 +32,10 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
   UploadTask? _uploadTask;
 
   void _startUpload() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     final user = (await MyUser.getCurrentUser())!;
     String filepath = 'user_profiles/${user.uid}.png';
     final ref = _storage.ref().child(filepath);
