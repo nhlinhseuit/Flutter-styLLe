@@ -54,7 +54,6 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         child: Text(
                           "Update profile",
                           style: TextStyle(
-                              color: Colors.black,
                               fontSize: 36.00,
                               fontWeight: FontWeight.w900),
                         ),
@@ -87,15 +86,19 @@ class _EditInfoPageState extends State<EditInfoPage> {
                             controller: _firstNameController,
                             cursorColor: Colors.white,
                             decoration: const InputDecoration(
-                              hintText: 'Your first name',
-                            ),
+                                filled: true,
+                                fillColor: Color(0xFF303030),
+                                hintText: 'Your first name',
+                                hintStyle: TextStyle(color: Colors.white60)),
                           ),
                           TextField(
                             controller: _lastNameController,
                             cursorColor: Colors.white,
                             decoration: const InputDecoration(
-                              hintText: 'Your last name',
-                            ),
+                                filled: true,
+                                fillColor: Color(0xFF303030),
+                                hintText: 'Your last name',
+                                hintStyle: TextStyle(color: Colors.white60)),
                           ),
                         ],
                       ),
@@ -106,13 +109,13 @@ class _EditInfoPageState extends State<EditInfoPage> {
                               borderRadius:
                                   BorderRadius.circular(25), // <-- Radius
                             ),
-                            backgroundColor: Colors.black,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                             minimumSize: const Size.fromHeight(50),
                           ),
                           child: const Text(
                             'Save',
                             style: TextStyle(
-                              color: Color.fromARGB(255, 252, 200, 209),
+                              color: Colors.black,
                               fontSize: 16.00,
                             ),
                           ),
@@ -124,13 +127,14 @@ class _EditInfoPageState extends State<EditInfoPage> {
                             await user.updateInfo(
                                 firstName: firstNameText,
                                 lastName: lastNameText);
-                            await showMessageDialog(context, "Update profile successfully.");
+                            await showMessageDialog(
+                                context, "Update profile successfully.");
                             Navigator.of(context).pop();
                           }),
                       TextButton(
                         child: const Text("Cancel",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 16.00,
                             )),
                         onPressed: () {

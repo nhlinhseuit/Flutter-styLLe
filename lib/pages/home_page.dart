@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:stylle/pages/favorites_page.dart';
 import 'package:stylle/pages/home_page_delegated.dart';
 import 'package:stylle/pages/profile_page_delegated.dart';
 import 'package:stylle/pages/search_page.dart';

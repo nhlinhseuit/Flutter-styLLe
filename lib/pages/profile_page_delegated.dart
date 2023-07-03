@@ -133,7 +133,7 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                             selected: _selectedChoiceIndex == 0,
                             onSelected: (bool selected) {
                               setState(() {
-                                _selectedChoiceIndex = selected ? 0 : -1;
+                                _selectedChoiceIndex = selected ? 0 : 1;
                               });
                             },
                           ),
@@ -151,7 +151,7 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                             selected: _selectedChoiceIndex == 1,
                             onSelected: (bool selected) {
                               setState(() {
-                                _selectedChoiceIndex = selected ? 1 : -1;
+                                _selectedChoiceIndex = selected ? 1 : 0;
                               });
                             },
                           ),

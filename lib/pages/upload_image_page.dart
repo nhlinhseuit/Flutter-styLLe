@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stylle/components/page_header.dart';
 
 import '../components/image_uploader.dart';
 
@@ -97,7 +98,7 @@ class _ImageCaptureState extends State<ImageCapture> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
         ),
         body: Container(
             padding: const EdgeInsets.all(24),
@@ -111,13 +112,14 @@ class _ImageCaptureState extends State<ImageCapture> {
                         const SizedBox(
                           height: 32,
                         ),
-                        Text(
-                          "Upload image",
-                          style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                            fontSize: 24.00,
-                          )),
-                        ),
+                        const Header(firstLine: 'Upload', secondLine: 'your idea',),
+                        // Text(
+                        //   "Upload image",
+                        //   style: GoogleFonts.poppins(
+                        //       textStyle: const TextStyle(
+                        //     fontSize: 24.00,
+                        //   )),
+                        // ),
                         const SizedBox(
                           height: 40,
                         ),
