@@ -74,25 +74,22 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                             top: 0, left: 8, right: 8, bottom: 20),
                         child: Column(
                           children: [
-                            Hero(
-                              tag: images[index].id,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                        detailPageRout,
-                                        arguments: images[index]);
-                                  },
-                                  child: CachedNetworkImage(
-                                    imageUrl: images[index].imagePath,
-                                    progressIndicatorBuilder: (context, url,
-                                            downloadProgress) =>
-                                        CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      detailPageRout,
+                                      arguments: images[index]);
+                                },
+                                child: CachedNetworkImage(
+                                  imageUrl: images[index].imagePath,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                               ),
                             ),
@@ -138,53 +135,54 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                 if (images[index].userID ==
                                     currentUser.user.uid)
                                   PopupMenuButton<MyImageAction>(
-                                    color: Colors.white70,
+                                      color: Colors.white70,
                                       itemBuilder: (context) {
-                                    return const [
-                                      PopupMenuItem<MyImageAction>(
-                                        value: MyImageAction.update,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.edit),
-                                            SizedBox(
-                                              width: 4,
+                                        return const [
+                                          PopupMenuItem<MyImageAction>(
+                                            value: MyImageAction.update,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.edit),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text('Edit'),
+                                              ],
                                             ),
-                                            Text('Edit'),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem<MyImageAction>(
-                                        value: MyImageAction.delete,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.delete_outline),
-                                            SizedBox(
-                                              width: 4,
+                                          ),
+                                          PopupMenuItem<MyImageAction>(
+                                            value: MyImageAction.delete,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.delete_outline),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text('Delete'),
+                                              ],
                                             ),
-                                            Text('Delete'),
-                                          ],
-                                        ),
-                                      )
-                                    ];
-                                  }, onSelected: (value) async {
-                                    switch (value) {
-                                      case MyImageAction.update:
-                                        Navigator.of(context).popAndPushNamed(
-                                            editImageRoute,
-                                            arguments: images[index]);
-                                        break;
-                                      case MyImageAction.delete:
-                                        final confirmLogout =
-                                            await showLogOutDialog(context,
-                                                content:
-                                                    'Delete this image?\nThis action cannot be revert.',
-                                                title: 'Delete');
-                                        if (confirmLogout) {
-                                          images[index].delete();
-                                          Navigator.of(context).pop();
+                                          )
+                                        ];
+                                      },
+                                      onSelected: (value) async {
+                                        switch (value) {
+                                          case MyImageAction.update:
+                                            Navigator.of(context)
+                                                .popAndPushNamed(editImageRoute,
+                                                    arguments: images[index]);
+                                            break;
+                                          case MyImageAction.delete:
+                                            final confirmLogout =
+                                                await showLogOutDialog(context,
+                                                    content:
+                                                        'Delete this image?\nThis action cannot be revert.',
+                                                    title: 'Delete');
+                                            if (confirmLogout) {
+                                              images[index].delete();
+                                              Navigator.of(context).pop();
+                                            }
                                         }
-                                    }
-                                  })
+                                      })
                               ],
                             )
                           ],

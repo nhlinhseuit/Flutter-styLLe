@@ -42,24 +42,21 @@ class _ImageStreamViewShortState extends State<ImageStreamViewShort> {
                         top: 0, left: 8, right: 8, bottom: 20),
                     child: Column(
                       children: [
-                        Hero(
-                          tag: images[index].id,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(detailPageRout,
-                                    arguments: images[index]);
-                              },
-                              child: CachedNetworkImage(
-                                imageUrl: images[index].imagePath,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) =>
-                                        CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(detailPageRout,
+                                  arguments: images[index]);
+                            },
+                            child: CachedNetworkImage(
+                              imageUrl: images[index].imagePath,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                           ),
                         ),
