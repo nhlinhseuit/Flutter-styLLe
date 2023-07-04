@@ -79,25 +79,27 @@ class _DetailPageState extends State<DetailPage> {
               FloatingActionButtonLocation.miniStartTop,
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
+            child: Column(children: [
               //////////////////////////////       HÌNH RENDER
 
               SizedBox(
                 width: double.infinity,
                 // height: 610,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(38),
-                      bottomRight: Radius.circular(38)),
-                  child: InteractiveViewer(
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      fit: BoxFit.cover,
+                child: Hero(
+                  tag: args.id,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(38),
+                        bottomRight: Radius.circular(38)),
+                    child: InteractiveViewer(
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

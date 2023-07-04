@@ -74,22 +74,25 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                             top: 0, left: 8, right: 8, bottom: 20),
                         child: Column(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                      detailPageRout,
-                                      arguments: images[index]);
-                                },
-                                child: CachedNetworkImage(
-                                  imageUrl: images[index].imagePath,
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                            Hero(
+                              tag: images[index].id,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        detailPageRout,
+                                        arguments: images[index]);
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: images[index].imagePath,
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
                                 ),
                               ),
                             ),
@@ -98,13 +101,13 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                               children: [
                                 if (images[index].userID !=
                                     currentUser.user.uid)
-                                Text(
-                                  images[index].userName,
-                                  style: const TextStyle(
-                                    color: Colors.white70,
+                                  Text(
+                                    images[index].userName,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
                                 IconButton(
                                   icon: images[index].isFavorite
                                       ? Icon(
@@ -135,6 +138,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                 if (images[index].userID ==
                                     currentUser.user.uid)
                                   PopupMenuButton<MyImageAction>(
+                                    color: Colors.white70,
                                       itemBuilder: (context) {
                                     return const [
                                       PopupMenuItem<MyImageAction>(

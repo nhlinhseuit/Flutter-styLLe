@@ -116,13 +116,6 @@ class _ImageCaptureState extends State<ImageCapture> {
                           firstLine: 'Upload',
                           secondLine: 'your idea',
                         ),
-                        // Text(
-                        //   "Upload image",
-                        //   style: GoogleFonts.poppins(
-                        //       textStyle: const TextStyle(
-                        //     fontSize: 24.00,
-                        //   )),
-                        // ),
                         const SizedBox(
                           height: 40,
                         ),
