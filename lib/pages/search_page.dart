@@ -48,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         title: TextField(
           controller: _searchController,
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.white),
           cursorColor: Colors.black,
           decoration: const InputDecoration(
             hintText: 'Search...',

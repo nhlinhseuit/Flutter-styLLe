@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../components/popup_dialog.dart';
 import '../services/collections/my_users.dart';
+import '../utilities/check_connectivity.dart';
 
 class UserProfileUpload extends StatefulWidget {
   const UserProfileUpload({super.key});
@@ -31,6 +32,10 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
   UploadTask? _uploadTask;
 
   void _startUpload() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     final user = (await MyUser.getCurrentUser())!;
     String filepath = 'user_profiles/${user.uid}.png';
     final ref = _storage.ref().child(filepath);
@@ -131,7 +136,6 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
           automaticallyImplyLeading: false
         ),
         body: Container(
-          color: Colors.white,
           padding: const EdgeInsets.all(24),
           child: ListView(
             padding: const EdgeInsets.only(top: 0),
@@ -149,7 +153,7 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
                         "Change profile pic",
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 24.00,
                           )
                         ),

@@ -98,13 +98,13 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                               children: [
                                 if (images[index].userID !=
                                     currentUser.user.uid)
-                                Text(
-                                  images[index].userName,
-                                  style: const TextStyle(
-                                    color: Colors.black38,
+                                  Text(
+                                    images[index].userName,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
                                 IconButton(
                                   icon: images[index].isFavorite
                                       ? Icon(
@@ -135,52 +135,54 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                 if (images[index].userID ==
                                     currentUser.user.uid)
                                   PopupMenuButton<MyImageAction>(
+                                      color: Colors.white70,
                                       itemBuilder: (context) {
-                                    return const [
-                                      PopupMenuItem<MyImageAction>(
-                                        value: MyImageAction.update,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.edit),
-                                            SizedBox(
-                                              width: 4,
+                                        return const [
+                                          PopupMenuItem<MyImageAction>(
+                                            value: MyImageAction.update,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.edit),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text('Edit'),
+                                              ],
                                             ),
-                                            Text('Edit'),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem<MyImageAction>(
-                                        value: MyImageAction.delete,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.delete_outline),
-                                            SizedBox(
-                                              width: 4,
+                                          ),
+                                          PopupMenuItem<MyImageAction>(
+                                            value: MyImageAction.delete,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.delete_outline),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text('Delete'),
+                                              ],
                                             ),
-                                            Text('Delete'),
-                                          ],
-                                        ),
-                                      )
-                                    ];
-                                  }, onSelected: (value) async {
-                                    switch (value) {
-                                      case MyImageAction.update:
-                                        Navigator.of(context).popAndPushNamed(
-                                            editImageRoute,
-                                            arguments: images[index]);
-                                        break;
-                                      case MyImageAction.delete:
-                                        final confirmLogout =
-                                            await showLogOutDialog(context,
-                                                content:
-                                                    'Delete this image?\nThis action cannot be revert.',
-                                                title: 'Delete');
-                                        if (confirmLogout) {
-                                          images[index].delete();
-                                          Navigator.of(context).pop();
+                                          )
+                                        ];
+                                      },
+                                      onSelected: (value) async {
+                                        switch (value) {
+                                          case MyImageAction.update:
+                                            Navigator.of(context)
+                                                .popAndPushNamed(editImageRoute,
+                                                    arguments: images[index]);
+                                            break;
+                                          case MyImageAction.delete:
+                                            final confirmLogout =
+                                                await showLogOutDialog(context,
+                                                    content:
+                                                        'Delete this image?\nThis action cannot be revert.',
+                                                    title: 'Delete');
+                                            if (confirmLogout) {
+                                              images[index].delete();
+                                              Navigator.of(context).pop();
+                                            }
                                         }
-                                    }
-                                  })
+                                      })
                               ],
                             )
                           ],

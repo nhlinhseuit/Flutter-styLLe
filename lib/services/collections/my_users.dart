@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
+import '../../utilities/check_connectivity.dart';
+
 class MyUser {
   String firstName;
   final String uid;
@@ -27,6 +29,10 @@ class MyUser {
   });
 
   Future<void> updateInfo({String? firstName, String? lastName}) async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     if ((firstName == null || firstName.isEmpty) && (lastName == null || lastName.isEmpty)) {
       return;
     }
@@ -69,7 +75,11 @@ class MyUser {
     return "$firstName $lastName";
   }
 
-  Future<void> createUser() {
+  Future<void> createUser() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     final userData = toJson();
     // Call the user's CollectionReference to add a new user
     return dbUsers.doc(uid).set(userData)
@@ -136,6 +146,10 @@ class MyUser {
   }
 
   Future<void> handleFavorite(MyImage image) async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     if (image.isUserFavorite(this)) {
       await removeFavoriteImage(image);
     } else {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stylle/components/page_header.dart';
 
 import '../components/image_uploader.dart';
 
@@ -94,11 +95,10 @@ class _ImageCaptureState extends State<ImageCapture> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
         ),
         body: Container(
             padding: const EdgeInsets.all(24),
@@ -112,13 +112,9 @@ class _ImageCaptureState extends State<ImageCapture> {
                         const SizedBox(
                           height: 32,
                         ),
-                        Text(
-                          "Upload image",
-                          style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 24.00,
-                          )),
+                        const Header(
+                          firstLine: 'Upload',
+                          secondLine: 'your idea',
                         ),
                         const SizedBox(
                           height: 40,
@@ -140,7 +136,8 @@ class _ImageCaptureState extends State<ImageCapture> {
                                         MediaQuery.of(context).size.width / 2.6,
                                         120),
                                   ),
-                                  child: const Icon(Icons.camera_alt_outlined),
+                                  child: const Icon(Icons.camera_alt_outlined,
+                                      color: Colors.black),
                                 ),
                                 const SizedBox(
                                   height: 12,
@@ -163,7 +160,8 @@ class _ImageCaptureState extends State<ImageCapture> {
                                         MediaQuery.of(context).size.width / 2.6,
                                         120),
                                   ),
-                                  child: const Icon(Icons.image_search),
+                                  child: const Icon(Icons.image_search,
+                                      color: Colors.black),
                                 ),
                                 const SizedBox(
                                   height: 12,
@@ -188,14 +186,17 @@ class _ImageCaptureState extends State<ImageCapture> {
                       children: [
                         ElevatedButton(
                           onPressed: _cropImage,
-                          child: const Icon(Icons.crop),
+                          child: const Icon(
+                            Icons.crop,
+                            color: Colors.black,
+                          ),
                         ),
                         const SizedBox(
                           width: 24,
                         ),
                         ElevatedButton(
                           onPressed: _clear,
-                          child: const Icon(Icons.refresh),
+                          child: const Icon(Icons.refresh, color: Colors.black),
                         )
                       ],
                     ),
@@ -205,12 +206,15 @@ class _ImageCaptureState extends State<ImageCapture> {
                       ),
                       child: TextField(
                         controller: _imageDescriptionController,
+                        style: const TextStyle(color: Colors.white),
                         keyboardType: TextInputType.multiline,
                         maxLines: 10,
                         decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Description (optional)',
-                        ),
+                            filled: true,
+                            fillColor: Color(0xFF303030),
+                            border: OutlineInputBorder(),
+                            hintText: 'Description (optional)',
+                            hintStyle: TextStyle(color: Colors.white60)),
                       ),
                     ),
                     const SizedBox(
@@ -218,10 +222,13 @@ class _ImageCaptureState extends State<ImageCapture> {
                     ),
                     TextField(
                       controller: _imageTagsController,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'jeans, vintage (optional)',
-                      ),
+                          filled: true,
+                          fillColor: Color(0xFF303030),
+                          border: OutlineInputBorder(),
+                          hintText: 'jeans, vintage (optional)',
+                          hintStyle: TextStyle(color: Colors.white60)),
                     ),
                     const SizedBox(
                       height: 12,
