@@ -24,7 +24,7 @@ import 'package:stylle/services/notifiers/current_user.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor:
-        Color.fromARGB(255, 252, 200, 209), // màu nền của thanh trạng thái
+        Color(0xFFFF768E), // màu nền của thanh trạng thái
     statusBarIconBrightness: Brightness.dark, // màu icon trên thanh trạng thái
   ));
   runApp(const MyApp());
@@ -56,16 +56,17 @@ class MyApp extends StatelessWidget {
           userProfileUploadRoute: (context) => const UserProfileUpload(),
         },
         theme: ThemeData(
+          scaffoldBackgroundColor: Colors.black,
           // brightness: Brightness.dark,
           colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: const Color.fromARGB(255, 252, 200, 209),
+            primary: const Color(0xFFFF768E),
             secondary: Colors.black,
           ),
           textTheme: TextTheme(
               bodyMedium: GoogleFonts.poppins(
                   textStyle: const TextStyle(
             fontSize: 14,
-            color: Colors.black,
+            color: Colors.white,
           ))),
         ),
       ),

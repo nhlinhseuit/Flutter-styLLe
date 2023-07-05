@@ -99,6 +99,7 @@ class _EditImagePageState extends State<EditImagePage> {
           child: Column(
             children: [
               TextField(
+                style: const TextStyle(color: Colors.white),
                 controller: _imageDescriptionController,
                 keyboardType: TextInputType.multiline,
                 maxLines: 10,
@@ -113,6 +114,7 @@ class _EditImagePageState extends State<EditImagePage> {
               Container(
                 padding: const EdgeInsets.only(top: 8),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _imageTagsController,
                   enabled: true,
                   decoration: InputDecoration(

@@ -39,7 +39,7 @@ class _DetailPageState extends State<DetailPage> {
     size: 30,
   );
   Icon secondIcon = const Icon(
-    color: Colors.black,
+    color: Colors.white,
     size: 30,
     Icons.favorite_border_rounded,
   );
@@ -77,7 +77,6 @@ class _DetailPageState extends State<DetailPage> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.miniStartTop,
-          backgroundColor: Colors.white,
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(children: [
@@ -126,7 +125,7 @@ class _DetailPageState extends State<DetailPage> {
                   IconButton(
                     icon: const Icon(
                       Icons.file_download_outlined,
-                      color: Colors.black,
+                      color: Colors.white,
                       size: 30,
                     ),
                     onPressed: () async {
@@ -150,7 +149,7 @@ class _DetailPageState extends State<DetailPage> {
                   IconButton(
                     icon: const Icon(
                       Icons.copy,
-                      color: Colors.black,
+                      color: Colors.white,
                       size: 30,
                     ),
                     onPressed: () async {
@@ -168,7 +167,7 @@ class _DetailPageState extends State<DetailPage> {
                   IconButton(
                     icon: const Icon(
                       Icons.share,
-                      color: Colors.black,
+                      color: Colors.white,
                       size: 30,
                     ),
                     onPressed: () async {
@@ -243,64 +242,62 @@ class _DetailPageState extends State<DetailPage> {
               ),
 
               //////////////////////////////       INFORMATION IMG
-              Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 16, top: 8),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleImage(
-                                  size: 52, imgUrl: args.userProfilePic),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                args.userName,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
+              Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 16, top: 8),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleImage(
+                              size: 52, imgUrl: args.userProfilePic),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 28, right: 20, top: 8, bottom: 8),
-                        child: Container(
-                          alignment: Alignment.topLeft,
-                          child: EllipsisText(
-                            maxLines: 4,
-                            text: args.description,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            args.userName,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                        left: 28, right: 20, top: 8, bottom: 8),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: EllipsisText(
+                        maxLines: 4,
+                        text: args.description,
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 20, bottom: 20),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: args.tags.isNotEmpty
-                              ? Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.tag,
-                                      color: Colors.black,
-                                      size: 22,
-                                    ),
-                                    Text(
-                                      args.tags.join(", "),
-                                    ),
-                                  ],
-                                )
-                              : const SizedBox(),
-                        ),
-                      ),
-                    ],
-                  )),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20, bottom: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: args.tags.isNotEmpty
+                          ? Row(
+                              children: [
+                                const Icon(
+                                  Icons.tag,
+                                  color: Colors.white,
+                                  size: 22,
+                                ),
+                                Text(
+                                  args.tags.join(", "),
+                                ),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
+                ],
+              ),
 
               //////////////////////////////       DIVIDER
               const Divider(

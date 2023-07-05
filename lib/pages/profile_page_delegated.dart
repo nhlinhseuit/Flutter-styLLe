@@ -7,6 +7,7 @@ import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
+import '../components/image_stream_viewer.dart';
 import '../constants/routes.dart';
 
 class ProfilePageDelegated extends StatefulWidget {
@@ -17,6 +18,9 @@ class ProfilePageDelegated extends StatefulWidget {
 }
 
 class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
+  final List<String> _choiceChips = ['My posts', 'Favorites'];
+  int _selectedChoiceIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CurrentUser>(builder: (context, currentUser, child) {
@@ -29,6 +33,7 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                 return Scaffold(
                   floatingActionButton: PopupMenuButton<MenuAction>(
                       icon: const Icon(Icons.menu),
+                      color: Colors.white,
                       itemBuilder: (context) {
                         return [
                           if (!snapshot.data!.contains("google.com"))
@@ -92,11 +97,14 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                                           borderRadius: BorderRadius.circular(
                                               16), // <-- Radius
                                         ),
-                                        backgroundColor: Colors.black,
+                                        backgroundColor: Theme.of(context).colorScheme.primary,
                                         minimumSize: const Size(120, 32),
                                       ),
                                       child: const Text(
                                         'Edit profile',
+                                        style: TextStyle(
+                                          color: Colors.black
+                                        ),
                                       ),
                                       onPressed: () {
                                         Navigator.of(context)
@@ -111,7 +119,54 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                       const SizedBox(
                         height: 40,
                       ),
-                      const UserImagesView()
+                      Row(
+                        children: [
+                          const SizedBox(width: 16,),
+                          ChoiceChip(
+                            label: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(_choiceChips[0]),
+                            ),
+                            selectedColor:
+                                Theme.of(context).colorScheme.primary,
+                            selected: _selectedChoiceIndex == 0,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                _selectedChoiceIndex = selected ? 0 : 1;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          ChoiceChip(
+                            label: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(_choiceChips[1]),
+                            ),
+                            selectedColor:
+                                Theme.of(context).colorScheme.primary,
+                            selected: _selectedChoiceIndex == 1,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                _selectedChoiceIndex = selected ? 1 : 0;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      _selectedChoiceIndex == 0
+                          ? const UserImagesView()
+                          : ImageStreamView(
+                              user: Provider.of<CurrentUser>(context,
+                                      listen: false)
+                                  .user,
+                              imagesStream: Provider.of<CurrentUser>(context,
+                                      listen: false)
+                                  .user
+                                  .favoriteImagesStream()),
                     ],
                   ),
                 );

@@ -140,7 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               Text(
                                 "Remember me",
-                                style: GoogleFonts.abhayaLibre(),
+                                style: GoogleFonts.abhayaLibre(
+                                    color: Colors.black),
                               )
                             ],
                           ),
@@ -171,14 +172,15 @@ class _LoginPageState extends State<LoginPage> {
                                   borderRadius:
                                       BorderRadius.circular(25), // <-- Radius
                                 ),
-                                backgroundColor: Colors.black,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
                                 minimumSize: const Size.fromHeight(50),
                               ),
                               child: Text(
                                 'Log in',
                                 style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
+                                    textStyle: const TextStyle(
+                                  color: Colors.black,
                                   fontSize: 16.00,
                                 )),
                               ),
@@ -237,10 +239,15 @@ class _LoginPageState extends State<LoginPage> {
                                 BorderRadius.circular(25), // <-- Radius
                           ),
                           minimumSize: const Size.fromHeight(50),
+                          backgroundColor: Colors.black
                         ),
                         label: Text(
                           'Log in with Google',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16.00,
+                          )),
                         ),
                         onPressed: () async {
                           try {
@@ -277,7 +284,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     child: Text(
                       "New to this app? Sign up.",
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: GoogleFonts.abhayaLibre(
+                          color: Colors.black, fontSize: 16),
                     ),
                     onPressed: () {
                       Navigator.of(context).popAndPushNamed(registerRoute);
