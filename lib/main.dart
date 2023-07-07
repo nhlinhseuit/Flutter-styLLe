@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       value: CurrentUser(),
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const MainPage(),
+          home: const Splash(),
           routes: {
             preLoginRoute: (context) => const PreLoginPage(),
             loginRoute: (context) => const LoginPage(),
@@ -68,6 +68,55 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class Splash extends StatefulWidget {
+  const Splash({super.key});
+
+  @override
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToHome();
+  }
+
+  _navigateToHome() async {
+    await Future.delayed(const Duration(milliseconds: 3000), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const MainPage()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.only(top: 300),
+          child: Column(children: [
+            Image.asset(
+              "assets/images/camera.png",
+              width: 80,
+            ),
+            Text(
+            'styLLe',
+            style: GoogleFonts.allura(
+              color: Color.fromARGB(255, 255, 118, 142),
+              fontSize: 100,
+            ),
+          ),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
+
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
