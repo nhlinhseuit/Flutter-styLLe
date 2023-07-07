@@ -1,1 +1,1 @@
-const whiteText = '0xbebebe';
+const whiteText = '0xbebebe'; 
