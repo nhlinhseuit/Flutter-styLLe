@@ -209,7 +209,7 @@ class _SearchPageState extends State<SearchPage> {
                             children: List.generate(myObjects.length, (index) {
                               return GestureDetector(
                                 onTap: () {
-                                  ImageStreamView(imagesStream: MyImage.searchImages("cat"));
+                                  
                                 },
                                 child: Stack(
                                   children: [
