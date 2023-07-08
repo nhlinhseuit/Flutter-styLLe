@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stylle/constants/routes.dart';
 import 'package:stylle/pages/boarding_page.dart';
-import 'package:stylle/pages/detail_demo.dart';
 import 'package:stylle/pages/detail_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
@@ -45,7 +44,6 @@ class MyApp extends StatelessWidget {
             verifyRoute: (context) => const VerifyEmailPage(),
             forgotPasswordRoute: (context) => const ForgotPasswordPage(),
             detailPageRout: (context) => const DetailPage(),
-            detailDemoRout: (context) => const DetailDemo(),
             imageCaptureRoute: (context) => const ImageCapture(),
             userProfileUploadRoute: (context) => const UserProfileUpload(),
           },

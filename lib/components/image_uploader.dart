@@ -87,8 +87,8 @@ class _UploaderState extends State<Uploader> {
       // allow user to start the upload if uploadtask is null
       return ElevatedButton.icon(
         onPressed:_startUpload,
-        icon: const Icon(Icons.cloud_upload_outlined), 
-        label: const Text('Upload')
+        icon: const Icon(Icons.cloud_upload_outlined, color: Colors.black,), 
+        label: const Text('Upload', style: TextStyle(color: Colors.black),)
       );
     }
   }
