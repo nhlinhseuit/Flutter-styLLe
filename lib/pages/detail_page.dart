@@ -187,7 +187,9 @@ class _DetailPageState extends State<DetailPage> {
                     },
                   ),
                   if (args.userID == currentUser.user.uid)
-                    PopupMenuButton<MyImageAction>(itemBuilder: (context) {
+                    PopupMenuButton<MyImageAction>(
+                      color: Colors.white,
+                      itemBuilder: (context) {
                       return const [
                         PopupMenuItem<MyImageAction>(
                           value: MyImageAction.update,

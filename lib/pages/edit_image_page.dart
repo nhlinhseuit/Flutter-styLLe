@@ -104,9 +104,11 @@ class _EditImagePageState extends State<EditImagePage> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 10,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  hintText: args.description,
-                ),
+                    filled: true,
+                    fillColor: const Color(0xFF303030),
+                    border: const OutlineInputBorder(),
+                    hintText: args.description == "" ? 'Description (optional)' : args.description,
+                    hintStyle: const TextStyle(color: Colors.white60)),
               ),
               const SizedBox(
                 height: 12,
@@ -118,9 +120,11 @@ class _EditImagePageState extends State<EditImagePage> {
                   controller: _imageTagsController,
                   enabled: true,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: args.tags.join(", "),
-                  ),
+                      filled: true,
+                      fillColor: const Color(0xFF303030),
+                      border: const OutlineInputBorder(),
+                      hintText: args.tags.isNotEmpty ? args.tags.join(", ") : 'pets, fashion (optional)',
+                      hintStyle: const TextStyle(color: Colors.white60)),
                 ),
               ),
               const SizedBox(

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:stylle/components/circle_image.dart';
 import 'package:stylle/components/popup_dialog.dart';
 import 'package:stylle/constants/routes.dart';
-import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../utilities/check_connectivity.dart';

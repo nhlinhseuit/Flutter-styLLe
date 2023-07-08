@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stylle/components/page_header.dart';
@@ -227,7 +226,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                           filled: true,
                           fillColor: Color(0xFF303030),
                           border: OutlineInputBorder(),
-                          hintText: 'jeans, vintage (optional)',
+                          hintText: 'pets, fashion (optional)',
                           hintStyle: TextStyle(color: Colors.white60)),
                     ),
                     const SizedBox(

@@ -168,7 +168,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                         switch (value) {
                                           case MyImageAction.update:
                                             Navigator.of(context)
-                                                .popAndPushNamed(editImageRoute,
+                                                .pushNamed(editImageRoute,
                                                     arguments: images[index]);
                                             break;
                                           case MyImageAction.delete:
