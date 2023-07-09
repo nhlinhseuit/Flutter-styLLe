@@ -15,4 +15,7 @@ class CurrentUser extends ChangeNotifier {
     _user.favorites = favorites;
     notifyListeners();
   }
+  void setName() {
+    notifyListeners();
+  }
 }

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
+import '../../utilities/check_connectivity.dart';
+
 class MyImage {
   String id;
   String path;
@@ -12,8 +14,8 @@ class MyImage {
   final String userEmail;
   final String userID;
   final String userProfilePic;
-  final String description;
-  final List<String> tags;
+  String description;
+  List<String> tags;
   bool isFavorite;
   int likes;
   late bool deleted;
@@ -45,7 +47,11 @@ class MyImage {
     this.isFavorite = false,
   });
 
-  Future<void> createImage() {
+  Future<void> createImage() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     final imageDoc = dbImages.doc();
     id = imageDoc.id;
     final imageData = toJson();
@@ -164,7 +170,24 @@ class MyImage {
     });
   }
 
+  Future<void> update() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
+    await FirebaseFirestore.instance.collection('images')
+      .doc(id)
+      .update({
+        'description': description,
+        'tags': tags,
+      });
+  }
+
   Future<void> delete() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     await FirebaseFirestore.instance.collection('images').doc(id).update({
       'deleted': true,
     }).onError((error, stackTrace) => print(error.toString()));

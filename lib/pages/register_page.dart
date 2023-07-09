@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
 import '../components/popup_dialog.dart';
+import '../services/collections/my_users.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,7 +19,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
-  late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _confirmPasswordController; 
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   @override
@@ -161,6 +164,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             firstName: firstNameText, 
                             lastName: lastNameText,
                           );
+                          Provider.of<CurrentUser>(context,
+                                                listen: false)
+                                            .user =
+                                        (await MyUser.getCurrentUser())!;
                           if (!mounted) return;
                           Navigator.of(context).pushNamed(verifyRoute);
                         } on WeakPasswordAuthException {

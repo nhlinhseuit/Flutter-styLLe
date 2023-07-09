@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:stylle/components/popup_dialog.dart';
 import 'package:stylle/services/collections/my_users.dart';
+import 'package:stylle/utilities/check_connectivity.dart';
 
 class UserProfileUploader extends StatefulWidget {
   final File? file;
@@ -23,6 +24,10 @@ class _UserProfileUploaderState extends State<UserProfileUploader> {
   UploadTask? _uploadTask;
 
   void _startUpload() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     final user = (await MyUser.getCurrentUser())!;
     String filepath = 'user_profiles/${user.uid}.png';
     final ref = _storage.ref().child(filepath);

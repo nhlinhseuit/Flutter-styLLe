@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
+import '../../utilities/check_connectivity.dart';
+
 class MyUser {
-  final String firstName;
+  String firstName;
   final String uid;
-  final String lastName;
+  String lastName;
   final String email;
   final String profileImage;
   List<String> favorites;
@@ -26,7 +28,46 @@ class MyUser {
     this.deleted = false,
   });
 
+  Future<void> updateInfo({String? firstName, String? lastName}) async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
+    if ((firstName == null || firstName.isEmpty) && (lastName == null || lastName.isEmpty)) {
+      return;
+    }
+    firstName = firstName == null || firstName.isEmpty ? this.firstName : firstName.trim();
+    lastName = lastName == null || lastName.isEmpty ? this.lastName : lastName.trim();
+    this.firstName = firstName;
+    this.lastName = lastName;
+    await FirebaseFirestore.instance.collection('users')
+      .doc(uid)
+      .update({
+        'first_name': firstName,
+        'last_name': lastName,
+      })
+      .catchError((error) => print("Failed to update info: $error"));
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('images')
+          .where('user_info.id', isEqualTo: uid)
+          .get();
+
+      querySnapshot.docs.forEach((DocumentSnapshot doc) async {
+        DocumentReference documentRef = doc.reference;
+        try {
+          await documentRef.update({
+            'user_info.name': getName, 
+          });
+        } catch (error) {
+          print('Error updating document: $error');
+        }
+      });
+  }
+
   static Future<MyUser?> getCurrentUser() async {
+    final googleUser = await readUser(uid: AuthService.google().currentUser?.uid);
+    if (googleUser != null) {
+      return googleUser;
+    }
     return await readUser(uid: AuthService.firebase().currentUser?.uid);
   }
 
@@ -34,7 +75,11 @@ class MyUser {
     return "$firstName $lastName";
   }
 
-  Future<void> createUser() {
+  Future<void> createUser() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     final userData = toJson();
     // Call the user's CollectionReference to add a new user
     return dbUsers.doc(uid).set(userData)
@@ -64,6 +109,7 @@ class MyUser {
 
   Future<void> addFavoriteImage(MyImage image) async {
     if (image.isUserFavorite(this)) return;
+    image.isFavorite = true;
     image.likes++;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)
@@ -82,6 +128,7 @@ class MyUser {
   
   Future<void> removeFavoriteImage(MyImage image) async {
     if (!image.isUserFavorite(this) || image.likes == 0) return;
+    image.isFavorite = false;
     image.likes--;
     await FirebaseFirestore.instance.collection('images')
       .doc(image.id)
@@ -99,6 +146,10 @@ class MyUser {
   }
 
   Future<void> handleFavorite(MyImage image) async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     if (image.isUserFavorite(this)) {
       await removeFavoriteImage(image);
     } else {
@@ -107,11 +158,16 @@ class MyUser {
   }
 
   Stream<List<MyImage>> favoriteImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
+  FirebaseFirestore.instance.collection('images')
+  .where('deleted', isEqualTo: false)
+  .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Stream<List<MyImage>> userImagesStream() => 
-  FirebaseFirestore.instance.collection('images').where('user_id', isEqualTo: uid)
+  FirebaseFirestore.instance.collection('images')
+  .where('deleted', isEqualTo: false)
+  .where('user_info.id', isEqualTo: uid)
+  .orderBy('upload_time', descending: true)
   .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Map<String, dynamic> toJson() => {
