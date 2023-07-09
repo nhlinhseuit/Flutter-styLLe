@@ -134,7 +134,7 @@ class MainPage extends StatelessWidget {
               if (googleUser != null) {
                 return FutureBuilder(
                   future: MyUser.getCurrentUser(),
-                  builder: (context, userSnapshot) {
+                  builder: (context, userSnapshot) {  
                     if (userSnapshot.connectionState == ConnectionState.done) {
                       Provider.of<CurrentUser>(context, listen: false).user =
                           userSnapshot.data!;
