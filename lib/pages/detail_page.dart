@@ -11,6 +11,7 @@ import 'package:stylle/components/circle_image.dart';
 import 'package:stylle/components/ellipsis_text.dart';
 import 'package:stylle/components/image_stream_viewer_short.dart';
 import 'package:http/http.dart' as http;
+import 'package:stylle/constants/colors.dart';
 import 'package:stylle/services/collections/my_images.dart';
 import '../constants/enums.dart';
 import '../constants/routes.dart';
@@ -33,8 +34,8 @@ class _DetailPageState extends State<DetailPage> {
   //         ? 'https://picsum.photos/400/400?image=${index + 10}'
   //         : 'https://picsum.photos/300/600?image=${index + 18}');
 
-  Icon firstIcon = Icon(
-    color: Colors.pink.shade200,
+  Icon firstIcon = const Icon(
+    color: primaryPinkColor,
     Icons.favorite_rounded,
     size: 30,
   );

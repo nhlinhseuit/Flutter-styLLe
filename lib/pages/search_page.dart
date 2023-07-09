@@ -112,7 +112,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               contentPadding: const EdgeInsets.only(left: 30),
               filled: true, //<-- SEE HERE
-              fillColor: primaryPinkColor2,
+              fillColor: primaryPinkColor,
               hintText: 'Find you style...',
               hintStyle: const TextStyle(
                   color: Colors.white,
@@ -143,13 +143,13 @@ class _SearchPageState extends State<SearchPage> {
                 } else {
                   final MyUser currentUser = snapshot.data!;
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
                           // POPULAR STYLES
                           Container(
-                            margin: EdgeInsets.only(left: 10, top: 15),
+                            margin: const EdgeInsets.only(left: 10, top: 15),
                             child: const Align(
                               alignment: Alignment.topLeft,
                               child: Text(
@@ -166,7 +166,7 @@ class _SearchPageState extends State<SearchPage> {
 
                           // LIST POPULAR IMG
                           Container(
-                            margin: EdgeInsets.only(top: 8, bottom: 10),
+                            margin: const EdgeInsets.only(top: 8, bottom: 10),
                             child: ImageStreamPopularSearch(
                                 user: currentUser,
                                 imagesPopularStream:
@@ -175,7 +175,7 @@ class _SearchPageState extends State<SearchPage> {
 
                           // IDEAS FOR YOU
                           Container(
-                            margin: EdgeInsets.only(left: 10, top: 5),
+                            margin: const EdgeInsets.only(left: 10, top: 5),
                             child: const Align(
                               alignment: Alignment.topLeft,
                               child: Text(
@@ -191,7 +191,7 @@ class _SearchPageState extends State<SearchPage> {
 
                           // LIST COLLECTION
                           // Container(
-                          //   margin: EdgeInsets.only(top: 20, bottom: 20),
+                          //   margin: const EdgeInsets.only(top: 20, bottom: 20),
                           //   child: ImageStreamIdeas(
                           //       user: currentUser,
                           //       imagesTagsStream: MyImage.imagesTagsStream(tags)),
@@ -251,7 +251,7 @@ class _SearchPageState extends State<SearchPage> {
                                         child: Text(
                                           myObjects[index].name,
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
