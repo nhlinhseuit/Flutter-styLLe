@@ -16,7 +16,6 @@ class SearchPage extends StatefulWidget {
 class MyObject {
   String imageUrl;
   String name;
-  
 
   MyObject({required this.imageUrl, required this.name});
 }
@@ -51,8 +50,6 @@ List<MyObject> myObjects = [
 class _SearchPageState extends State<SearchPage> {
   late final TextEditingController _searchController;
   String _searchInput = '';
-
-  
 
   // DEFAULT TAGS IN SEARCH
   // List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
@@ -112,12 +109,11 @@ class _SearchPageState extends State<SearchPage> {
               ),
               contentPadding: const EdgeInsets.only(left: 30),
               filled: true, //<-- SEE HERE
-              fillColor: primaryPinkColor,
+              fillColor: const Color(0xFF303030),
               hintText: 'Find you style...',
               hintStyle: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
+                color: Colors.white,
+              ),
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
@@ -208,9 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                             childAspectRatio: (size.width - 52) / 200,
                             children: List.generate(myObjects.length, (index) {
                               return GestureDetector(
-                                onTap: () {
-                                  
-                                },
+                                onTap: () {},
                                 child: Stack(
                                   children: [
                                     ClipRRect(
@@ -253,7 +247,6 @@ class _SearchPageState extends State<SearchPage> {
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
