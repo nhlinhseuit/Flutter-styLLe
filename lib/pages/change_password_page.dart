@@ -72,17 +72,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               children: [
                 const Text(
                   "Change password",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30.00,
-                      fontWeight: FontWeight.w900),
+                  style:
+                      TextStyle(fontSize: 30.00, fontWeight: FontWeight.w900),
                 ),
                 Column(
                   children: [
                     TextFormField(
+                      style: const TextStyle(color: Colors.white),
                       controller: _currentPasswordController,
-                      decoration:
-                          const InputDecoration(labelText: 'Current Password'),
+                      decoration: const InputDecoration(
+                        labelText: 'Current Password',
+                        labelStyle: TextStyle(color: Colors.white60),
+                        filled: true,
+                        fillColor: Color(0xFF303030),
+                        border: OutlineInputBorder(),
+                      ),
                       obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -92,9 +96,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       },
                     ),
                     TextFormField(
+                      style: const TextStyle(color: Colors.white),
                       controller: _newPasswordController,
-                      decoration:
-                          const InputDecoration(labelText: 'New Password'),
+                      decoration: const InputDecoration(
+                        labelText: 'New Password',
+                        labelStyle: TextStyle(color: Colors.white60),
+                        filled: true,
+                        fillColor: Color(0xFF303030),
+                        border: OutlineInputBorder(),
+                      ),
                       obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -115,13 +125,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25), // <-- Radius
                         ),
-                        backgroundColor: Colors.black,
                         minimumSize: const Size.fromHeight(50),
                       ),
                       onPressed: _isLoading ? null : _changePassword,
                       child: _isLoading
                           ? const CircularProgressIndicator()
-                          : const Text('Confirm'),
+                          : const Text('Confirm',
+                              style: TextStyle(
+                                color: Colors.black,
+                              )),
                     ),
                     const SizedBox(
                       height: 20,
@@ -129,7 +141,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     TextButton(
                       child: const Text("Cancel",
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 16.00,
                           )),
                       onPressed: () {

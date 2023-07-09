@@ -16,7 +16,7 @@ class VerifyEmailPage extends StatefulWidget {
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   late Timer _timer;
-  
+
   Future<void> verifyEmail() async {
     await AuthService.firebase().sendEmailVerification();
   }
@@ -31,16 +31,20 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       if (user?.isEmailVerified ?? false) {
         timer.cancel();
         if (!mounted) return;
-        await showMessageDialog(context, 'Your email has been successfully verified.');
-        Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+        await showMessageDialog(
+            context, 'Your email has been successfully verified.');
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(homeRoute, (route) => false);
       }
     });
   }
+
   @override
   void dispose() {
     super.dispose();
     _timer.cancel();
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -63,76 +67,79 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           body: Container(
             padding: const EdgeInsets.all(32),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     "Verify \nyour account",
                     style: GoogleFonts.abhayaLibre(
-                      textStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 36.00,
-                        fontWeight: FontWeight.w900
-                      )
-                    ),
-                  ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("We've sent you an email verification.\nIf you haven't receive your verification, please tap on the button below:"),
-                    const SizedBox(
-                      height: 60,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25), // <-- Radius
-                        ),
-                        minimumSize: const Size.fromHeight(50),
-                      ),
-                      onPressed: () async {
-                        await AuthService.firebase().sendEmailVerification();
-                      }, 
-                      child: Text(
-                        'Send email verification.',
-                        style: GoogleFonts.abhayaLibre(
-                          textStyle: const TextStyle(
+                        textStyle: const TextStyle(
                             color: Colors.black,
-                            fontSize: 20.00,
-                          )
-                        ),
-                      )
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25), // <-- Radius
-                        ),
-                        backgroundColor: Colors.black,
-                        minimumSize: const Size.fromHeight(50),
+                            fontSize: 36.00,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                          "We've sent you an email verification.\nIf you haven't receive your verification, please tap on the button below:",
+                          style: TextStyle(
+                            color: Colors.black,
+                          )),
+                      const SizedBox(
+                        height: 60,
                       ),
-                      onPressed: () => {
-                        Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false)
-                      }, 
-                      child: Text(
-                        'Later',
-                        style: GoogleFonts.abhayaLibre(
-                          textStyle: TextStyle(
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(25), // <-- Radius
+                            ),
+                            minimumSize: const Size.fromHeight(50),
+                          ),
+                          onPressed: () async {
+                            await AuthService.firebase()
+                                .sendEmailVerification();
+                          },
+                          child: Text(
+                            'Send email verification.',
+                            style: GoogleFonts.abhayaLibre(
+                                textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.00,
+                            )),
+                          )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(25), // <-- Radius
+                          ),
+                          backgroundColor: Colors.black,
+                          minimumSize: const Size.fromHeight(50),
+                        ),
+                        onPressed: () => {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              homeRoute, (route) => false)
+                        },
+                        child: Text(
+                          'Later',
+                          style: GoogleFonts.abhayaLibre(
+                              textStyle: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: 20.00,
-                          )
+                          )),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 80,
-                    ),
-                  ],
-                ),
-            ]),
+                      const SizedBox(
+                        height: 80,
+                      ),
+                    ],
+                  ),
+                ]),
           ),
         ),
       ],
