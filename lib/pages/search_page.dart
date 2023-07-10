@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stylle/components/image_stream_viewer.dart';
 import 'package:stylle/constants/colors.dart';
+import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_images.dart';
 import 'dart:ui';
 import '../components/images_stream_popular_search.dart';
@@ -55,8 +56,8 @@ class _SearchPageState extends State<SearchPage> {
   
 
   // DEFAULT TAGS IN SEARCH
-  // List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
-  List<String> tags = ['cat'];
+  List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
+  // List<String> tags = ['cat'];
 
   get args => null;
   @override
@@ -209,7 +210,10 @@ class _SearchPageState extends State<SearchPage> {
                             children: List.generate(myObjects.length, (index) {
                               return GestureDetector(
                                 onTap: () {
-                                  
+                                  Navigator.of(context).pushNamed(tagRoute,
+                                  arguments: {
+                                    tags[index],
+                                  });
                                 },
                                 child: Stack(
                                   children: [

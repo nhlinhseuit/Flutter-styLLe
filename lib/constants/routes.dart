@@ -1,3 +1,4 @@
+
 const preLoginRoute = '/preLogin/';
 const loginRoute = '/login/';
 const registerRoute = '/register/';
@@ -10,3 +11,4 @@ const favoritesRout = '/favorites/';
 const imageCaptureRoute = '/imageCapture/';
 const userProfileUploadRoute = '/profile_upload/';
 const searchRoute = '/search/';
+const tagRoute = '/tagRoute/';
