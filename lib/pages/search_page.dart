@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stylle/components/image_stream_viewer.dart';
 import 'package:stylle/constants/colors.dart';
+import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_images.dart';
 import 'dart:ui';
 import '../components/images_stream_popular_search.dart';
@@ -52,8 +53,8 @@ class _SearchPageState extends State<SearchPage> {
   String _searchInput = '';
 
   // DEFAULT TAGS IN SEARCH
-  // List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
-  List<String> tags = ['cat'];
+  List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
+  // List<String> tags = ['cat'];
 
   get args => null;
   @override
@@ -204,7 +205,12 @@ class _SearchPageState extends State<SearchPage> {
                             childAspectRatio: (size.width - 52) / 200,
                             children: List.generate(myObjects.length, (index) {
                               return GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(tagRoute,
+                                  arguments: 
+                                    [tags[index]],
+                                  );
+                                },
                                 child: Stack(
                                   children: [
                                     ClipRRect(
@@ -243,7 +249,7 @@ class _SearchPageState extends State<SearchPage> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          myObjects[index].name,
+                                          myObjects[index].name.toUpperCase(),
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             color: Colors.white,

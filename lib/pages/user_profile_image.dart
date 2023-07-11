@@ -84,7 +84,7 @@ class _UserProfileUploadState extends State<UserProfileUpload> {
   Future<void> _pickImage(ImageSource source) async {
     XFile? selected = await _picker.pickImage(
       source: source,
-      maxWidth: 200,
+      maxWidth: 800,
     );
 
     setState(() {
