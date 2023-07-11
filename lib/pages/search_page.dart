@@ -211,9 +211,9 @@ class _SearchPageState extends State<SearchPage> {
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(tagRoute,
-                                  arguments: {
-                                    tags[index],
-                                  });
+                                  arguments: 
+                                    [tags[index]],
+                                  );
                                 },
                                 child: Stack(
                                   children: [
@@ -253,11 +253,10 @@ class _SearchPageState extends State<SearchPage> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          myObjects[index].name,
+                                          myObjects[index].name.toUpperCase(),
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),

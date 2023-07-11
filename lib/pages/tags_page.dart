@@ -1,10 +1,10 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stylle/constants/routes.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
 import '../components/image_stream_viewer.dart';
+import '../components/page_header.dart';
 import '../services/collections/my_images.dart';
 
 class TagsPageDelegate extends StatefulWidget {
@@ -30,8 +30,7 @@ class _TagsPageDelegateState extends State<TagsPageDelegate> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as MyImage;
-    final tags = args.tags;
+    final tags = ModalRoute.of(context)!.settings.arguments as List<String>;
     return FutureBuilder(
         future: MyUser.getCurrentUser(),
         builder: (context, snapshot) {
@@ -44,40 +43,33 @@ class _TagsPageDelegateState extends State<TagsPageDelegate> {
           } else {
             final MyUser currentUser = snapshot.data!;
             return Scaffold(
-                backgroundColor: Colors.white,
-                body: NestedScrollView(
-                  floatHeaderSlivers: true,
-                  headerSliverBuilder: (context, innerBoxIsScrolled) {
-                    return [
-                      SliverAppBar(
-                        // forceElevated: true,
-                        // elevation: 2.5,
-                        centerTitle: true,
-                        snap: true,
-                        floating: true,
-                        shadowColor: Colors.black,
-                        toolbarHeight: 55,
-                        backgroundColor: Colors.white,
-                        title: Container(
-                          margin: const EdgeInsets.only(bottom: 4, top: 10),
-                          child: Text(
-                            'styLLe',
-                            style: GoogleFonts.allura(
-                              color: Colors.pink[200],
-                              fontSize: 35,
-                            ),
-                          ),
-                        ),
-                      )
-                    ];
+              floatingActionButton: Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: FloatingActionButton.small(
+                  elevation: 1,
+                  backgroundColor: Colors.white.withOpacity(.2),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
                   },
-                  body: ListView(
-                      children: [
-                             ImageStreamView(
-                                user: currentUser,
-                                imagesStream: MyImage.imagesTagsStream(tags))
-                      ]),
-                ));
+                ),
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.miniEndTop,
+              body: ListView(children: [
+                Header(
+                  firstLine: "this is",
+                  secondLine: tags[0],
+                ),
+                ImageStreamView(
+                    user: currentUser,
+                    imagesStream: MyImage.imagesTagsStream(tags))
+              ]),
+            );
           }
         });
   }
