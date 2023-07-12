@@ -18,4 +18,7 @@ class CurrentUser extends ChangeNotifier {
   void setName() {
     notifyListeners();
   }
+  void setProfileImage() {
+    notifyListeners();
+  }
 }

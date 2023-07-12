@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CircleImage extends StatefulWidget {
-  const CircleImage({super.key, required this.size, required this.imgUrl});
+  CircleImage({super.key, required this.size, required this.imgUrl});
   final double size;
-  final String imgUrl;
+  String? imgUrl;
 
   @override
   State<CircleImage> createState() => _CircleImageState();
@@ -19,7 +19,7 @@ class _CircleImageState extends State<CircleImage> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(widget.size/2),
         child: CachedNetworkImage(
-          imageUrl: widget.imgUrl,
+          imageUrl: widget.imgUrl ?? "https://placehold.co/200x200",
           placeholder: (context, url) => const CircularProgressIndicator(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
           fit: BoxFit.cover,

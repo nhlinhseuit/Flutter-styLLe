@@ -7,11 +7,11 @@ import 'package:stylle/services/collections/my_images.dart';
 import '../../utilities/check_connectivity.dart';
 
 class MyUser {
-  String firstName;
   final String uid;
-  String lastName;
   final String email;
-  final String profileImage;
+  String firstName;
+  String lastName;
+  String profileImage;
   List<String> favorites;
   late bool deleted;
 

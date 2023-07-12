@@ -73,7 +73,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                                 color: Colors.white,
                                 onPressed: () {
                                   Navigator.of(context)
-                                      .pushNamed(userProfileUploadRoute);
+                                      .popAndPushNamed(userProfileUploadRoute);
                                 },
                                 icon: const Icon(Icons.camera_alt_outlined)),
                           ),
