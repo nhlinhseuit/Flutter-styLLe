@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CircleImage extends StatefulWidget {
   CircleImage({super.key, required this.size, required this.imgUrl});
   final double size;

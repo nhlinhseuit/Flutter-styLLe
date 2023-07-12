@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stylle/constants/routes.dart';
@@ -24,8 +25,7 @@ import 'package:stylle/services/notifiers/current_user.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor:
-        Color(0xFFFF768E), // màu nền của thanh trạng thái
+    statusBarColor: Color(0xFFFF768E), // màu nền của thanh trạng thái
     statusBarIconBrightness: Brightness.dark, // màu icon trên thanh trạng thái
   ));
   runApp(const MyApp());
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           imageCaptureRoute: (context) => const ImageCapture(),
           editImageRoute: (context) => const EditImagePage(),
           userProfileUploadRoute: (context) => const UserProfileUpload(),
-            tagRoute: (context) => const TagsPageDelegate(),
+          tagRoute: (context) => const TagsPageDelegate(),
         },
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.black,
@@ -110,12 +110,12 @@ class _SplashState extends State<Splash> {
               width: 80,
             ),
             Text(
-            'styLLe',
-            style: GoogleFonts.allura(
-              color: const Color(0xFFFF768E),
-              fontSize: 100,
+              'styLLe',
+              style: GoogleFonts.allura(
+                color: const Color(0xFFFF768E),
+                fontSize: 100,
+              ),
             ),
-          ),
           ]),
         ),
       ),
@@ -127,37 +127,30 @@ class MainPage extends StatelessWidget {
   const MainPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: AuthService.firebase().initialize(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              final googleUser = AuthService.google().currentUser;
-              if (googleUser != null) {
-                return FutureBuilder(
-                  future: MyUser.getCurrentUser(),
-                  builder: (context, userSnapshot) {  
-                    if (userSnapshot.connectionState == ConnectionState.done) {
-                      Provider.of<CurrentUser>(context, listen: false).user =
-                          userSnapshot.data!;
-                      return const HomePage();
-                    } else {
-                      return const Scaffold(
-                        body: Center(child: CircularProgressIndicator()),
-                      );
-                    }
-                  },
-                );
-              }
-              final emailUser = AuthService.firebase().currentUser;
-              if (emailUser != null) {
-                final emailVerified = emailUser.isEmailVerified;
-                if (emailVerified) {
+    DateTime? currentBackPressTime;
+    Future<bool> onWillPop() {
+      DateTime now = DateTime.now();
+      if (currentBackPressTime == null ||
+          now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+        currentBackPressTime = now;
+        Fluttertoast.showToast(msg: "Press again to exit app.");
+        return Future.value(false);
+      }
+      return Future.value(true);
+    }
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: FutureBuilder(
+          future: AuthService.firebase().initialize(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.done:
+                final googleUser = AuthService.google().currentUser;
+                if (googleUser != null) {
                   return FutureBuilder(
                     future: MyUser.getCurrentUser(),
                     builder: (context, userSnapshot) {
-                      if (userSnapshot.connectionState ==
-                          ConnectionState.done) {
+                      if (userSnapshot.connectionState == ConnectionState.done) {
                         Provider.of<CurrentUser>(context, listen: false).user =
                             userSnapshot.data!;
                         return const HomePage();
@@ -168,17 +161,38 @@ class MainPage extends StatelessWidget {
                       }
                     },
                   );
-                } else {
-                  return const VerifyEmailPage();
                 }
-              } else {
-                return const BoardingPage();
-              }
-            default:
-              return const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              );
-          }
-        });
+                final emailUser = AuthService.firebase().currentUser;
+                if (emailUser != null) {
+                  final emailVerified = emailUser.isEmailVerified;
+                  if (emailVerified) {
+                    return FutureBuilder(
+                      future: MyUser.getCurrentUser(),
+                      builder: (context, userSnapshot) {
+                        if (userSnapshot.connectionState ==
+                            ConnectionState.done) {
+                          Provider.of<CurrentUser>(context, listen: false).user =
+                              userSnapshot.data!;
+                          return const HomePage();
+                        } else {
+                          return const Scaffold(
+                            body: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+                      },
+                    );
+                  } else {
+                    return const VerifyEmailPage();
+                  }
+                } else {
+                  return const BoardingPage();
+                }
+              default:
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+            }
+          }),
+    );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:provider/provider.dart';
 import 'package:stylle/components/circle_image.dart';
