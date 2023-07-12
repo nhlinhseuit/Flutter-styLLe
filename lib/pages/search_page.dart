@@ -23,28 +23,28 @@ class MyObject {
 
 List<MyObject> myObjects = [
   MyObject(
-    imageUrl: "assets/images/cat.jpg",
-    name: 'Cat',
+    imageUrl: "assets/images/cat2.jpg",
+    name: 'male',
   ),
   MyObject(
-    imageUrl: "assets/images/kitchen.jpg",
-    name: 'Kitchen',
+    imageUrl: "assets/images/kitchen2.jpg",
+    name: 'female',
   ),
   MyObject(
-    imageUrl: "assets/images/dog.jpg",
-    name: 'Dog',
+    imageUrl: "assets/images/dog2.jpg",
+    name: 'minimalist',
   ),
   MyObject(
-    imageUrl: "assets/images/uit.jpg",
-    name: 'Uit',
+    imageUrl: "assets/images/uit2.jpg",
+    name: 'street',
   ),
   MyObject(
-    imageUrl: "assets/images/school.jpg",
-    name: 'School',
+    imageUrl: "assets/images/school2.jpg",
+    name: 'cute',
   ),
   MyObject(
-    imageUrl: "assets/images/nvhsv.jpg",
-    name: 'NVHSV',
+    imageUrl: "assets/images/nvhsv2.jpg",
+    name: 'vintage',
   ),
 ];
 
@@ -53,7 +53,14 @@ class _SearchPageState extends State<SearchPage> {
   String _searchInput = '';
 
   // DEFAULT TAGS IN SEARCH
-  List<String> tags = ['cat', 'kitchen', 'dog', 'uit', 'school', 'nvhsv'];
+  List<String> tags = [
+    'male',
+    'female',
+    'minimalist',
+    'street',
+    'cute',
+    'vintage'
+  ];
   // List<String> tags = ['cat'];
 
   get args => null;
@@ -206,9 +213,9 @@ class _SearchPageState extends State<SearchPage> {
                             children: List.generate(myObjects.length, (index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(tagRoute,
-                                  arguments: 
-                                    [tags[index]],
+                                  Navigator.of(context).pushNamed(
+                                    tagRoute,
+                                    arguments: [tags[index]],
                                   );
                                 },
                                 child: Stack(
