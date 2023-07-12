@@ -179,7 +179,6 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                                     title: 'Delete');
                                             if (confirmLogout) {
                                               images[index].delete();
-                                              Navigator.of(context).pop();
                                             }
                                         }
                                       })
