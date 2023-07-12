@@ -20,18 +20,24 @@ class ProfilePageDelegated extends StatefulWidget {
 }
 
 class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
+  bool changesMade = false;
   final List<String> _choiceChips = ['My posts', 'Favorites'];
   int _selectedChoiceIndex = 0;
-  String imagePath = 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541';
+  String imagePath =
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541';
 
   @override
   Widget build(BuildContext context) {
     return Consumer<CurrentUser>(builder: (context, currentUser, child) {
+      imagePath = currentUser.user.profileImage;
       return FocusDetector(
         onVisibilityGained: () {
-          setState(() {
-            imagePath = currentUser.user.profileImage;
-          });
+          if (changesMade) {
+            setState(() {
+              imagePath = currentUser.user.profileImage;
+              changesMade = false;
+            });
+          }
         },
         child: FutureBuilder(
             future:
@@ -114,6 +120,9 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                                           style: TextStyle(color: Colors.black),
                                         ),
                                         onPressed: () {
+                                          setState(() {
+                                            changesMade = true;
+                                          });
                                           Navigator.of(context)
                                               .pushNamed(editInfoRoute);
                                         }),
