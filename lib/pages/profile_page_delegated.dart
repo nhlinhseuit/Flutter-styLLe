@@ -50,7 +50,7 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                         color: Colors.white,
                         itemBuilder: (context) {
                           return [
-                            if (!snapshot.data!.contains("google.com"))
+                            if (!(snapshot.data!.contains("google.com") && snapshot.data!.length == 1))
                               const PopupMenuItem<MenuAction>(
                                 value: MenuAction.changePassword,
                                 child: Text('Change password'),

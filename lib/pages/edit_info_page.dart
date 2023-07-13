@@ -92,6 +92,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                               hintText: 'Your first name',
                               hintStyle: TextStyle(color: Colors.white60)),
                         ),
+                        const SizedBox(height: 4,),
                         TextField(
                           style: const TextStyle(color: Colors.white),
                           controller: _lastNameController,

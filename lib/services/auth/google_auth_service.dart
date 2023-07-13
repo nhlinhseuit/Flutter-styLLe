@@ -74,7 +74,7 @@ class AuthProviderGoogle implements AuthProvider {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
         var user = userCredential.user; 
-        if (user != null) {
+        if (user != null && user.email == null) {
           createUser(
             firstName: user.displayName!, 
             lastName: '', 
