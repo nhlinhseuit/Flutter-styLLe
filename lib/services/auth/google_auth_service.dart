@@ -71,16 +71,17 @@ class AuthProviderGoogle implements AuthProvider {
       );
 
       try {
-        final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
-        var user = userCredential.user; 
-        if (user != null && user.email == null) {
-          createUser(
-            firstName: user.displayName!, 
-            lastName: '', 
-            email: user.email!, 
-            password: ''
-          );
+        final UserCredential userCredential = await auth.signInWithCredential(credential);
+        var user = userCredential.user;
+        if (user != null) {
+          var dbUser = await MyUser.readUser(uid: user.uid);
+          if (dbUser == null) {
+            createUser(
+                firstName: user.displayName!,
+                lastName: '',
+                email: user.email!,
+                password: '');
+          }
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {

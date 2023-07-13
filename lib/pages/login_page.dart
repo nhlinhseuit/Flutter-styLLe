@@ -267,7 +267,6 @@ class _LoginPageState extends State<LoginPage> {
                             await AuthService.google()
                                 .login(email: '', password: '');
                             final user = AuthService.google().currentUser;
-                            if (!mounted) return;
                             if (user != null) {
                               Provider.of<CurrentUser>(context, listen: false)
                                   .user = (await MyUser.getCurrentUser())!;

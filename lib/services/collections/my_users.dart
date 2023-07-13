@@ -15,16 +15,17 @@ class MyUser {
   List<String> favorites;
   late bool deleted;
 
-  static CollectionReference dbUsers = FirebaseFirestore.instance.collection('users');
-  
+  static CollectionReference dbUsers =
+      FirebaseFirestore.instance.collection('users');
+
   MyUser({
-    this.profileImage = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
-    this.favorites = const [],  
+    this.profileImage =
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+    this.favorites = const [],
     required this.uid,
     required this.firstName,
     required this.lastName,
     required this.email,
-
     this.deleted = false,
   });
 
@@ -33,38 +34,41 @@ class MyUser {
       displayNoInternet();
       return;
     }
-    if ((firstName == null || firstName.isEmpty) && (lastName == null || lastName.isEmpty)) {
+    if ((firstName == null || firstName.isEmpty) &&
+        (lastName == null || lastName.isEmpty)) {
       return;
     }
-    firstName = firstName == null || firstName.isEmpty ? this.firstName : firstName.trim();
-    lastName = lastName == null || lastName.isEmpty ? this.lastName : lastName.trim();
+    firstName = firstName == null || firstName.isEmpty
+        ? this.firstName
+        : firstName.trim();
+    lastName =
+        lastName == null || lastName.isEmpty ? this.lastName : lastName.trim();
     this.firstName = firstName;
     this.lastName = lastName;
-    await FirebaseFirestore.instance.collection('users')
-      .doc(uid)
-      .update({
-        'first_name': firstName,
-        'last_name': lastName,
-      })
-      .catchError((error) => print("Failed to update info: $error"));
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('images')
-          .where('user_info.id', isEqualTo: uid)
-          .get();
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'first_name': firstName,
+      'last_name': lastName,
+    }).catchError((error) => print("Failed to update info: $error"));
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('images')
+        .where('user_info.id', isEqualTo: uid)
+        .get();
 
-      querySnapshot.docs.forEach((DocumentSnapshot doc) async {
-        DocumentReference documentRef = doc.reference;
-        try {
-          await documentRef.update({
-            'user_info.name': getName, 
-          });
-        } catch (error) {
-          print('Error updating document: $error');
-        }
-      });
+    querySnapshot.docs.forEach((DocumentSnapshot doc) async {
+      DocumentReference documentRef = doc.reference;
+      try {
+        await documentRef.update({
+          'user_info.name': getName,
+        });
+      } catch (error) {
+        print('Error updating document: $error');
+      }
+    });
   }
 
   static Future<MyUser?> getCurrentUser() async {
-    final googleUser = await readUser(uid: AuthService.google().currentUser?.uid);
+    final googleUser =
+        await readUser(uid: AuthService.google().currentUser?.uid);
     if (googleUser != null) {
       return googleUser;
     }
@@ -82,19 +86,18 @@ class MyUser {
     }
     final userData = toJson();
     // Call the user's CollectionReference to add a new user
-    return dbUsers.doc(uid).set(userData)
+    return dbUsers
+        .doc(uid)
+        .set(userData)
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
 
   static Stream<List<MyUser>> readUsers() => FirebaseFirestore.instance
-    .collection('users')
-    .snapshots()
-    .map((snapshot) => snapshot.docs.map(
-      (doc) => MyUser.fromJson(doc.data()))
-    .toList()
-    );
-    
+      .collection('users')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => MyUser.fromJson(doc.data())).toList());
 
   static Future<MyUser?> readUser({required String? uid}) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc(uid);
@@ -111,38 +114,28 @@ class MyUser {
     if (image.isUserFavorite(this)) return;
     image.isFavorite = true;
     image.likes++;
-    await FirebaseFirestore.instance.collection('images')
-      .doc(image.id)
-      .update({
-        'likes': image.likes,
-      });
+    await FirebaseFirestore.instance.collection('images').doc(image.id).update({
+      'likes': image.likes,
+    });
     favorites.add(image.id);
     // image.isFavorite = false;
-    await FirebaseFirestore.instance.collection('users')
-      .doc(uid)
-      .update({
-        'favorites': favorites.isNotEmpty ? favorites : []
-      })
-      .catchError((error) => print("Failed to add fav image: $error"));
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'favorites': favorites.isNotEmpty ? favorites : []
+    }).catchError((error) => print("Failed to add fav image: $error"));
   }
-  
+
   Future<void> removeFavoriteImage(MyImage image) async {
     if (!image.isUserFavorite(this) || image.likes == 0) return;
     image.isFavorite = false;
     image.likes--;
-    await FirebaseFirestore.instance.collection('images')
-      .doc(image.id)
-      .update({
-        'likes': image.likes,
-      });
+    await FirebaseFirestore.instance.collection('images').doc(image.id).update({
+      'likes': image.likes,
+    });
     favorites.remove(image.id);
     // image.isFavorite = false;
-    await FirebaseFirestore.instance.collection('users')
-      .doc(uid)
-      .update({
-        'favorites': favorites.isNotEmpty ? favorites : []
-      })
-      .catchError((error) => print("Failed to remove fav image: $error"));
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'favorites': favorites.isNotEmpty ? favorites : []
+    }).catchError((error) => print("Failed to remove fav image: $error"));
   }
 
   Future<void> handleFavorite(MyImage image) async {
@@ -157,39 +150,42 @@ class MyUser {
     }
   }
 
-  Stream<List<MyImage>> favoriteImagesStream() => 
-  FirebaseFirestore.instance.collection('images')
-  .where('deleted', isEqualTo: false)
-  .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
-  .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+  Stream<List<MyImage>> favoriteImagesStream() => FirebaseFirestore.instance
+      .collection('images')
+      .where('deleted', isEqualTo: false)
+      .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
-  Stream<List<MyImage>> userImagesStream() => 
-  FirebaseFirestore.instance.collection('images')
-  .where('deleted', isEqualTo: false)
-  .where('user_info.id', isEqualTo: uid)
-  .orderBy('upload_time', descending: true)
-  .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+  Stream<List<MyImage>> userImagesStream() => FirebaseFirestore.instance
+      .collection('images')
+      .where('deleted', isEqualTo: false)
+      .where('user_info.id', isEqualTo: uid)
+      .orderBy('upload_time', descending: true)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
   Map<String, dynamic> toJson() => {
-    'uid': uid,
-    'profile_image': profileImage,
-    'first_name': firstName,
-    'last_name': lastName,
-    'email': email,
-    'favorites': favorites,
-    'deleted': deleted,
-  };
-  static MyUser fromJson(Map<String,dynamic> json) => MyUser(
-    uid: json['uid'], 
-    profileImage: json['profile_image'],
-    firstName: json['first_name'], 
-    lastName: json['last_name'], 
-    email: json['email'],
-    favorites: List<String>.from(json['favorites']),
-    // favorites: List<MyImage>.from(json['favorites'].map((doc) {
-    //   return MyImage.fromJson(doc);
-    // })),
-    deleted: json['deleted'],
-  );
+        'uid': uid,
+        'profile_image': profileImage,
+        'first_name': firstName,
+        'last_name': lastName,
+        'email': email,
+        'favorites': favorites,
+        'deleted': deleted,
+      };
+  static MyUser fromJson(Map<String, dynamic> json) => MyUser(
+        uid: json['uid'],
+        profileImage: json['profile_image'],
+        firstName: json['first_name'],
+        lastName: json['last_name'],
+        email: json['email'],
+        favorites: List<String>.from(json['favorites']),
+        // favorites: List<MyImage>.from(json['favorites'].map((doc) {
+        //   return MyImage.fromJson(doc);
+        // })),
+        deleted: json['deleted'],
+      );
 }
-
