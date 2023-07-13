@@ -9,6 +9,7 @@ import 'package:stylle/services/notifiers/current_user.dart';
 import '../constants/routes.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
+import '../utilities/check_connectivity.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -146,7 +147,11 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                           TextButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                if (!(await checkInternetConnectivity())) {
+                                  displayNoInternet();
+                                  return;
+                                }
                                 Navigator.of(context)
                                     .pushNamed(forgotPasswordRoute);
                               },
@@ -185,6 +190,10 @@ class _LoginPageState extends State<LoginPage> {
                                 )),
                               ),
                               onPressed: () async {
+                                if (!(await checkInternetConnectivity())) {
+                                  displayNoInternet();
+                                  return;
+                                }
                                 final emailText = _emailController.text.trim();
                                 final passwordText =
                                     _passwordController.text.trim();
@@ -250,6 +259,10 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                         ),
                         onPressed: () async {
+                          if (!(await checkInternetConnectivity())) {
+                            displayNoInternet();
+                            return;
+                          }
                           try {
                             await AuthService.google()
                                 .login(email: '', password: '');

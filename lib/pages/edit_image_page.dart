@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stylle/constants/routes.dart';
 
 import '../services/collections/my_images.dart';
+import '../utilities/check_connectivity.dart';
 
 class EditImagePage extends StatefulWidget {
   const EditImagePage({super.key});
@@ -42,14 +43,14 @@ class _EditImagePageState extends State<EditImagePage> {
     });
   }
 
-  void updateImage(MyImage image) {
+  Future<void> updateImage(MyImage image) async {
     image.description = _imageDescriptionText.isEmpty
         ? image.description
         : _imageDescriptionText;
     image.tags = _imageTagsText == null || _imageTagsText!.isEmpty
         ? image.tags
         : _imageTagsText!.split(',').map((tag) => tag.trim()).toList();
-    image.update();
+    await image.update();
   }
 
   @override
@@ -131,7 +132,11 @@ class _EditImagePageState extends State<EditImagePage> {
                 height: 12,
               ),
               ElevatedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
+                    if (!(await checkInternetConnectivity())) {
+                      displayNoInternet();
+                      return;
+                    }
                     updateImage(args);
                     Navigator.of(context)
                         .popAndPushNamed(detailPageRout, arguments: args);

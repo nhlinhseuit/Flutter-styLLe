@@ -4,6 +4,7 @@ import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/components/popup_dialog.dart';
 
 import '../services/auth/auth_exceptions.dart';
+import '../utilities/check_connectivity.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -26,6 +27,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   void resetPassword() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     String email = _emailController.text.trim();
 
     if (email.isNotEmpty) {

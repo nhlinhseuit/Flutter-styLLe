@@ -6,6 +6,7 @@ import 'package:stylle/services/collections/my_images.dart';
 import 'dart:ui';
 import '../components/images_stream_popular_search.dart';
 import '../services/collections/my_users.dart';
+import '../utilities/check_connectivity.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -212,7 +213,11 @@ class _SearchPageState extends State<SearchPage> {
                             childAspectRatio: (size.width - 52) / 200,
                             children: List.generate(myObjects.length, (index) {
                               return GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  if (!(await checkInternetConnectivity())) {
+                                    displayNoInternet();
+                                    return;
+                                  }
                                   Navigator.of(context).pushNamed(
                                     tagRoute,
                                     arguments: [tags[index]],

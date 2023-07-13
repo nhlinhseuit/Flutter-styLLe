@@ -16,6 +16,7 @@ import 'package:stylle/services/collections/my_images.dart';
 import '../constants/enums.dart';
 import '../constants/routes.dart';
 import '../services/notifiers/current_user.dart';
+import '../utilities/check_connectivity.dart';
 import '../utilities/popup_confirm_dialog.dart';
 
 class DetailPage extends StatefulWidget {
@@ -112,6 +113,10 @@ class _DetailPageState extends State<DetailPage> {
                       IconButton(
                           icon: isUserFavorite ? firstIcon : secondIcon,
                           onPressed: () async {
+                            if (!(await checkInternetConnectivity())) {
+                              displayNoInternet();
+                              return;
+                            }
                             await currentUser.user.handleFavorite(args);
                             setState(() {
                               Provider.of<CurrentUser>(context, listen: false)
@@ -131,6 +136,10 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                     onPressed: () async {
                       try {
+                        if (!(await checkInternetConnectivity())) {
+                          displayNoInternet();
+                          return;
+                        }
                         String path = args.path;
                         await GallerySaver.saveImage(path).then((success) {
                           if (success != null && success) {
@@ -172,11 +181,11 @@ class _DetailPageState extends State<DetailPage> {
                       size: 30,
                     ),
                     onPressed: () async {
+                      if (!(await checkInternetConnectivity())) {
+                        displayNoInternet();
+                        return;
+                      }
                       String path = args.path;
-                      // await Share.share(path, subject: "subject that I like");
-
-                      // ignore: use_build_context_synchronously
-
                       final uri = Uri.parse(path);
                       final response = await http.get(uri);
                       final bytes = response.bodyBytes;

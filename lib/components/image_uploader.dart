@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:stylle/services/collections/my_images.dart';
 import 'package:stylle/services/collections/my_users.dart';
 
+import '../utilities/check_connectivity.dart';
+
 class Uploader extends StatefulWidget {
   final File? file;
   final String? description;
@@ -21,6 +23,10 @@ class _UploaderState extends State<Uploader> {
   UploadTask? _uploadTask;
 
   void _startUpload() async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     String filepath = 'images/${DateTime.now()}.png';
     final ref = _storage.ref().child(filepath);
 

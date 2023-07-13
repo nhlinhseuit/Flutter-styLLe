@@ -8,6 +8,7 @@ import '../services/auth/auth_exceptions.dart';
 import '../services/auth/auth_service.dart';
 import '../components/popup_dialog.dart';
 import '../services/collections/my_users.dart';
+import '../utilities/check_connectivity.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -148,6 +149,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       onPressed: () async {
+                        if (!(await checkInternetConnectivity())) {
+                          displayNoInternet();
+                          return;
+                        }
                         final emailText = _emailController.text.trim();
                         final passwordText = _passwordController.text.trim();
                         final firstNameText = _firstNameController.text.trim();

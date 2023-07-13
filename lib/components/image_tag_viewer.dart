@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../constants/routes.dart';
 import '../services/collections/my_images.dart';
+import '../utilities/check_connectivity.dart';
 
 class ImageStreamViewShort extends StatefulWidget {
   const ImageStreamViewShort({
@@ -46,7 +47,11 @@ class _ImageStreamViewShortState extends State<ImageStreamViewShort> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            if (!(await checkInternetConnectivity())) {
+                                displayNoInternet();
+                                return;
+                              }
                             Navigator.of(context)
                                 .pushNamed(detailPageRout, arguments: images[index]);
                           },

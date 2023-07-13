@@ -8,6 +8,7 @@ import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../constants/routes.dart';
 import '../services/collections/my_images.dart';
+import '../utilities/check_connectivity.dart';
 
 class ImageStreamIdeas extends StatefulWidget {
   const ImageStreamIdeas({
@@ -75,7 +76,11 @@ class _ImageStreamIdeasState extends State<ImageStreamIdeas> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              if (!(await checkInternetConnectivity())) {
+                                displayNoInternet();
+                                return;
+                              }
                               Navigator.of(context)
                                   .pushNamed(detailPageRout, arguments: images[index]);
                             },

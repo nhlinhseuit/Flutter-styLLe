@@ -8,6 +8,7 @@ import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../constants/routes.dart';
+import '../utilities/check_connectivity.dart';
 
 class InfiniteScrollableImageList extends StatefulWidget {
   const InfiniteScrollableImageList({super.key, required this.currentUser});
@@ -109,7 +110,11 @@ class _InfiniteScrollableImageListState extends State<InfiniteScrollableImageLis
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        if (!(await checkInternetConnectivity())) {
+                          displayNoInternet();
+                          return;
+                        }
                         Navigator.of(context)
                             .pushNamed(detailPageRout, arguments: images[index]);
                       },

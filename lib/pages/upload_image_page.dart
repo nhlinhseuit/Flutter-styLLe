@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:stylle/components/page_header.dart';
 
 import '../components/image_uploader.dart';
+import '../utilities/check_connectivity.dart';
 
 class ImageCapture extends StatefulWidget {
   const ImageCapture({super.key});
@@ -48,6 +49,10 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
     XFile? selected = await _picker.pickImage(
       source: source,
       maxWidth: 400,

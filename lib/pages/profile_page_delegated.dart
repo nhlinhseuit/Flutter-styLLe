@@ -10,6 +10,7 @@ import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
 import '../components/image_stream_viewer.dart';
 import '../constants/routes.dart';
+import '../utilities/check_connectivity.dart';
 
 class ProfilePageDelegated extends StatefulWidget {
   const ProfilePageDelegated({super.key});
@@ -62,6 +63,10 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                           ];
                         },
                         onSelected: (value) async {
+                          if (!(await checkInternetConnectivity())) {
+                            displayNoInternet();
+                            return;
+                          }
                           switch (value) {
                             case MenuAction.logout:
                               final confirmLogout = await showLogOutDialog(
@@ -118,7 +123,11 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                                           'Edit profile',
                                           style: TextStyle(color: Colors.black),
                                         ),
-                                        onPressed: () {
+                                        onPressed: () async {
+                                          if (!(await checkInternetConnectivity())) {
+                                            displayNoInternet();
+                                            return;
+                                          }
                                           setState(() {
                                             changesMade = true;
                                           });

@@ -1,11 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:stylle/pages/home_page_delegated.dart';
 import 'package:stylle/pages/profile_page_delegated.dart';
 import 'package:stylle/pages/search_page.dart';
 import 'package:stylle/pages/upload_image_page.dart';
 import '../services/auth/auth_service.dart';
+import '../utilities/check_connectivity.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,75 +30,75 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.values[0]);
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
-    // return FutureBuilder(
-    //   future: MyUser.getCurrentUser(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.done) {
-    //       Provider.of<CurrentUser>(context,listen: false).user = snapshot.data!;
-          return Scaffold(
-            body: IndexedStack(
-              index: _selectedIndex,
-              children: tabs,
-            ),
-            bottomNavigationBar: Container(
-              // color: const Color(0xFF303030),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
-                boxShadow: [
-                  BoxShadow(
-                    spreadRadius: 1,
-                    color: Color(0xFF303030),
-                    blurRadius: 0,
-                    offset: Offset(0, 2), // changes position of shadow
-                  ),
-                ],
+          return FocusDetector(
+            onVisibilityGained: () async {
+              if (!(await checkInternetConnectivity())) {
+                displayNoInternet();
+              }
+            },
+            child: Scaffold(
+              body: IndexedStack(
+                index: _selectedIndex,
+                children: tabs,
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: GNav(
-                  // tabBackgroundColor: const Color.fromRGBO(255, 191, 202, 100),
-                  tabBackgroundColor: Theme.of(context).colorScheme.primary,
-                  padding: const EdgeInsets.all(7),
-                  tabs: [
-                    GButton(
-                      icon: Icons.home,
-                      iconColor: Theme.of(context).colorScheme.primary,
-                      text: 'Home',
-                      textColor: Colors.black,
-                      gap: 6,
-                    ),
-                    GButton(
-                      icon: Icons.add_box_rounded,
-                      iconColor: Theme.of(context).colorScheme.primary,
-                      text: 'Add',
-                      textColor: Colors.black,
-                      gap: 6,
-                    ),
-                    GButton(
-                      icon: Icons.search_rounded,
-                      iconSize: 28,
-                      iconColor: Theme.of(context).colorScheme.primary,
-                      textColor: Colors.black,
-                      gap: 6,
-                      text: 'Search',
-                    ),
-                    GButton(
-                      icon: Icons.person_2,
-                      iconColor: Theme.of(context).colorScheme.primary,
-                      text: 'Profile',
-                      textColor: Colors.black,
-                      gap: 6,
+              bottomNavigationBar: Container(
+                // color: const Color(0xFF303030),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      spreadRadius: 1,
+                      color: Color(0xFF303030),
+                      blurRadius: 0,
+                      offset: Offset(0, 2), // changes position of shadow
                     ),
                   ],
-                  selectedIndex: _selectedIndex,
-                  onTabChange: (value) {
-                    setState(() {
-                      _selectedIndex = value;
-                    });
-                  },
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: GNav(
+                    // tabBackgroundColor: const Color.fromRGBO(255, 191, 202, 100),
+                    tabBackgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.all(7),
+                    tabs: [
+                      GButton(
+                        icon: Icons.home,
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        text: 'Home',
+                        textColor: Colors.black,
+                        gap: 6,
+                      ),
+                      GButton(
+                        icon: Icons.add_box_rounded,
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        text: 'Add',
+                        textColor: Colors.black,
+                        gap: 6,
+                      ),
+                      GButton(
+                        icon: Icons.search_rounded,
+                        iconSize: 28,
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        textColor: Colors.black,
+                        gap: 6,
+                        text: 'Search',
+                      ),
+                      GButton(
+                        icon: Icons.person_2,
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        text: 'Profile',
+                        textColor: Colors.black,
+                        gap: 6,
+                      ),
+                    ],
+                    selectedIndex: _selectedIndex,
+                    onTabChange: (value) {
+                      setState(() {
+                        _selectedIndex = value;
+                      });
+                    },
+                  ),
                 ),
               ),
             ),

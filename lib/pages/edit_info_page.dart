@@ -71,7 +71,11 @@ class _EditInfoPageState extends State<EditInfoPage> {
                             ),
                             child: IconButton(
                                 color: Colors.white,
-                                onPressed: () {
+                                onPressed: () async {
+                                  if (!(await checkInternetConnectivity())) {
+                                      displayNoInternet();
+                                      return;
+                                    }
                                   Navigator.of(context)
                                       .popAndPushNamed(userProfileUploadRoute);
                                 },

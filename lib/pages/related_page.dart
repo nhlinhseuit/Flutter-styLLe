@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:stylle/constants/routes.dart';
 
+import '../utilities/check_connectivity.dart';
+
 class RelatedPage extends StatefulWidget {
   const RelatedPage({super.key});
 
@@ -50,7 +52,11 @@ class _RelatedPageState extends State<RelatedPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              if (!(await checkInternetConnectivity())) {
+                                displayNoInternet();
+                                return;
+                              }
                               Navigator.of(context).pushNamed(detailPageRout,
                                   arguments: {
                                     'imgUrlString': imgUrls[index],
