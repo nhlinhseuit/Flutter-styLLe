@@ -174,7 +174,7 @@ class UserImagesViewState extends State<UserImagesView> {
                                         onSelected: (value) async {
                                           switch (value) {
                                             case MyImageAction.update:
-                                              Navigator.of(context).popAndPushNamed(
+                                              Navigator.of(context).pushNamed(
                                                   editImageRoute,
                                                   arguments: images[index]);
                                               break;
