@@ -186,7 +186,6 @@ class UserImagesViewState extends State<UserImagesView> {
                                                       title: 'Delete');
                                               if (confirmLogout) {
                                                 images[index].delete();
-                                                Navigator.of(context).pop();
                                               }
                                           }
                                         }),
