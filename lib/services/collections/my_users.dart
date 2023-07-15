@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
 import '../../utilities/check_connectivity.dart';
+import '../../utilities/commons.dart';
 
 class MyUser {
   final String uid;
@@ -150,13 +152,63 @@ class MyUser {
     }
   }
 
-  Stream<List<MyImage>> favoriteImagesStream() => FirebaseFirestore.instance
-      .collection('images')
-      .where('deleted', isEqualTo: false)
-      .where('id', whereIn: favorites.isNotEmpty ? favorites : [""])
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+  Stream<List<MyImage>> favoriteImagesStream() {
+    final firestore = FirebaseFirestore.instance;
+    final collection = firestore.collection('images');
+    const chunkSize = 10;
+
+    final baseQuery = collection
+        .where('deleted', isEqualTo: false)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+
+    if (favorites.isNotEmpty) {
+      final chunks = chunkList(favorites, chunkSize);
+
+      final streamGroup = StreamGroup<List<MyImage>>();
+
+      for (final chunk in chunks) {
+        final chunkQuery = collection
+            .where('deleted', isEqualTo: false)
+            .where('id', whereIn: chunk)
+            .snapshots()
+            .map((snapshot) => snapshot.docs
+                .map((doc) => MyImage.fromJson(doc.data()))
+                .toList());
+        streamGroup.add(chunkQuery);
+      }
+
+      final mergedList = <MyImage>[];
+      return streamGroup.stream.map((results) {
+        mergedList.addAll(results);
+
+        return mergedList;
+      });
+    }
+
+    return baseQuery;
+
+    // if (favorites.isNotEmpty) {
+    //   final chunks = chunkList(favorites, chunkSize);
+    //   final streamGroup = StreamGroup<List<MyImage>>();
+
+    //   for (final chunk in chunks) {
+    //     final chunkQuery = collection
+    //         .where('deleted', isEqualTo: false)
+    //         .where('id', whereIn: chunk)
+    //         .snapshots()
+    //         .map((snapshot) => snapshot.docs
+    //             .map((doc) => MyImage.fromJson(doc.data()))
+    //             .toList());
+    //     streamGroup.add(chunkQuery);
+    //   }
+    //   return streamGroup.stream;
+    // }
+    // return collection.where('deleted', isEqualTo: false).snapshots().map(
+    //     (snapshot) =>
+    //         snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
+  }
 
   Stream<List<MyImage>> userImagesStream() => FirebaseFirestore.instance
       .collection('images')

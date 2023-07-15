@@ -61,6 +61,7 @@ dependencies:
   connectivity: ^3.0.6
   fluttertoast: ^8.2.2
   focus_detector: ^2.0.1
+  async: ^2.11.0
 
 dev_dependencies:
   flutter_test:
