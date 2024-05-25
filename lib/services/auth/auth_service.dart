@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stylle/services/auth/google_auth_service.dart';
 
@@ -5,8 +6,8 @@ import 'auth_provider.dart';
 import 'auth_user.dart';
 import 'firebase_auth_provider.dart';
 
-class AuthService implements AuthProvider {
-  final AuthProvider provider;
+class AuthService implements MyAuthProvider {
+  final MyAuthProvider provider;
   const AuthService(this.provider);
 
   factory AuthService.firebase() => AuthService(FirebaseAuthProvider());
