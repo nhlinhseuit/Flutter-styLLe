@@ -11,6 +11,7 @@ import 'package:stylle/pages/edit_image_page.dart';
 import 'package:stylle/pages/edit_info_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
+import 'package:stylle/pages/image_management_page.dart';
 import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
           editImageRoute: (context) => const EditImagePage(),
           userProfileUploadRoute: (context) => const UserProfileUpload(),
           tagRoute: (context) => const TagsPageDelegate(),
+          imageManagementPage: (context) => const ImageManagementPage(),
         },
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.black,
@@ -138,6 +140,7 @@ class MainPage extends StatelessWidget {
       }
       return Future.value(true);
     }
+
     return WillPopScope(
       onWillPop: onWillPop,
       child: FutureBuilder(
@@ -150,7 +153,8 @@ class MainPage extends StatelessWidget {
                   return FutureBuilder(
                     future: MyUser.getCurrentUser(),
                     builder: (context, userSnapshot) {
-                      if (userSnapshot.connectionState == ConnectionState.done) {
+                      if (userSnapshot.connectionState ==
+                          ConnectionState.done) {
                         Provider.of<CurrentUser>(context, listen: false).user =
                             userSnapshot.data!;
                         return const HomePage();
@@ -171,8 +175,8 @@ class MainPage extends StatelessWidget {
                       builder: (context, userSnapshot) {
                         if (userSnapshot.connectionState ==
                             ConnectionState.done) {
-                          Provider.of<CurrentUser>(context, listen: false).user =
-                              userSnapshot.data!;
+                          Provider.of<CurrentUser>(context, listen: false)
+                              .user = userSnapshot.data!;
                           return const HomePage();
                         } else {
                           return const Scaffold(

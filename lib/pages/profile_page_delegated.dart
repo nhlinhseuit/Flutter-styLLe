@@ -51,7 +51,8 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                         color: Colors.white,
                         itemBuilder: (context) {
                           return [
-                            if (!(snapshot.data!.contains("google.com") && snapshot.data!.length == 1))
+                            if (!(snapshot.data!.contains("google.com") &&
+                                snapshot.data!.length == 1))
                               const PopupMenuItem<MenuAction>(
                                 value: MenuAction.changePassword,
                                 child: Text('Change password'),
@@ -132,7 +133,7 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                                             changesMade = true;
                                           });
                                           Navigator.of(context)
-                                              .pushNamed(editInfoRoute);
+                                              .pushNamed(imageManagementPage);
                                         }),
                                   ],
                                 ),
