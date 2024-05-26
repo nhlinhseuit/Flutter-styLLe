@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,9 +43,19 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAho-6DqCZT50Q8fq3fQuW0xb_DsVYrEWw',
+    appId: '1:1024287017546:web:9f0d49eab135b1f29134b3',
+    messagingSenderId: '1024287017546',
+    projectId: 'stylle',
+    authDomain: 'stylle.firebaseapp.com',
+    storageBucket: 'stylle.appspot.com',
+    measurementId: 'G-991W3986NV',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCpKPaEwroREo5oM9ZhLwuWnGRz6oFRKvc',
-    appId: '1:1024287017546:android:9c1f32d7306611cc9134b3',
+    appId: '1:1024287017546:android:2e46256e8a7936039134b3',
     messagingSenderId: '1024287017546',
     projectId: 'stylle',
     storageBucket: 'stylle.appspot.com',
@@ -59,11 +63,23 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyACqA-Q9txJOxxp9tqQFq0qu9D-eNuZy2E',
-    appId: '1:1024287017546:ios:12fe667e32367e939134b3',
+    appId: '1:1024287017546:ios:eae66c299d34469d9134b3',
     messagingSenderId: '1024287017546',
     projectId: 'stylle',
     storageBucket: 'stylle.appspot.com',
-    iosClientId: '1024287017546-dln47v1oq4i72s7q5o2oml30o0lttkmg.apps.googleusercontent.com',
-    iosBundleId: 'com.example.stylle',
+    androidClientId: '1024287017546-0on50bvpdiktae3vlb30hrbq6998quqf.apps.googleusercontent.com',
+    iosClientId: '1024287017546-gr4bij46rs6t64ci5v8e45rgfvijp2eu.apps.googleusercontent.com',
+    iosBundleId: 'com.uit.stylle',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyACqA-Q9txJOxxp9tqQFq0qu9D-eNuZy2E',
+    appId: '1:1024287017546:ios:eae66c299d34469d9134b3',
+    messagingSenderId: '1024287017546',
+    projectId: 'stylle',
+    storageBucket: 'stylle.appspot.com',
+    androidClientId: '1024287017546-0on50bvpdiktae3vlb30hrbq6998quqf.apps.googleusercontent.com',
+    iosClientId: '1024287017546-gr4bij46rs6t64ci5v8e45rgfvijp2eu.apps.googleusercontent.com',
+    iosBundleId: 'com.uit.stylle',
   );
 }

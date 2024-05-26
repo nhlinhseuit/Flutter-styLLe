@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,7 +9,7 @@ import '../../firebase_options.dart';
 import '../collections/my_users.dart';
 import 'auth_exceptions.dart';
 
-class AuthProviderGoogle implements AuthProvider {
+class AuthProviderGoogle implements MyAuthProvider {
   @override
   Future<void> changePassword(
       {required String currentPassword, required String newPassword}) async {}
