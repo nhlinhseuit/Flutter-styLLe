@@ -3,6 +3,10 @@
 *.log
 *.pyc
 *.swp
+*.cc 
+*.cmake 
+*.swift 
+pubspec.lock
 .DS_Store
 .atom/
 .buildlog/

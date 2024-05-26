@@ -120,36 +120,71 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                      IconButton(
-                                        icon: images[index].isFavorite
-                                            ? Icon(
-                                                Icons.favorite,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              )
-                                            : Icon(
-                                                Icons.favorite_border,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-                                        onPressed: () async {
-                                          if (!(await checkInternetConnectivity())) {
-                                            displayNoInternet();
-                                            return;
-                                          }
-                                          await currentUser.user
-                                              .handleFavorite(images[index]);
-                                          setState(() {
-                                            images[index].isFavorite =
-                                                !images[index].isFavorite;
-                                            Provider.of<CurrentUser>(context,
-                                                        listen: false)
-                                                    .userFavorites =
-                                                currentUser.user.favorites;
-                                          });
-                                        },
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: images[index].isFavorite
+                                                ? Icon(
+                                                    Icons.favorite,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                  )
+                                                : Icon(
+                                                    Icons.favorite_border,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                  ),
+                                            onPressed: () async {
+                                              if (!(await checkInternetConnectivity())) {
+                                                displayNoInternet();
+                                                return;
+                                              }
+                                              await currentUser.user
+                                                  .handleFavorite(
+                                                      images[index]);
+                                              setState(() {
+                                                images[index].isFavorite =
+                                                    !images[index].isFavorite;
+                                                Provider.of<CurrentUser>(
+                                                            context,
+                                                            listen: false)
+                                                        .userFavorites =
+                                                    currentUser.user.favorites;
+                                              });
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: images[index].isFavorite
+                                                ? Icon(
+                                                    Icons.report,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                  )
+                                                : const Icon(
+                                                    Icons.report,
+                                                    color: Colors.blue,
+                                                  ),
+                                            onPressed: () async {
+                                              // if (!(await checkInternetConnectivity())) {
+                                              //   displayNoInternet();
+                                              //   return;
+                                              // }
+                                              // await currentUser.user
+                                              //     .handleFavorite(images[index]);
+                                              // setState(() {
+                                              //   images[index].isFavorite =
+                                              //       !images[index].isFavorite;
+                                              //   Provider.of<CurrentUser>(context,
+                                              //               listen: false)
+                                              //           .userFavorites =
+                                              //       currentUser.user.favorites;
+                                              // });
+                                            },
+                                          ),
+                                        ],
                                       ),
                                       if (images[index].userID ==
                                           currentUser.user.uid)
@@ -181,7 +216,7 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                                       Text('Delete'),
                                                     ],
                                                   ),
-                                                )
+                                                ),
                                               ];
                                             },
                                             onSelected: (value) async {
