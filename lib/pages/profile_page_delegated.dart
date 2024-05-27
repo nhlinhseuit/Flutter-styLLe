@@ -49,7 +49,10 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                     case ConnectionState.done:
                       return Scaffold(
                         floatingActionButton: PopupMenuButton<MenuAction>(
-                            icon: const Icon(Icons.menu),
+                            icon: const Icon(
+                              Icons.menu,
+                              color: Colors.white,
+                            ),
                             color: Colors.white,
                             itemBuilder: (context) {
                               return [

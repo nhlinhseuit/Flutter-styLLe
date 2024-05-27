@@ -171,6 +171,10 @@ class UserImagesViewState extends State<UserImagesView> {
                                             )
                                           ];
                                         },
+                                        icon: const Icon(
+                                              Icons.more_vert,
+                                              color: Colors.white,
+                                            ),
                                         onSelected: (value) async {
                                           switch (value) {
                                             case MyImageAction.update:

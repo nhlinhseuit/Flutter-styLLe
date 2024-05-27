@@ -161,6 +161,10 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                           currentUser.user.uid)
                                         PopupMenuButton<MyImageAction>(
                                             color: Colors.white70,
+                                            icon: const Icon(
+                                              Icons.more_vert,
+                                              color: Colors.white,
+                                            ),
                                             itemBuilder: (context) {
                                               return const [
                                                 PopupMenuItem<MyImageAction>(
