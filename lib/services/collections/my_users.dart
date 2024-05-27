@@ -15,6 +15,7 @@ class MyUser {
   String lastName;
   String profileImage;
   List<String> favorites;
+  List<String> reports;
   late bool deleted;
 
   static CollectionReference dbUsers =
@@ -24,6 +25,7 @@ class MyUser {
     this.profileImage =
         "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
     this.favorites = const [],
+    this.reports = const [],
     required this.uid,
     required this.firstName,
     required this.lastName,
@@ -149,6 +151,50 @@ class MyUser {
       await removeFavoriteImage(image);
     } else {
       await addFavoriteImage(image);
+    }
+  }
+
+  Future<void> addReportImage(MyImage image) async {
+    if (image.isUserReport(this)) return;
+    image.isReport = true;
+    image.dislikes++;
+    await FirebaseFirestore.instance.collection('images').doc(image.id).update({
+      'dislikes': image.dislikes,
+    });
+    reports.add(image.id);
+    // image.isFavorite = false;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'reports': reports.isNotEmpty ? reports : []}).catchError(
+            (error) => print("Failed to add report image: $error"));
+  }
+
+  Future<void> removeReportImage(MyImage image) async {
+    if (!image.isUserReport(this) || image.dislikes == 0) return;
+    image.isReport = false;
+    image.dislikes--;
+    await FirebaseFirestore.instance.collection('images').doc(image.id).update({
+      'dislikes': image.dislikes,
+    });
+    reports.remove(image.id);
+    // image.isFavorite = false;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'reports': reports.isNotEmpty ? reports : []}).catchError(
+            (error) => print("Failed to remove report image: $error"));
+  }
+
+  Future<void> handleReport(MyImage image) async {
+    if (!(await checkInternetConnectivity())) {
+      displayNoInternet();
+      return;
+    }
+    if (image.isUserReport(this)) {
+      await removeReportImage(image);
+    } else {
+      await addReportImage(image);
     }
   }
 

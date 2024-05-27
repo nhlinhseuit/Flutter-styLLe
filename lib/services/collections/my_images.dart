@@ -17,7 +17,9 @@ class MyImage {
   String description;
   List<String> tags;
   bool isFavorite;
+  bool isReport;
   int likes;
+  int dislikes;
   late bool deleted;
 
   String get imagePath {
@@ -43,8 +45,10 @@ class MyImage {
     this.description = '',
     this.tags = const ['foryou'],
     this.likes = 0,
+    this.dislikes = 0,
     this.deleted = false,
     this.isFavorite = false,
+    this.isReport = false,
   });
 
   Future<void> createImage() async {
@@ -67,19 +71,22 @@ class MyImage {
   }
 
   Stream<List<MyImage>> getRelatedImages() {
-    return FirebaseFirestore.instance.collection('images')
-    .where('deleted', isEqualTo: false)
-    .where(Filter.or(
-      Filter('tags', arrayContainsAny: tags),
-      Filter('user_info.id', isEqualTo: userID),
-    ))
-    .where('id', isNotEqualTo: id)
-    .snapshots().map((snapshot) => snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList())
-    .handleError((e) {
+    return FirebaseFirestore.instance
+        .collection('images')
+        .where('deleted', isEqualTo: false)
+        .where(Filter.or(
+          Filter('tags', arrayContainsAny: tags),
+          Filter('user_info.id', isEqualTo: userID),
+        ))
+        .where('id', isNotEqualTo: id)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList())
+        .handleError((e) {
       print(e);
     });
   }
-  
+
   static Future<MyImage?> readImage({required String? id}) async {
     final docUser = FirebaseFirestore.instance.collection('images').doc(id);
     final snapshot = await docUser.get();
@@ -127,12 +134,11 @@ class MyImage {
         .collection('images')
         .where('deleted', isEqualTo: false)
         .where(Filter.or(
-          Filter('tags', arrayContainsAny: searchInput.split(' ')),
-          Filter.and(
-            Filter('description', isGreaterThanOrEqualTo: searchInput),
-            Filter('description', isLessThan: searchInput + 'z'),
-          )
-        ))
+            Filter('tags', arrayContainsAny: searchInput.split(' ')),
+            Filter.and(
+              Filter('description', isGreaterThanOrEqualTo: searchInput),
+              Filter('description', isLessThan: '${searchInput}z'),
+            )))
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
@@ -175,12 +181,10 @@ class MyImage {
       displayNoInternet();
       return;
     }
-    await FirebaseFirestore.instance.collection('images')
-      .doc(id)
-      .update({
-        'description': description,
-        'tags': tags,
-      });
+    await FirebaseFirestore.instance.collection('images').doc(id).update({
+      'description': description,
+      'tags': tags,
+    });
   }
 
   Future<void> delete() async {
@@ -202,6 +206,15 @@ class MyImage {
     return false;
   }
 
+  bool isUserReport(MyUser user) {
+    for (var imageID in user.reports) {
+      if (id == imageID) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
@@ -211,6 +224,7 @@ class MyImage {
         'upload_time': uploadTime,
         'download_url': path,
         'likes': likes,
+        'dislikes': dislikes,
         'user_info': {
           'name': userName,
           'email': userEmail,
@@ -233,6 +247,7 @@ class MyImage {
         uploadTime: DateTime.parse(json['upload_time'].toDate().toString()),
         path: json['download_url'],
         likes: json['likes'],
+        dislikes: json['dislikes'] ?? 0,
         deleted: json['deleted'],
       );
     } catch (e) {

@@ -53,6 +53,7 @@ class _DetailPageState extends State<DetailPage> {
     final args = ModalRoute.of(context)!.settings.arguments as MyImage;
     final imageUrl = args.imagePath;
     var isUserFavorite = args.isFavorite;
+    var isUserReport = args.isReport;
     likeIcon = isUserFavorite ? firstIcon : secondIcon;
 
     // List<String> imgUrlsRelated = List.generate(
@@ -198,51 +199,74 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   if (args.userID == currentUser.user.uid)
                     PopupMenuButton<MyImageAction>(
-                      color: Colors.white,
-                      itemBuilder: (context) {
-                      return const [
-                        PopupMenuItem<MyImageAction>(
-                          value: MyImageAction.update,
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.edit),
-                              SizedBox(
-                                width: 4,
+                        color: Colors.white,
+                        itemBuilder: (context) {
+                          return const [
+                            PopupMenuItem<MyImageAction>(
+                              value: MyImageAction.update,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.edit),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text('Edit'),
+                                ],
                               ),
-                              Text('Edit'),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem<MyImageAction>(
-                          value: MyImageAction.delete,
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.delete_outline),
-                              SizedBox(
-                                width: 4,
+                            ),
+                            PopupMenuItem<MyImageAction>(
+                              value: MyImageAction.delete,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.delete_outline),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text('Delete'),
+                                ],
                               ),
-                              Text('Delete'),
-                            ],
-                          ),
-                        )
-                      ];
-                    }, onSelected: (value) async {
-                      switch (value) {
-                        case MyImageAction.update:
-                          Navigator.of(context)
-                              .popAndPushNamed(editImageRoute, arguments: args);
-                          break;
-                        case MyImageAction.delete:
-                          final confirmLogout = await showLogOutDialog(context,
-                              content:
-                                  'Delete this image?\nThis action cannot be revert.',
-                              title: 'Delete');
-                          if (confirmLogout) {
-                            args.delete();
-                            Navigator.of(context).pop();
+                            )
+                          ];
+                        },
+                        onSelected: (value) async {
+                          switch (value) {
+                            case MyImageAction.update:
+                              Navigator.of(context).popAndPushNamed(
+                                  editImageRoute,
+                                  arguments: args);
+                              break;
+                            case MyImageAction.delete:
+                              final confirmLogout = await showLogOutDialog(
+                                  context,
+                                  content:
+                                      'Delete this image?\nThis action cannot be revert.',
+                                  title: 'Delete');
+                              if (confirmLogout) {
+                                args.delete();
+                                Navigator.of(context).pop();
+                              }
                           }
-                      }
-                    })
+                        }),
+                  if (args.userID != currentUser.user.uid)
+                    IconButton(
+                      icon: Icon(
+                        Icons.report_gmailerrorred,
+                        color: args.isReport ? primaryPinkColor : Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () async {
+                        if (!(await checkInternetConnectivity())) {
+                          displayNoInternet();
+                          return;
+                        }
+                        await currentUser.user.handleReport(args);
+                        setState(() {
+                          args.isReport = true;
+                          Provider.of<CurrentUser>(context, listen: false)
+                              .userReports = currentUser.user.reports;
+                        });
+                      },
+                    ),
                 ],
               ),
 

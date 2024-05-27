@@ -155,35 +155,6 @@ class _ImageStreamViewState extends State<ImageStreamView> {
                                               });
                                             },
                                           ),
-                                          IconButton(
-                                            icon: images[index].isFavorite
-                                                ? Icon(
-                                                    Icons.report,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primary,
-                                                  )
-                                                : const Icon(
-                                                    Icons.report,
-                                                    color: Colors.blue,
-                                                  ),
-                                            onPressed: () async {
-                                              // if (!(await checkInternetConnectivity())) {
-                                              //   displayNoInternet();
-                                              //   return;
-                                              // }
-                                              // await currentUser.user
-                                              //     .handleFavorite(images[index]);
-                                              // setState(() {
-                                              //   images[index].isFavorite =
-                                              //       !images[index].isFavorite;
-                                              //   Provider.of<CurrentUser>(context,
-                                              //               listen: false)
-                                              //           .userFavorites =
-                                              //       currentUser.user.favorites;
-                                              // });
-                                            },
-                                          ),
                                         ],
                                       ),
                                       if (images[index].userID ==
