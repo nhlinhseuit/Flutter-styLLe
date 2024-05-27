@@ -77,6 +77,8 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                 width: 8,
                               ),
                               Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(
@@ -95,9 +97,6 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                         fontSize: 14,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
                                   ),
 
                                   // SizedBox(
@@ -174,6 +173,15 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                           fontSize: 14,
                                         ),
                                       ),
+                                      IconButton(
+                                          icon: const Icon(
+                                            color: primaryPinkColor,
+                                            Icons.delete,
+                                            size: 30,
+                                          ),
+                                          onPressed: () async {
+                                            images[index].delete();
+                                          }),
                                     ],
                                   ),
                                 ],
