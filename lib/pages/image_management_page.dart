@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stylle/constants/colors.dart';
+import 'package:stylle/constants/routes.dart';
+import 'package:stylle/services/auth/auth_service.dart';
 import 'package:stylle/services/collections/my_images.dart';
+import 'package:stylle/utilities/popup_confirm_dialog.dart';
 
 class ImageManagementPage extends StatefulWidget {
   const ImageManagementPage({super.key});
@@ -19,6 +22,24 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
       appBar: AppBar(
         title: const Text('Image management page'),
         backgroundColor: const Color.fromARGB(255, 56, 159, 244),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final confirmLogout = await showLogOutDialog(context,
+              content: 'Logging out?', title: 'Log out');
+
+          if (confirmLogout) {
+            await AuthService.firebase().logout();
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              loginRoute,
+              (_) => false,
+            );
+          }
+        },
+        child: const Icon(
+          Icons.logout,
+          color: Colors.white,
+        ),
       ),
       backgroundColor: Colors.grey,
       body: Padding(

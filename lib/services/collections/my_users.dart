@@ -17,6 +17,7 @@ class MyUser {
   List<String> favorites;
   List<String> reports;
   late bool deleted;
+  String role;
 
   static CollectionReference dbUsers =
       FirebaseFirestore.instance.collection('users');
@@ -24,6 +25,7 @@ class MyUser {
   MyUser({
     this.profileImage =
         "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+    this.role = 'none',
     this.favorites = const [],
     this.reports = const [],
     required this.uid,
@@ -285,6 +287,7 @@ class MyUser {
       };
   static MyUser fromJson(Map<String, dynamic> json) => MyUser(
         uid: json['uid'],
+        role: json['role'] ?? 'none',
         profileImage: json['profile_image'],
         firstName: json['first_name'],
         lastName: json['last_name'],

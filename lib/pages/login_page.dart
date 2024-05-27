@@ -223,14 +223,30 @@ class _LoginPageState extends State<LoginPage> {
                                         time: DateTime.now());
                                     logger.addLogging();
 
-                                    if (emailVerified) {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                              homeRoute, (route) => false);
+                                    //AUTHORIZATION
+                                    if (userLogger.role == 'admin') {
+                                      if (emailVerified) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                          adminHomeRoute,
+                                          (route) => false,
+                                          arguments: 'admin',
+                                        );
+                                      } else {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                verifyRoute, (route) => false);
+                                      }
                                     } else {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                              verifyRoute, (route) => false);
+                                      if (emailVerified) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                homeRoute, (route) => false);
+                                      } else {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                verifyRoute, (route) => false);
+                                      }
                                     }
                                   }
                                 } on UserNotFoundAuthException {

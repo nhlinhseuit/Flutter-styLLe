@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stylle/constants/routes.dart';
+import 'package:stylle/pages/admin_home_page.dart';
 import 'package:stylle/pages/boarding_page.dart';
 import 'package:stylle/pages/change_password_page.dart';
 import 'package:stylle/pages/detail_page.dart';
@@ -48,7 +49,8 @@ class MyApp extends StatelessWidget {
           loginRoute: (context) => const LoginPage(),
           registerRoute: (context) => const RegisterPage(),
           homeRoute: (context) => const HomePage(),
-          verifyRoute: (context) => const VerifyEmailPage(),
+          adminHomeRoute: (context) => const AdminHomePage(),
+          verifyRoute: (context) => VerifyEmailPage(),
           forgotPasswordRoute: (context) => const ForgotPasswordPage(),
           changePasswordRoute: (context) => const ChangePasswordPage(),
           editInfoRoute: (context) => const EditInfoPage(),
@@ -188,7 +190,7 @@ class MainPage extends StatelessWidget {
                       },
                     );
                   } else {
-                    return const VerifyEmailPage();
+                    return VerifyEmailPage();
                   }
                 } else {
                   return const BoardingPage();

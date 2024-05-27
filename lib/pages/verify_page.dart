@@ -8,7 +8,8 @@ import 'package:stylle/components/popup_dialog.dart';
 import '../services/auth/auth_service.dart';
 
 class VerifyEmailPage extends StatefulWidget {
-  const VerifyEmailPage({super.key});
+  String? role;
+  VerifyEmailPage({super.key, this.role = 'none'});
 
   @override
   State<VerifyEmailPage> createState() => _VerifyEmailPageState();
@@ -33,8 +34,13 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         if (!mounted) return;
         await showMessageDialog(
             context, 'Your email has been successfully verified.');
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(homeRoute, (route) => false);
+        if (widget.role == 'admin') {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(adminHomeRoute, (route) => false);
+        } else {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(homeRoute, (route) => false);
+        }
       }
     });
   }
