@@ -15,3 +15,4 @@ const editImageRoute = '/edit_image/';
 const searchRoute = '/search/';
 const tagRoute = '/tagRoute/';
 const imageManagementPage = '/imageManagementPage/';
+const loggingPage = '/loggingPage/';

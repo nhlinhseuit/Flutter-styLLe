@@ -12,6 +12,7 @@ import 'package:stylle/pages/edit_info_page.dart';
 import 'package:stylle/pages/forgot_password_page.dart';
 import 'package:stylle/pages/home_page.dart';
 import 'package:stylle/pages/image_management_page.dart';
+import 'package:stylle/pages/logging_page.dart';
 import 'package:stylle/pages/login_page.dart';
 import 'package:stylle/pages/pre_login_page.dart';
 import 'package:stylle/pages/register_page.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
           userProfileUploadRoute: (context) => const UserProfileUpload(),
           tagRoute: (context) => const TagsPageDelegate(),
           imageManagementPage: (context) => const ImageManagementPage(),
+          loggingPage: (context) => const LoggingPage(),
         },
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.black,

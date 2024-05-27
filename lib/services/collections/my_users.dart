@@ -49,10 +49,14 @@ class MyUser {
         lastName == null || lastName.isEmpty ? this.lastName : lastName.trim();
     this.firstName = firstName;
     this.lastName = lastName;
+
+    // update thông tin user
     await FirebaseFirestore.instance.collection('users').doc(uid).update({
       'first_name': firstName,
       'last_name': lastName,
     }).catchError((error) => print("Failed to update info: $error"));
+
+    // update thông tin user trong thông tin của các image
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('images')
         .where('user_info.id', isEqualTo: uid)
@@ -90,6 +94,11 @@ class MyUser {
     }
     final userData = toJson();
     // Call the user's CollectionReference to add a new user
+    // return dbUsers
+    //     .doc(uid)
+    //     .set(userData)
+    //     .then((value) => print("User Added"))
+    //     .catchError((error) => print("Failed to add user: $error"));
     return dbUsers
         .doc(uid)
         .set(userData)

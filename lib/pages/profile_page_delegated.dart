@@ -30,179 +30,226 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
   Widget build(BuildContext context) {
     return Consumer<CurrentUser>(builder: (context, currentUser, child) {
       imagePath = currentUser.user.profileImage;
-      return FocusDetector(
-        onVisibilityGained: () {
-          if (changesMade) {
-            setState(() {
-              imagePath = currentUser.user.profileImage;
-              changesMade = false;
-            });
-          }
-        },
-        child: FutureBuilder(
-            future:
-                AuthService.fetchSignInMethodsForEmail(currentUser.user.email),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  return Scaffold(
-                    floatingActionButton: PopupMenuButton<MenuAction>(
-                        icon: const Icon(Icons.menu),
-                        color: Colors.white,
-                        itemBuilder: (context) {
-                          return [
-                            if (!(snapshot.data!.contains("google.com") &&
-                                snapshot.data!.length == 1))
-                              const PopupMenuItem<MenuAction>(
-                                value: MenuAction.changePassword,
-                                child: Text('Change password'),
-                              ),
-                            const PopupMenuItem<MenuAction>(
-                              value: MenuAction.logout,
-                              child: Text('Logout'),
-                            ),
-                          ];
-                        },
-                        onSelected: (value) async {
-                          if (!(await checkInternetConnectivity())) {
-                            displayNoInternet();
-                            return;
-                          }
-                          switch (value) {
-                            case MenuAction.logout:
-                              final confirmLogout = await showLogOutDialog(
-                                  context,
-                                  content: 'Logging out?',
-                                  title: 'Log out');
-                              if (confirmLogout) {
-                                await AuthService.firebase().logout();
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  loginRoute,
-                                  (_) => false,
-                                );
-                              }
-                              break;
-                            case MenuAction.changePassword:
-                              Navigator.of(context)
-                                  .pushNamed(changePasswordRoute);
-                          }
-                        }),
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.endTop,
-                    body: ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24, top: 40),
-                          child: Row(
-                            children: [
-                              CircleImage(size: 128, imgUrl: imagePath),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(currentUser.user.getName),
-                                    Text(
-                                      currentUser.user.email,
-                                      overflow: TextOverflow.fade,
-                                    ),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          maximumSize: const Size(200, 32),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                16), // <-- Radius
-                                          ),
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          minimumSize: const Size(120, 32),
-                                        ),
-                                        child: const Text(
-                                          'Edit profile',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        onPressed: () async {
-                                          if (!(await checkInternetConnectivity())) {
-                                            displayNoInternet();
-                                            return;
-                                          }
-                                          setState(() {
-                                            changesMade = true;
-                                          });
-                                          Navigator.of(context)
-                                              .pushNamed(imageManagementPage);
-                                        }),
-                                  ],
+      return Stack(
+        children: [
+          FocusDetector(
+            onVisibilityGained: () {
+              if (changesMade) {
+                setState(() {
+                  imagePath = currentUser.user.profileImage;
+                  changesMade = false;
+                });
+              }
+            },
+            child: FutureBuilder(
+                future: AuthService.fetchSignInMethodsForEmail(
+                    currentUser.user.email),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      return Scaffold(
+                        floatingActionButton: PopupMenuButton<MenuAction>(
+                            icon: const Icon(Icons.menu),
+                            color: Colors.white,
+                            itemBuilder: (context) {
+                              return [
+                                if (!(snapshot.data!.contains("google.com") &&
+                                    snapshot.data!.length == 1))
+                                  const PopupMenuItem<MenuAction>(
+                                    value: MenuAction.changePassword,
+                                    child: Text('Change password'),
+                                  ),
+                                const PopupMenuItem<MenuAction>(
+                                  value: MenuAction.logout,
+                                  child: Text('Logout'),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        Row(
+                              ];
+                            },
+                            onSelected: (value) async {
+                              if (!(await checkInternetConnectivity())) {
+                                displayNoInternet();
+                                return;
+                              }
+                              switch (value) {
+                                case MenuAction.logout:
+                                  final confirmLogout = await showLogOutDialog(
+                                      context,
+                                      content: 'Logging out?',
+                                      title: 'Log out');
+                                  if (confirmLogout) {
+                                    await AuthService.firebase().logout();
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      loginRoute,
+                                      (_) => false,
+                                    );
+                                  }
+                                  break;
+                                case MenuAction.changePassword:
+                                  Navigator.of(context)
+                                      .pushNamed(changePasswordRoute);
+                              }
+                            }),
+                        floatingActionButtonLocation:
+                            FloatingActionButtonLocation.endTop,
+                        body: ListView(
                           children: [
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            ChoiceChip(
-                              label: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Text(_choiceChips[0]),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 24, top: 40),
+                              child: Row(
+                                children: [
+                                  CircleImage(size: 128, imgUrl: imagePath),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(currentUser.user.getName),
+                                        Text(
+                                          currentUser.user.email,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              maximumSize: const Size(200, 32),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        16), // <-- Radius
+                                              ),
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              minimumSize: const Size(120, 32),
+                                            ),
+                                            child: const Text(
+                                              'Edit profile',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () async {
+                                              if (!(await checkInternetConnectivity())) {
+                                                displayNoInternet();
+                                                return;
+                                              }
+                                              setState(() {
+                                                changesMade = true;
+                                              });
+                                              Navigator.of(context)
+                                                  .pushNamed(editInfoRoute);
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              selectedColor:
-                                  Theme.of(context).colorScheme.primary,
-                              selected: _selectedChoiceIndex == 0,
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  _selectedChoiceIndex = selected ? 0 : 1;
-                                });
-                              },
                             ),
                             const SizedBox(
-                              width: 8,
+                              height: 40,
                             ),
-                            ChoiceChip(
-                              label: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Text(_choiceChips[1]),
-                              ),
-                              selectedColor:
-                                  Theme.of(context).colorScheme.primary,
-                              selected: _selectedChoiceIndex == 1,
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  _selectedChoiceIndex = selected ? 1 : 0;
-                                });
-                              },
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                ChoiceChip(
+                                  label: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(_choiceChips[0]),
+                                  ),
+                                  selectedColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  selected: _selectedChoiceIndex == 0,
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      _selectedChoiceIndex = selected ? 0 : 1;
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                ChoiceChip(
+                                  label: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(_choiceChips[1]),
+                                  ),
+                                  selectedColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  selected: _selectedChoiceIndex == 1,
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      _selectedChoiceIndex = selected ? 1 : 0;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
+                            _selectedChoiceIndex == 0
+                                ? const UserImagesView()
+                                : ImageStreamView(
+                                    user: Provider.of<CurrentUser>(context,
+                                            listen: false)
+                                        .user,
+                                    imagesStream: Provider.of<CurrentUser>(
+                                            context,
+                                            listen: false)
+                                        .user
+                                        .favoriteImagesStream()),
                           ],
                         ),
-                        _selectedChoiceIndex == 0
-                            ? const UserImagesView()
-                            : ImageStreamView(
-                                user: Provider.of<CurrentUser>(context,
-                                        listen: false)
-                                    .user,
-                                imagesStream: Provider.of<CurrentUser>(context,
-                                        listen: false)
-                                    .user
-                                    .favoriteImagesStream()),
-                      ],
-                    ),
-                  );
-                default:
-                  return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-              }
-            }),
+                      );
+                    default:
+                      return const Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      );
+                  }
+                }),
+          ),
+          Positioned(
+            top: 150,
+            right: 30,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(imageManagementPage);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(100)),
+                child: const Icon(
+                  Icons.image,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 210,
+            right: 30,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(loggingPage);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.pink,
+                    borderRadius: BorderRadius.circular(100)),
+                child: const Icon(
+                  Icons.note,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     });
   }

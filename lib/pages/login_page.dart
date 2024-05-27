@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stylle/components/popup_dialog.dart';
+import 'package:stylle/services/collections/logging.dart';
 import 'package:stylle/services/collections/my_users.dart';
 import 'package:stylle/services/notifiers/current_user.dart';
 
@@ -208,8 +209,20 @@ class _LoginPageState extends State<LoginPage> {
                                                 listen: false)
                                             .user =
                                         (await MyUser.getCurrentUser())!;
+
+                                    // LOGGING
+                                    var userLogger =
+                                        await MyUser.getCurrentUser();
                                     final emailVerified = user.isEmailVerified;
                                     if (!mounted) return;
+                                    Logging logger = Logging(
+                                        uid: userLogger!.uid,
+                                        email: userLogger.email,
+                                        firstName: userLogger.firstName,
+                                        lastName: userLogger.lastName,
+                                        time: DateTime.now());
+                                    logger.addLogging();
+
                                     if (emailVerified) {
                                       Navigator.of(context)
                                           .pushNamedAndRemoveUntil(
@@ -243,13 +256,12 @@ class _LoginPageState extends State<LoginPage> {
                       ElevatedButton.icon(
                         // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                         style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(25), // <-- Radius
-                          ),
-                          minimumSize: const Size.fromHeight(50),
-                          backgroundColor: Colors.black
-                        ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(25), // <-- Radius
+                            ),
+                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: Colors.black),
                         label: Text(
                           'Log in with Google',
                           style: GoogleFonts.poppins(

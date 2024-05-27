@@ -164,11 +164,11 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                             //           .userFavorites =
                                             //       currentUser.user.favorites;
                                           }),
-                                      const Text(
-                                        '20',
+                                      Text(
+                                        images[index].dislikes.toString(),
                                         maxLines: 2,
                                         overflow: TextOverflow.fade,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w200,
                                           fontSize: 14,
