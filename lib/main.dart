@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           imageCaptureRoute: (context) => const ImageCapture(),
           editImageRoute: (context) => const EditImagePage(),
           userProfileUploadRoute: (context) => const UserProfileUpload(),
-          tagRoute: (context) => const TagsPageDelegate(),
+          // tagRoute: (context) => const TagsPageDelegate(),
           imageManagementPage: (context) => const ImageManagementPage(),
           loggingPage: (context) => const LoggingPage(),
         },

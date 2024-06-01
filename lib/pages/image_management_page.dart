@@ -21,27 +21,29 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image management page'),
-        backgroundColor: const Color.fromARGB(255, 56, 159, 244),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final confirmLogout = await showLogOutDialog(context,
-              content: 'Logging out?', title: 'Log out');
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final confirmLogout = await showLogOutDialog(context,
+                  content: 'Logging out?', title: 'Log out');
 
-          if (confirmLogout) {
-            await AuthService.firebase().logout();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              loginRoute,
-              (_) => false,
-            );
-          }
-        },
-        child: const Icon(
-          Icons.logout,
-          color: Colors.white,
-        ),
+              if (confirmLogout) {
+                await AuthService.firebase().logout();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  loginRoute,
+                  (_) => false,
+                );
+              }
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.black.withAlpha(100),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: StreamBuilder(

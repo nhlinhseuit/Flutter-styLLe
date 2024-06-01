@@ -1,6 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:stylle/services/auth/auth_user.dart';
 import 'package:stylle/utilities/check_connectivity.dart';
+
+enum LoggingType { general, register, login, logout, changePassword }
+
+String loggingTypeToString(LoggingType type) {
+  switch(type) {
+    case LoggingType.register:
+      return "register";
+    case LoggingType.login:
+      return "login";
+    case LoggingType.logout:
+      return "logout";
+    case LoggingType.changePassword:
+      return "changePassword";
+    case LoggingType.general:
+      return "general";
+  }
+}
+
+LoggingType cvStringToLoggingType(String value) {
+  if (value == "login") return LoggingType.login;
+  if (value == "logout") return LoggingType.logout;
+  if (value == "changePassword") return LoggingType.changePassword;
+  return LoggingType.general;
+}
 
 class Logging {
   String uid;
@@ -8,6 +31,7 @@ class Logging {
   final String firstName;
   final String lastName;
   final DateTime time;
+  final LoggingType type;
 
   static CollectionReference dbLogging =
       FirebaseFirestore.instance.collection('logging');
@@ -18,6 +42,7 @@ class Logging {
     required this.firstName,
     required this.lastName,
     required this.time,
+    required this.type,
   });
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +70,7 @@ class Logging {
       firstName: json['firstName'],
       lastName: json['lastName'],
       time: parseTime(json['time']),
+      type: cvStringToLoggingType(json['type'] ?? '')
     );
   }
 

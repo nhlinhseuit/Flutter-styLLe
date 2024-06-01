@@ -220,8 +220,9 @@ class _LoginPageState extends State<LoginPage> {
                                         email: userLogger.email,
                                         firstName: userLogger.firstName,
                                         lastName: userLogger.lastName,
-                                        time: DateTime.now());
-                                    logger.addLogging();
+                                        time: DateTime.now(),
+                                        type: LoggingType.login);
+                                    await logger.addLogging();
 
                                     //AUTHORIZATION
                                     if (userLogger.role == 'admin') {

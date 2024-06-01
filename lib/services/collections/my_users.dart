@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stylle/services/auth/auth_service.dart';
+import 'package:stylle/services/collections/logging.dart';
 import 'package:stylle/services/collections/my_images.dart';
 
 import '../../utilities/check_connectivity.dart';
@@ -101,6 +102,15 @@ class MyUser {
     //     .set(userData)
     //     .then((value) => print("User Added"))
     //     .catchError((error) => print("Failed to add user: $error"));
+    
+    Logging logger = Logging(
+        uid: uid,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        time: DateTime.now(),
+        type: LoggingType.register);
+    await logger.addLogging();
     return dbUsers
         .doc(uid)
         .set(userData)

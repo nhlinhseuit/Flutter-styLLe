@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart'
         FirebaseAuth,
         FirebaseAuthException,
         User;
+import 'package:stylle/services/collections/logging.dart';
+import 'package:stylle/services/notifiers/current_user.dart';
 
 import '../../firebase_options.dart';
 import '../collections/my_users.dart';
@@ -91,6 +93,15 @@ class FirebaseAuthProvider implements MyAuthProvider {
   Future<void> logout() async {
     final user = currentUser;
     if (user != null) {
+      final userLogger = CurrentUser().user;
+      Logging logger = Logging(
+          uid: userLogger.uid,
+          email: userLogger.email,
+          firstName: userLogger.firstName,
+          lastName: userLogger.lastName,
+          time: DateTime.now(),
+          type: LoggingType.logout);
+      await logger.addLogging();
       await FirebaseAuth.instance.signOut();
     } else {
       throw UserNotLoggedInAuthException();
@@ -147,6 +158,16 @@ class FirebaseAuthProvider implements MyAuthProvider {
       );
       await user.reauthenticateWithCredential(credentials);
       await user.updatePassword(newPassword.trim());
+      
+      final userLogger = CurrentUser().user;
+      Logging logger = Logging(
+          uid: userLogger.uid,
+          email: userLogger.email,
+          firstName: userLogger.firstName,
+          lastName: userLogger.lastName,
+          time: DateTime.now(),
+          type: LoggingType.changePassword);
+      await logger.addLogging();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password') {
         throw WrongPasswordAuthException();

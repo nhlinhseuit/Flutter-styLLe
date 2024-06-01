@@ -80,12 +80,12 @@ class _ProfilePageDelegatedState extends State<ProfilePageDelegated> {
                                       content: 'Logging out?',
                                       title: 'Log out');
                                   if (confirmLogout) {
-                                    await AuthService.firebase().logout();
                                     Navigator.of(context)
                                         .pushNamedAndRemoveUntil(
                                       loginRoute,
                                       (_) => false,
                                     );
+                                    await AuthService.firebase().logout();
                                   }
                                   break;
                                 case MenuAction.changePassword:

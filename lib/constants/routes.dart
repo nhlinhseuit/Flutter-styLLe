@@ -14,6 +14,6 @@ const userProfileUploadRoute = '/profile_upload/';
 const editInfoRoute = '/edit_info/';
 const editImageRoute = '/edit_image/';
 const searchRoute = '/search/';
-const tagRoute = '/tagRoute/';
+// const tagRoute = '/tagRoute/';
 const imageManagementPage = '/imageManagementPage/';
 const loggingPage = '/loggingPage/';
