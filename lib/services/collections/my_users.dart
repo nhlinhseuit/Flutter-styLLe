@@ -286,6 +286,15 @@ class MyUser {
       .map((snapshot) =>
           snapshot.docs.map((doc) => MyImage.fromJson(doc.data())).toList());
 
+  
+  
+  Future<int> update(
+    Map<String, dynamic> updateData,
+  ) async {
+    await dbUsers.doc(uid).update(updateData);
+    return 1;
+  }
+
   Map<String, dynamic> toJson() => {
         'uid': uid,
         'profile_image': profileImage,

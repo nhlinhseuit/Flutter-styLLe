@@ -1,15 +1,14 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:stylle/pages/home_page_delegated.dart';
 import 'package:stylle/pages/image_management_page.dart';
 import 'package:stylle/pages/logging_page.dart';
-import 'package:stylle/pages/profile_page_delegated.dart';
-import 'package:stylle/pages/search_page.dart';
-import 'package:stylle/pages/upload_image_page.dart';
+import 'package:stylle/pages/user_management_page.dart';
+
 import '../services/auth/auth_service.dart';
 import '../utilities/check_connectivity.dart';
+import 'tags_management_page.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -24,9 +23,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
   int _selectedIndex = 0;
 
   final tabs = const [
+    UserManagementPage(),
     ImageManagementPage(),
-    LoggingPage(),
-    ImageManagementPage(),
+    TagManagementPage(),
     LoggingPage(),
   ];
 

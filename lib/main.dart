@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           imageCaptureRoute: (context) => const ImageCapture(),
           editImageRoute: (context) => const EditImagePage(),
           userProfileUploadRoute: (context) => const UserProfileUpload(),
-          // tagRoute: (context) => const TagsPageDelegate(),
+          tagRoute: (context) => const TagsPageDelegate(),
           imageManagementPage: (context) => const ImageManagementPage(),
           loggingPage: (context) => const LoggingPage(),
         },
@@ -161,6 +161,10 @@ class MainPage extends StatelessWidget {
                           ConnectionState.done) {
                         Provider.of<CurrentUser>(context, listen: false).user =
                             userSnapshot.data!;
+                        if (userSnapshot.data!.role == "admin") 
+                        {
+                          return const AdminHomePage();
+                        }
                         return const HomePage();
                       } else {
                         return const Scaffold(

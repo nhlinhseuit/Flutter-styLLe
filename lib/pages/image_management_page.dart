@@ -50,8 +50,8 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
             stream: imagesStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final images = snapshot.data;
-                var numberOfImages = images!.length;
+                final images = snapshot.data!..sort((a, b) => a.dislikes - b.dislikes);
+                var numberOfImages = images.length;
                 for (var image in images) {
                   precacheImage(NetworkImage(image.imagePath), context);
                 }
@@ -138,25 +138,13 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                   // ),
                                   Row(
                                     children: [
-                                      IconButton(
-                                          icon: const Icon(
+                                      const IconButton(
+                                          icon: Icon(
                                             color: primaryPinkColor,
                                             Icons.favorite_rounded,
                                             size: 30,
                                           ),
-                                          onPressed: () async {
-                                            // if (!(await checkInternetConnectivity())) {
-                                            //   displayNoInternet();
-                                            //   return;
-                                            // }
-                                            // await currentUser.user
-                                            //     .handleFavorite(args);
-                                            // setState(() {
-                                            //   Provider.of<CurrentUser>(context,
-                                            //               listen: false)
-                                            //           .userFavorites =
-                                            //       currentUser.user.favorites;
-                                          }),
+                                          onPressed: null),
                                       Text(
                                         images[index].likes.toString(),
                                         maxLines: 2,
@@ -167,25 +155,13 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                           fontSize: 14,
                                         ),
                                       ),
-                                      IconButton(
-                                          icon: const Icon(
+                                      const IconButton(
+                                          icon: Icon(
                                             color: primaryPinkColor,
                                             Icons.report,
                                             size: 30,
                                           ),
-                                          onPressed: () async {
-                                            // if (!(await checkInternetConnectivity())) {
-                                            //   displayNoInternet();
-                                            //   return;
-                                            // }
-                                            // await currentUser.user
-                                            //     .handleFavorite(args);
-                                            // setState(() {
-                                            //   Provider.of<CurrentUser>(context,
-                                            //               listen: false)
-                                            //           .userFavorites =
-                                            //       currentUser.user.favorites;
-                                          }),
+                                          onPressed: null),
                                       Text(
                                         images[index].dislikes.toString(),
                                         maxLines: 2,
@@ -203,7 +179,13 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
                                             size: 30,
                                           ),
                                           onPressed: () async {
-                                            images[index].delete();
+                                            
+                                            final confirmLogout = await showLogOutDialog(context,
+                                                content: 'Delete image?', title: 'Confirm');
+
+                                            if (confirmLogout) {
+                                              await images[index].delete();
+                                            }
                                           }),
                                     ],
                                   ),

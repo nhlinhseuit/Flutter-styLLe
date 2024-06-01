@@ -45,6 +45,7 @@ class _LoggingPageState extends State<LoggingPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: RefreshIndicator(
+          backgroundColor: Colors.white,
           onRefresh: () async { 
             setState(() {
               reload++;
@@ -70,99 +71,119 @@ class _LoggingPageState extends State<LoggingPage> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 150,
-                                    child: Text(
-                                      'uid ${logging[index].uid}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 14,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width - 150,
+                                      child: Text(
+                                        'uid: ${logging[index].uid}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w200,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 150,
-                                    child: Text(
-                                      'email ${logging[index].email}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 14,
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width - 150,
+                                      child: Text(
+                                        'email: ${logging[index].email}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 150,
-                                    child: Text(
-                                      'firstName ${logging[index].firstName}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 14,
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width - 150,
+                                      child: Text(
+                                        'firstName: ${logging[index].firstName}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w200,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 150,
-                                    child: Text(
-                                      'lastName ${logging[index].lastName}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 14,
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width - 150,
+                                      child: Text(
+                                        'lastName: ${logging[index].lastName}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w200,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 150,
-                                    child: Text(
-                                      'time ${logging[index].time}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 14,
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width - 150,
+                                      child: Text(
+                                        'time: ${logging[index].time}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width - 150,
+                                      child: Text(
+                                        'action: ${loggingTypeToString(logging[index].type)}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       });
