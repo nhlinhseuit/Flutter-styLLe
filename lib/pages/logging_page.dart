@@ -55,8 +55,8 @@ class _LoggingPageState extends State<LoggingPage> {
               future: Logging.loggingFuture(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var logging = snapshot.data;
-                  var numberOfLogger = logging!.length;
+                  var logging = snapshot.data!..sort(((a, b) => b.time.compareTo(a.time)));
+                  var numberOfLogger = logging.length;
           
                   return ListView.builder(
                       itemCount: numberOfLogger,

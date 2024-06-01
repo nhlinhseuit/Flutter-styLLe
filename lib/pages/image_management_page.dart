@@ -50,7 +50,7 @@ class _ImageManagementPageState extends State<ImageManagementPage> {
             stream: imagesStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final images = snapshot.data!..sort((a, b) => a.dislikes - b.dislikes);
+                final images = snapshot.data!..sort((a, b) => b.dislikes - a.dislikes);
                 var numberOfImages = images.length;
                 for (var image in images) {
                   precacheImage(NetworkImage(image.imagePath), context);

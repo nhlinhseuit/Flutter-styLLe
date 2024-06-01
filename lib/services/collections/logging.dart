@@ -51,6 +51,7 @@ class Logging {
         'firstName': firstName,
         'lastName': lastName,
         'time': Timestamp.fromDate(time),
+        'type': loggingTypeToString(type)
       };
 
   static Logging fromJson(Map<String, dynamic> json) {
